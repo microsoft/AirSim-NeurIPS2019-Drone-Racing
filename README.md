@@ -33,6 +33,6 @@ There are two ways to swap between levels, either via API or by the UI menu.
 
 ## List of Levels by Difficulty (Least to Most Difficult)
 1. Soccer Field - A simple outdoors environment with few obstacles, and an easy to follow course.
-2. ZhangJiaJie - A mountainous 
-3. Building99 
+2. ZhangJiaJie - A mountainous landscape based on a national park in the Hunan province of China.
+3. Building99 - A tight race course designed inside one of Microsoft's very own buildings.
 
