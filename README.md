@@ -9,6 +9,15 @@ This competition marks the start of some new functionality in airsim, which we t
 4. Copy your downloaded `pak` file, and paste it into `Airsim-{your distribution}/AirSimExe/Content/Paks`
 5. The contents in that level pak will now be linked to your airsim binary!
 
+## Running the Environment Executable
+### Windows
+Navigate to your main project folder (`Airsim-Windows/`), and double click `run.bat`
+### Linux
+Open a terminal window, navigate to your main project directory (`Airsim-Linux/`), and enter the following command:
+```
+./AirsimExe.sh -windowed
+```
+
 ## Airsim
 To control your drone and get information from the environment, you will need to use the airsim client API, which is accessible via Python or C++.
 ### Python installation
@@ -16,12 +25,19 @@ To install the Python API via pip, simply open a command window (if on a Windows
 ```
 pip install airsim
 ```
-To download and from source: 
-1. Clone the [airsim git repository](https://github.com/Microsoft/AirSim.git)
-2. Navigate to `Airsim/PythonClient`, open a command window, and enter the following command: ```pip install airsim```
+To install from source: 
+1. Clone the [airsim git repository](https://github.com/Microsoft/AirSim):
+```
+git clone https://github.com/Microsoft/AirSim.git
+```
+2. Navigate to `Airsim/PythonClient`, open a command window, and enter the following command: 
+```
+python setup.py install --user
+```
+**note:** you mave have to run this command with administrator privileges.
 
 ### C++ installation
-To install the client API c++ library, follow the instructions listed under [How to Get It](https://github.com/Microsoft/AirSim#how-to-get-it)
+To install the client API c++ library, follow the instructions listed under [How to Get It](https://github.com/Microsoft/AirSim#how-to-get-it) in the Airsim repository.
 
 ## Changing Levels
 There are two ways to swap between levels, either via API or by the UI menu.
