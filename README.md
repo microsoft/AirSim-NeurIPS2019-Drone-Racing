@@ -1,54 +1,72 @@
-# Game of Drones Test Environment v0
-Say hello to the first release of test environments for the NeurIPS 2019 competition, [Game of Drones](https://www.microsoft.com/en-us/research/academic-program/game-of-drones-competition-at-neurips-2019/).
- Here you will find 3 different worlds with prebuilt tracks to test and refine the autonomous functionality of your drones.
-## Environments
-This competition marks the start of some new functionality in airsim, which we think you will enjoy. Instead of having a series of individual executables for each environment, we have compacted all of the relevant airsim content and functionality into a single binary, and created DLC packages which can loaded and unloaded into the main binary at will. Adding DLC content to your airsim executable is simple:
-1. Navigate to [the releases page](https://github.com/microsoft/AirSim-NeurIPS2019-Drone-Racing/releases)
-2. Download the AirSim executable relevant to your operating system ([linux](https://github.com/microsoft/AirSim-NeurIPS2019-Drone-Racing/releases/download/v0.0-linux/Airsim-Linux.tar.gz)/[windows](https://github.com/microsoft/AirSim-NeurIPS2019-Drone-Racing/releases/download/v0.0-windows/AirSim-Windows.zip))
-3. Download your desired DLC package(s)
-4. Copy your downloaded `pak` file, and paste it into `Airsim-{your distribution}/AirSimExe/Content/Paks`
-5. The contents in that level pak will now be linked to your airsim binary!
+# Game of Drones: A NeurIPS 2019 Competition
+- [Competition website](https://www.microsoft.com/en-us/research/academic-program/game-of-drones-competition-at-neurips-2019/)
+- [Competition guidelines](https://github.com/microsoft/AirSim-NeurIPS2019-Drone-Racing/blob/master/docs/competition_guidelines.md)
+- [Linux Binaries](https://github.com/microsoft/AirSim-NeurIPS2019-Drone-Racing/releases/tag/v0.0-linux)
+- [Windows Binaries](https://github.com/microsoft/AirSim-NeurIPS2019-Drone-Racing/releases/tag/v0.0-windows)
 
-## Running the Environment Executable
-### Windows
-Navigate to your main project folder (`Airsim-Windows/`), and double click `run.bat`
-### Linux
-Open a terminal window, navigate to your main project directory (`Airsim-Linux/`), and enter the following command:
-```
-./AirsimExe.sh -windowed
-```
+## Unreal Environments
+This competition marks the advent of a new release process for AirSim, in which we have separated out the AirSim plugin from environment content.    
+Instead of having [a series of individual executables](https://github.com/microsoft/AirSim/releases/tag/v.1.2.2) for each environment, we have compacted all of the relevant AirSim content and API into a single binary (`AirSimExe`).    
+Unreal environments containing race courses are released as separate downloadable content (DLC) packages, in the form of `.pak` files, which can be loaded and unloaded into the main binary as needed.    
 
-## Airsim
-To control your drone and get information from the environment, you will need to use the airsim client API, which is accessible via Python or C++.
-### Python installation
-To install the Python API via pip, simply open a command window (if on a Windows OS), or a terminal window (if on a Unix OS), and run the following command:
-```
-pip install airsim
-```
-To install from source: 
-1. Clone the [airsim git repository](https://github.com/Microsoft/AirSim):
-```
-git clone https://github.com/Microsoft/AirSim.git
-```
-2. Navigate to `Airsim/PythonClient`, open a command window, and enter the following command: 
-```
-python setup.py install --user
-```
-**note:** you mave have to run this command with administrator privileges.
+### Downloading AirSimExe and Unreal Environments 
+- Navigate to [the releases page](https://github.com/microsoft/AirSim-NeurIPS2019-Drone-Racing/releases).
+- Download the relevant AirSim executable:
+	- [Linux](https://github.com/microsoft/AirSim-NeurIPS2019-Drone-Racing/releases/download/v0.0-linux/AirSim-Linux.tar.gz)
+	- [Windows](https://github.com/microsoft/AirSim-NeurIPS2019-Drone-Racing/releases/download/v0.0-windows/AirSim-Windows.zip)
+- Download your desired environments (pakfiles) - `Building99.pak` / ` SoccerField.pak` / `ZhangJiaJie.pak`.
+- Move the environment pakfile into `AirSim/AirSimExe/Content/Paks`. 
+- The contents in the environment pakfile will now be linked to your AirSim binary!
 
-### C++ installation
-To install the client API c++ library, follow the instructions listed under [How to Get It](https://github.com/Microsoft/AirSim#how-to-get-it) in the Airsim repository.
+### Running the Executable
 
-## Changing Levels
-There are two ways to swap between levels, either via API or by the UI menu.
-### API usage
-``` client.simLoadLevel("{level_name}")```
-### UI menu
-1. press `F10` to toggle the level menu
-2. Click your desired level
+- Linux
+	- Open a terminal window, `cd` to `AirSim/` directory, and enter the following command:
+		```
+		./AirSimExe.sh -windowed
+		```
 
-## List of Levels by Difficulty (Least to Most Difficult)
-1. Soccer Field - A simple outdoors environment with few obstacles, and an easy to follow course.
-2. ZhangJiaJie - A mountainous landscape based on a national park in the Hunan province of China.
-3. Building99 - A tight race course designed inside one of Microsoft's very own buildings.
+- Windows
+	- Navigate to the `AirSim/` directory, and double-click `run.bat`
 
+
+## AirSim API
+To control your drone and get information from the environment, you will need to use the AirSim client API, which is accessible via Python or C++.
+
+### Python
+- Pip package
+	To install the Python API via pip:
+		```
+		pip install AirSim
+		```
+
+- Or else, install from source: 
+	- Clone the [AirSim git repository](https://github.com/Microsoft/AirSim):
+		```
+		git clone https://github.com/Microsoft/AirSim.git
+		```
+	- Navigate to `AirSim/PythonClient`, open a command window, and enter the following command: 
+		```
+		python setup.py install --user
+		```
+
+### C++
+- To use the C++ API, you'll have to build AirSim from source:
+	- [Linux](https://microsoft.github.io/AirSim/docs/build_linux/)
+	- [Windows](https://microsoft.github.io/AirSim/docs/build_windows/)
+- The C++ API is [documented here](https://microsoft.github.io/AirSim/docs/apis_cpp/) 
+
+## Changing Environments
+There are two ways to swap between levels, either via AirSIm API or by the UI menu.
+- API 
+	```python
+	client.simLoadLevel("{level_name}")
+	```
+- UI Menu
+	- Press `F10` to toggle the level menu
+	- Click your desired level. (Note: the UI lists all the pakfiles in the `AirSim/AirSimExe/Content/Paks` directory. Ensure you downloaded the pakfile, if you are not able to see a particular environment)
+
+## List of Environments in Increasing Order of Difficulty 
+- Soccer Field: A simple outdoors environment with few obstacles, and an easy to follow course.
+- ZhangJiaJie: A mountainous landscape based on a national park in the Hunan province of China.
+- Building99: A tight race course designed inside one of Microsoft's very own buildings.
