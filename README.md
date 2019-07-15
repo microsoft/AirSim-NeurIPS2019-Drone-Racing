@@ -4,11 +4,10 @@
 - [Linux Binaries](https://github.com/microsoft/AirSim-NeurIPS2019-Drone-Racing/releases/tag/v0.0-linux)
 - [Windows Binaries](https://github.com/microsoft/AirSim-NeurIPS2019-Drone-Racing/releases/tag/v0.0-windows)
 
-![Alt Text](https://github.com/microsoft/AirSim-NeurIPS2019-Drone-Racing/blob/master/docs/images/neurips_b99_3_drones.gif?raw=true)
+<img src="https://github.com/madratman/airsim_neurips_gifs/blob/master/imgs/neurips_b99_3_drones.gif?raw=true" width="285"> <img src="https://github.com/madratman/airsim_neurips_gifs/blob/master/imgs/neurips_soccer_field_8_drones.gif?raw=true" width="285"> <img src="https://github.com/madratman/airsim_neurips_gifs/blob/master/imgs/neurips_zhangjiajie_4_drones.gif?raw=true" width="285">
 
 ## Unreal Environments
-This competition marks the advent of a new release process for AirSim, in which we have separated out the AirSim plugin from environment content.    
-Instead of having [a series of individual executables](https://github.com/microsoft/AirSim/releases/tag/v.1.2.2) for each environment, we have compacted all of the relevant AirSim content and API into a single binary (`AirSimExe`).    
+This competition marks the advent of a new release process for AirSim, in which we have separated out the AirSim plugin from environment content. Instead of having a series of individual executables for each environment, we have compacted all of the relevant AirSim content and API into a single binary (`AirSimExe`).    
 Unreal environments containing race courses are released as separate downloadable content (DLC) packages, in the form of `.pak` files, which can be loaded and unloaded into the main binary as needed.    
 
 ### Downloading AirSimExe and Unreal Environments 
@@ -72,3 +71,6 @@ There are two ways to swap between levels, either via AirSIm API or by the UI me
 - Soccer Field: A simple outdoors environment with few obstacles, and an easy to follow course.
 - ZhangJiaJie: A mountainous landscape based on a national park in the Hunan province of China.
 - Building99: A tight race course designed inside one of Microsoft's very own buildings.
+
+## Questions
+Please open a Github Issue on **this** repository (not [AirSim](https://github.com/microsoft/AirSim)) for any technical questions w.r.t. the Neurips competition. 
