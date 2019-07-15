@@ -4,6 +4,8 @@
 - [Linux Binaries](https://github.com/microsoft/AirSim-NeurIPS2019-Drone-Racing/releases/tag/v0.0-linux)
 - [Windows Binaries](https://github.com/microsoft/AirSim-NeurIPS2019-Drone-Racing/releases/tag/v0.0-windows)
 
+![Alt Text](https://github.com/microsoft/AirSim-NeurIPS2019-Drone-Racing/blob/master/docs/images/neurips_b99_3_drones.gif?raw=true)
+
 ## Unreal Environments
 This competition marks the advent of a new release process for AirSim, in which we have separated out the AirSim plugin from environment content.    
 Instead of having [a series of individual executables](https://github.com/microsoft/AirSim/releases/tag/v.1.2.2) for each environment, we have compacted all of the relevant AirSim content and API into a single binary (`AirSimExe`).    
@@ -70,3 +72,4 @@ There are two ways to swap between levels, either via AirSIm API or by the UI me
 - Soccer Field: A simple outdoors environment with few obstacles, and an easy to follow course.
 - ZhangJiaJie: A mountainous landscape based on a national park in the Hunan province of China.
 - Building99: A tight race course designed inside one of Microsoft's very own buildings.
+

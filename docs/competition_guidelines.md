@@ -19,19 +19,24 @@ Equipped with two RGB cameras – one facing forward and the other downward – 
 
 ### Tier III: Full Autonomy 
 This is the combination of Tiers I and II. Given forward and downward facing RBD cameras and the ground truth pose of your own drone, complete the racecourse as fast as possible while avoiding collisions with the gates and the opponent drone. You will again be provided with approximate gate poses before the race starts. The actual gate poses will be a perturbed version of the given gate poses.
+
 - The Challenge: Use perception both to locate the gates and your opponent, and finish the race quicker than your opponent.
-- The Focus: Full stack autonomy, incorporating on board perception coupled with competitive planning. 
+- The Focus: Full stack autonomy, incorporating on-board perception coupled with competitive planning. 
+
 
 ## How to participate in the Challenge?
 Participants can download the binaries for the drone racing simulation environment [here](https://github.com/microsoft/AirSim-NeurIPS2019-Drone-Racing/releases). Participants interface with the simulation by supplying, at each time step, a target waypoint and velocity for the drone. The target waypoint is the point in 3D space where the user wants the drone to be located at the next available time step, and the target velocity is the 3D velocity it will be travelling at when it reaches that point. The simulation environment will already contain a low-level trajectory planner and feedback controller to control the dynamics of the drone to achieve the specified waypoint and velocity, thereby simplifying the interface as much as possible. Technical details of the interface can be found [here](//link).
 
 The exact form of submission is to be determined.  The participants are expected to develop everything in Python using typical packages (numpy, scipy, etc.) and the provided AirSim API.
 
+
 ## Qualification Rules
 To determine a leaderboard among all submissions during the qualification phase, every submission is evaluated across three rounds − one for each track − consisting of two races. Of the two races, only the best result is counted towards a participant’s score.
 As there are two drones in Tier I and III, the two drones will start at offset positions. To ensure fairness, every race is repeated with mirrored start positions and the score is determined by averaging the lap times of the two runs. 
 
-The qualifier binary contains three tracks of increasing difficulty levels: Easy, Medium, and Hard. In each race each drone must complete the racecourse by passing through a series of gates in a given order without colliding with the environment or the opponent drone (Tier I and III). Missing a gate and colliding with the environment incurs a penalty. Violating the safety radius incurs a penalty as well, and a collision with the other drones will disqualify the drone causing the collision. See [Penalties and Disqualifications](//link) in the following for details.
+
+The qualifier binary will contain three tracks classified into three categories: Easy, Medium, and Hard. In each race each drone must complete the racecourse by passing through a series of gates in a given order without colliding with the environment or the opponent drone (Tier I and III). Missing a gate and colliding with the environment incurs a penalty. Violating the safety radius incurs a penalty as well, and a collision with the other drones will disqualify the drone causing the collision. See [Penalties and Disqualifications](//link) in the following for details.
+
 The summed score over all tracks determines the overall score in the leaderboard (see [Metrics and Scoring](//link) below).
 
 The exact conditions for a team to qualify for the live tournament at the NeurIPS 2019 conference depends on the number of participants and feedback we gather during the qualification and will be detailed before 15th October, 2019. Qualifier binaries will also be released during this timeframe.
@@ -102,6 +107,7 @@ This is measured with both drones competing at the same time on the same track.
 
 ### Overall Score
 The sum of all lag times (Tier II: lap times) plus point deduction (penalties, see later) across all tracks and all counted runs determine the overall score.
+
 
 ### Collision Avoidance. (Tier I and III)
 It is the job of the chasing drone to avoid the leading drone. In the case of a collision, penalties are always incurred to the chasing drone.
