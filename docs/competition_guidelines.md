@@ -22,7 +22,7 @@ This is the combination of Tiers I and II. Given forward and downward facing RBD
 - The Challenge: Use perception both to locate the gates and your opponent, and finish the race quicker than your opponent.
 - The Focus: Full stack autonomy, incorporating on board perception coupled with competitive planning. 
 
-## How to participate in the Challenge?
+## How to Participate in the Challenge
 Participants can download binaries to experiment with the drone racing simulation environment using the airsim API. The binaries are located [here](https://github.com/microsoft/AirSim-NeurIPS2019-Drone-Racing/releases). The simulation environment will later contain a low-level trajectory planner and feedback controller to control the dynamics of the drone to achieve the specified waypoint and velocity, thereby simplifying the interface as much as possible.
 
 The exact form of submission is to be determined.  The participants are expected to develop everything in Python using typical packages (numpy, scipy, etc.) and the provided AirSim API.
@@ -31,7 +31,7 @@ The exact form of submission is to be determined.  The participants are expected
 To determine a leaderboard among all submissions during the qualification phase, every submission is evaluated across three rounds − one for each track − consisting of two races. Of the two races, only the best result is counted towards a participant’s score.
 As there are two drones in Tier I and III, the two drones will start at offset positions. To ensure fairness, every race is repeated with mirrored start positions and the score is determined by averaging the lap times of the two runs. 
 
-The qualifier binary will contain three tracks classified into three categories: Easy, Medium, and Hard. In each race each drone must complete the racecourse by passing through a series of gates in a given order without colliding with the environment or the opponent drone (Tier I and III). Missing a gate and colliding with the environment incurs a penalty. Violating the safety radius incurs a penalty as well, and a collision with the other drones will disqualify the drone causing the collision. See [Penalties and Disqualifications](https://github.com/microsoft/AirSim-NeurIPS2019-Drone-Racing/blob/master/docs/competition_guidelines.md#penalties) in the following for details.
+The qualifier binary will contain three tracks classified into three categories: Easy, Medium, and Hard. In each race, each drone must complete the racecourse by passing through a series of gates in a given order without colliding with the environment or the opponent drone (Tier I and III). Missing a gate and colliding with the environment incurs a penalty. Violating the safety radius incurs a penalty as well, and a collision with the other drones will disqualify the drone causing the collision. See [Penalties and Disqualifications](https://github.com/microsoft/AirSim-NeurIPS2019-Drone-Racing/blob/master/docs/competition_guidelines.md#penalties) in the following for details.
 
 The summed score over all tracks determines the overall score in the leaderboard (see [Metrics and Scoring](https://github.com/microsoft/AirSim-NeurIPS2019-Drone-Racing/blob/master/docs/competition_guidelines.md#metrics-and-scoring) below).
 
@@ -55,11 +55,11 @@ The start positions are specified for each track and in general consists of two 
 
 ### Environments
 There are three environments that will house race tracks for this competition.
-1. **SoccerField**, Easy  
+1. **SoccerField**
 A simple outdoors environment with few obstacles consisting of a green soccer field surrounded by buildings and trees.
-2. **ZhangJiaJie**, Medium  
+2. **ZhangJiaJie**
  A mountainous landscape modeled after the national park with the same name in the Hunan province of China.
-3. **Microsoft Research Building 99**, Hard  
+3. **Microsoft Research Building 99**
  A complex indoor environment with varying lighting conditions in one of Microsoft’s very own buildings. 
 
 ### Difficulty
@@ -67,7 +67,7 @@ The three tracks have increasing difficulties and meet the following specificati
 
 1. **Easy**
    - All gates are at the same altitude above the ground (2D tracks).
-   - All gates are the same dimensions (inner rectangle 1.6x1.6 m).
+   - All gates are the same dimensions.
    - Gates are only rotated about the z-axis.
    - The next gate is always fully in the field-of-view (FOV).
 2. **Medium**
@@ -78,17 +78,15 @@ The three tracks have increasing difficulties and meet the following specificati
    - The thickness of the gates differs (i.e. the ratio of the internal and external dimensions of the gates will not be consistent).
 3. **Hard**
    - Gates are arbitrarily oriented (3D tracks).
-   - Gates are arbitrarily sized.
+   - Gates are arbitrarily sized and proportioned.
    - The next gate is not necessarily in the FOV.
-   - There may be obstacles in between gates that have to be detected (i.e. walls, chairs, etc.). Holes and borders of varying size for gates.
+   - There may be obstacles in between gates that have to be detected (i.e. walls, chairs, etc.).
 
 ### Gates
 The gates are rectangular and marked using a "race-tape" checker pattern with different colors on each side.
-- The front side is colored green
-- The (inner and outer) sides blue and
+- The front side is colored green.
+- The (inner and outer) sides are blue.
 - The back side of the gate is colored red.
-
-Example [picture of gate].
 
 ## Metrics and Scoring
 
@@ -96,7 +94,7 @@ Example [picture of gate].
 The lap time is the time needed for a lap, that is, the time needed to pass all gates in order and right direction. The lap time is capped at a certain maximal lap time, which is given for every racetrack. In case of a disqualification the lap time is set to be this maximal lap time.
 
 ### Lag time (Lag-T)
-For Tier I and III to measure how well the participants performs with respect to the reference drone, the score is determined by the *lag time*.
+For Tier I and III to measure how well the participants perform with respect to the reference drone, the score is determined by the *lag time*.
 
 The lag time is the difference of the reference drone’s lap time minus the participants lap time.
 This is measured with both drones competing at the same time on the same track.
@@ -108,7 +106,7 @@ The sum of all lag times (Tier II: lap times) plus point deduction (penalties, s
 It is the job of the chasing drone to avoid the leading drone. In the case of a collision, penalties are always incurred to the chasing drone.
 There are two radii to limit the number of collisions and resulting disqualifications.
 1. **Collision Radius**  
-For collision purposes, the drones are modeled simple boxes. In case the distance between the two drones deceeds 0.6m a (simulated) collision occurs. Such a collision removes the violating drone from the game, and the other drone is allowed to finish without an opponent.
+For collision purposes, the drones are modeled as simple boxes. A collision is registered any time the distance between the two drones deceeds 0.6m. Such a collision removes the violating drone from the game, and the other drone is allowed to finish without an opponent.
 2. **Safety Radius**  
 The safety radius is set to 0.4m. If the distance between the two drones deceeds 0.8m, a linear penalty term is incurred for violating this constraint.
 
