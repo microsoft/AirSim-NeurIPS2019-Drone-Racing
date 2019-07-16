@@ -32,36 +32,32 @@ Unreal environments containing race courses are released as separate downloadabl
 
 
 ## AirSim API
-To control your drone and get information from the environment, you will need to use the AirSim client API, which is accessible via Python or C++.
+To control your drone and get information from the environment, you will need to use the AirSim client API, which is accessible via Python. 
 
-### Python
-- Pip package
-	To install the Python API via pip:
-		```
-		pip install AirSim
-		```
-
-- Or else, install from source: 
-	- Clone the [AirSim git repository](https://github.com/Microsoft/AirSim):
-		```
-		git clone https://github.com/Microsoft/AirSim.git
-		```
-	- Navigate to `AirSim/PythonClient`, open a command window, and enter the following command: 
-		```
-		python setup.py install --user
-		```
-
-### C++
-- To use the C++ API, you'll have to build AirSim from source:
-	- [Linux](https://microsoft.github.io/AirSim/docs/build_linux/)
-	- [Windows](https://microsoft.github.io/AirSim/docs/build_windows/)
-- The C++ API is [documented here](https://microsoft.github.io/AirSim/docs/apis_cpp/) 
+### Installation
+- To install the Python API for the Neurips competition, please use:
+	```
+	pip install airsimneurips
+	```
+	Corollary: Do not do a `pip install airsim`, as we will have a few custom APIs specific to this competition. 
+- Resources 
+	- [AirSim APIs](https://microsoft.github.io/AirSim/docs/apis/)
+	- [Examples for using the Python API](https://github.com/microsoft/AirSim/tree/master/PythonClient/multirotor)  	
 
 ## Changing Environments
 There are two ways to swap between levels, either via AirSIm API or by the UI menu.
 - API 
+	- We have added a new API `simLoadLevel(level_name="MainMenu")` to change Unreal environments on the fly.   
+	 Possible values for `level_name` are : `"Soccer_Field"`, `"ZhangJiaJie"`, `"Building99"`, or `"MainMenu"`. 
+	Here's a quick snippet to iterate throught them all. Before trying this, please ensure you've downloaded the 	corresponding pak files from [our releases page](https://github.com/microsoft/AirSim-NeurIPS2019-Drone-Racing/releases). 
+
 	```python
-	client.simLoadLevel("{level_name}")
+	import airsimneurips as airsim
+	client = airsim.MultirotorClient()
+	client.confirmConnection()
+	client.simLoadLevel('Soccer_Field')	
+	client.simLoadLevel('ZhangJiaJie')
+	client.simLoadLevel('Building99')
 	```
 - UI Menu
 	- Press `F10` to toggle the level menu
