@@ -48,16 +48,17 @@ To control your drone and get information from the environment, you will need to
 There are two ways to swap between levels, either via AirSIm API or by the UI menu.
 - API 
 	- We have added a new API `simLoadLevel(level_name="MainMenu")` to change Unreal environments on the fly.   
-	 Possible values for `level_name` are : `"Soccer_Field"`, `"ZhangJiaJie"`, `"Building99"`, or `"MainMenu"`. 
+	 Possible values for `level_name` are : `"Soccer_Field_Easy"`, `"Soccer_Field_Medium"`, `"ZhangJiaJie_Medium"`, `"Building99_Hard"`. 
 	Here's a quick snippet to iterate throught them all. Before trying this, please ensure you've downloaded the 	corresponding pak files from [our releases page](https://github.com/microsoft/AirSim-NeurIPS2019-Drone-Racing/releases). 
 
 	```python
 	import airsimneurips as airsim
 	client = airsim.MultirotorClient()
 	client.confirmConnection()
-	client.simLoadLevel('Soccer_Field')	
-	client.simLoadLevel('ZhangJiaJie')
-	client.simLoadLevel('Building99')
+	client.simLoadLevel('Soccer_Field_Easy')	
+	client.simLoadLevel('Soccer_Field_Medium')	
+	client.simLoadLevel('ZhangJiaJie_Medium')
+	client.simLoadLevel('Building99_Hard')
 	```
 - UI Menu
 	- Press `F10` to toggle the level menu
