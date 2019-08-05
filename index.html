@@ -162,10 +162,134 @@
 </div>
 <div class="section" id="documentation">
 <h2>Documentation<a class="headerlink" href="#documentation" title="Permalink to this headline">¶</a></h2>
-<span class="target" id="module-airsimneurips.client"></span><dl class="class">
+<span class="target" id="module-airsimneurips.client"></span><p>Summary</p>
+<dl class="class">
 <dt id="airsimneurips.client.MultirotorClient">
 <em class="property">class </em><code class="descclassname">airsimneurips.client.</code><code class="descname">MultirotorClient</code><span class="sig-paren">(</span><em>ip=''</em>, <em>port=41451</em>, <em>timeout_value=3600</em><span class="sig-paren">)</span><a class="headerlink" href="#airsimneurips.client.MultirotorClient" title="Permalink to this definition">¶</a></dt>
 <dd><p>Summary</p>
+<dl class="attribute">
+<dt id="airsimneurips.client.MultirotorClient.client">
+<code class="descname">client</code><a class="headerlink" href="#airsimneurips.client.MultirotorClient.client" title="Permalink to this definition">¶</a></dt>
+<dd><p>Description</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">TYPE</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="airsimneurips.client.MultirotorClient.armDisarm">
+<code class="descname">armDisarm</code><span class="sig-paren">(</span><em>arm</em>, <em>vehicle_name=''</em><span class="sig-paren">)</span><a class="headerlink" href="#airsimneurips.client.MultirotorClient.armDisarm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Summary line.</p>
+<p>Extended description of function.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>arm</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a>) – Description of arg1</li>
+<li><strong>vehicle_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Description of arg2</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Description of return value</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)">bool</a></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="airsimneurips.client.MultirotorClient.cancelLastTask">
+<code class="descname">cancelLastTask</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#airsimneurips.client.MultirotorClient.cancelLastTask" title="Permalink to this definition">¶</a></dt>
+<dd><p>Summary</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="airsimneurips.client.MultirotorClient.confirmConnection">
+<code class="descname">confirmConnection</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#airsimneurips.client.MultirotorClient.confirmConnection" title="Permalink to this definition">¶</a></dt>
+<dd><p>Summary</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="airsimneurips.client.MultirotorClient.enableApiControl">
+<code class="descname">enableApiControl</code><span class="sig-paren">(</span><em>is_enabled</em>, <em>vehicle_name=''</em><span class="sig-paren">)</span><a class="headerlink" href="#airsimneurips.client.MultirotorClient.enableApiControl" title="Permalink to this definition">¶</a></dt>
+<dd><p>Summary</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>is_enabled</strong> (<em>TYPE</em>) – Description</li>
+<li><strong>vehicle_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><em>optional</em>) – Description</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Description</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">TYPE</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="airsimneurips.client.MultirotorClient.getClientVersion">
+<code class="descname">getClientVersion</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#airsimneurips.client.MultirotorClient.getClientVersion" title="Permalink to this definition">¶</a></dt>
+<dd><p>Summary</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Description</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">TYPE</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="airsimneurips.client.MultirotorClient.getMinRequiredClientVersion">
+<code class="descname">getMinRequiredClientVersion</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#airsimneurips.client.MultirotorClient.getMinRequiredClientVersion" title="Permalink to this definition">¶</a></dt>
+<dd><p>Summary</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Description</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">TYPE</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="airsimneurips.client.MultirotorClient.getMinRequiredServerVersion">
+<code class="descname">getMinRequiredServerVersion</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#airsimneurips.client.MultirotorClient.getMinRequiredServerVersion" title="Permalink to this definition">¶</a></dt>
+<dd><p>Summary</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Description</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">TYPE</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
 <dl class="method">
 <dt id="airsimneurips.client.MultirotorClient.getMultirotorState">
 <code class="descname">getMultirotorState</code><span class="sig-paren">(</span><em>vehicle_name=''</em><span class="sig-paren">)</span><a class="headerlink" href="#airsimneurips.client.MultirotorClient.getMultirotorState" title="Permalink to this definition">¶</a></dt>
@@ -179,6 +303,22 @@
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Description</td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">TYPE</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="airsimneurips.client.MultirotorClient.getServerVersion">
+<code class="descname">getServerVersion</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#airsimneurips.client.MultirotorClient.getServerVersion" title="Permalink to this definition">¶</a></dt>
+<dd><p>Summary</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Description</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">TYPE</td>
 </tr>
 </tbody>
 </table>
@@ -211,6 +351,24 @@
 <dl class="method">
 <dt id="airsimneurips.client.MultirotorClient.hoverAsync">
 <code class="descname">hoverAsync</code><span class="sig-paren">(</span><em>vehicle_name=''</em><span class="sig-paren">)</span><a class="headerlink" href="#airsimneurips.client.MultirotorClient.hoverAsync" title="Permalink to this definition">¶</a></dt>
+<dd><p>Summary</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>vehicle_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><em>optional</em>) – Description</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Description</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">TYPE</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="airsimneurips.client.MultirotorClient.isApiControlEnabled">
+<code class="descname">isApiControlEnabled</code><span class="sig-paren">(</span><em>vehicle_name=''</em><span class="sig-paren">)</span><a class="headerlink" href="#airsimneurips.client.MultirotorClient.isApiControlEnabled" title="Permalink to this definition">¶</a></dt>
 <dd><p>Summary</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -292,68 +450,6 @@
 <li><strong>z</strong> (<em>TYPE</em>) – Description</li>
 <li><strong>yaw</strong> (<em>TYPE</em>) – Description</li>
 <li><strong>duration</strong> (<em>TYPE</em>) – Description</li>
-<li><strong>vehicle_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><em>optional</em>) – Description</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Description</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">TYPE</p>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="airsimneurips.client.MultirotorClient.moveByManualAsync">
-<code class="descname">moveByManualAsync</code><span class="sig-paren">(</span><em>vx_max</em>, <em>vy_max</em>, <em>z_min</em>, <em>duration</em>, <em>drivetrain=0</em>, <em>yaw_mode=&lt;instance&gt; {   'is_rate': True</em>, <em>'yaw_or_rate': 0.0}</em>, <em>vehicle_name=''</em><span class="sig-paren">)</span><a class="headerlink" href="#airsimneurips.client.MultirotorClient.moveByManualAsync" title="Permalink to this definition">¶</a></dt>
-<dd><p>Read current RC state and use it to control the vehicles.</p>
-<p>Parameters sets up the constraints on velocity and minimum altitude while flying. If RC state is detected to violate these constraints
-then that RC state would be ignored.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>vx_max</strong> (<em>TYPE</em>) – max velocity allowed in x direction</li>
-<li><strong>vy_max</strong> (<em>TYPE</em>) – max velocity allowed in y direction</li>
-<li><strong>vz_max</strong> – max velocity allowed in z direction</li>
-<li><strong>z_min</strong> (<em>TYPE</em>) – min z allowed for vehicle position</li>
-<li><strong>duration</strong> (<em>TYPE</em>) – after this duration vehicle would switch back to non-manual mode</li>
-<li><strong>drivetrain</strong> (<em>TYPE</em><em>, </em><em>optional</em>) – when ForwardOnly, vehicle rotates itself so that its front is always facing the direction of travel. If MaxDegreeOfFreedom then it doesn’t do that (crab-like movement)</li>
-<li><strong>yaw_mode</strong> (<em>TYPE</em><em>, </em><em>optional</em>) – Specifies if vehicle should face at given angle (is_rate=False) or should be rotating around its axis at given rate (is_rate=True)</li>
-<li><strong>vx_max</strong> – Description</li>
-<li><strong>vy_max</strong> – Description</li>
-<li><strong>z_min</strong> – Description</li>
-<li><strong>duration</strong> – Description</li>
-<li><strong>drivetrain</strong> – Description</li>
-<li><strong>yaw_mode</strong> – Description</li>
-<li><strong>vehicle_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><em>optional</em>) – Description</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Description</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">TYPE</p>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="airsimneurips.client.MultirotorClient.moveByRC">
-<code class="descname">moveByRC</code><span class="sig-paren">(</span><em>rcdata=&lt;instance&gt; {   'is_initialized': False</em>, <em>'is_valid': False</em>, <em>'pitch': 0.0</em>, <em>'roll': 0.0</em>, <em>'switch1': 0</em>, <em>'switch2': 0</em>, <em>'switch3': 0</em>, <em>'switch4': 0</em>, <em>'switch5': 0</em>, <em>'switch6': 0</em>, <em>'switch7': 0</em>, <em>'switch8': 0</em>, <em>'throttle': 0.0</em>, <em>'timestamp': 0</em>, <em>'yaw': 0.0}</em>, <em>vehicle_name=''</em><span class="sig-paren">)</span><a class="headerlink" href="#airsimneurips.client.MultirotorClient.moveByRC" title="Permalink to this definition">¶</a></dt>
-<dd><p>Summary</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>rcdata</strong> (<em>TYPE</em><em>, </em><em>optional</em>) – Description</li>
 <li><strong>vehicle_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><em>optional</em>) – Description</li>
 </ul>
 </td>
@@ -577,6 +673,22 @@ then that RC state would be ignored.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="airsimneurips.client.MultirotorClient.ping">
+<code class="descname">ping</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#airsimneurips.client.MultirotorClient.ping" title="Permalink to this definition">¶</a></dt>
+<dd><p>Summary</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Description</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">TYPE</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
 <dt id="airsimneurips.client.MultirotorClient.plot_transform">
 <code class="descname">plot_transform</code><span class="sig-paren">(</span><em>pose_list</em>, <em>vehicle_name=''</em><span class="sig-paren">)</span><a class="headerlink" href="#airsimneurips.client.MultirotorClient.plot_transform" title="Permalink to this definition">¶</a></dt>
 <dd><p>Summary</p>
@@ -592,6 +704,12 @@ then that RC state would be ignored.</p>
 </tr>
 </tbody>
 </table>
+</dd></dl>
+
+<dl class="method">
+<dt id="airsimneurips.client.MultirotorClient.reset">
+<code class="descname">reset</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#airsimneurips.client.MultirotorClient.reset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Summary</p>
 </dd></dl>
 
 <dl class="method">
@@ -664,6 +782,362 @@ then that RC state would be ignored.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="airsimneurips.client.MultirotorClient.simContinueForTime">
+<code class="descname">simContinueForTime</code><span class="sig-paren">(</span><em>seconds</em><span class="sig-paren">)</span><a class="headerlink" href="#airsimneurips.client.MultirotorClient.simContinueForTime" title="Permalink to this definition">¶</a></dt>
+<dd><p>Summary</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>seconds</strong> (<em>TYPE</em>) – Description</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="airsimneurips.client.MultirotorClient.simGetCameraInfo">
+<code class="descname">simGetCameraInfo</code><span class="sig-paren">(</span><em>camera_name</em>, <em>vehicle_name=''</em><span class="sig-paren">)</span><a class="headerlink" href="#airsimneurips.client.MultirotorClient.simGetCameraInfo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Summary</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>camera_name</strong> (<em>TYPE</em>) – Description</li>
+<li><strong>vehicle_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><em>optional</em>) – Description</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Description</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">TYPE</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="airsimneurips.client.MultirotorClient.simGetCollisionInfo">
+<code class="descname">simGetCollisionInfo</code><span class="sig-paren">(</span><em>vehicle_name=''</em><span class="sig-paren">)</span><a class="headerlink" href="#airsimneurips.client.MultirotorClient.simGetCollisionInfo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Summary</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>vehicle_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><em>optional</em>) – Description</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Description</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">TYPE</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="airsimneurips.client.MultirotorClient.simGetGroundTruthKinematics">
+<code class="descname">simGetGroundTruthKinematics</code><span class="sig-paren">(</span><em>vehicle_name=''</em><span class="sig-paren">)</span><a class="headerlink" href="#airsimneurips.client.MultirotorClient.simGetGroundTruthKinematics" title="Permalink to this definition">¶</a></dt>
+<dd><p>Summary</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>vehicle_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><em>optional</em>) – Description</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Description</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">TYPE</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="airsimneurips.client.MultirotorClient.simGetImage">
+<code class="descname">simGetImage</code><span class="sig-paren">(</span><em>camera_name</em>, <em>image_type</em>, <em>vehicle_name=''</em><span class="sig-paren">)</span><a class="headerlink" href="#airsimneurips.client.MultirotorClient.simGetImage" title="Permalink to this definition">¶</a></dt>
+<dd><p>Summary</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>camera_name</strong> (<em>TYPE</em>) – Description</li>
+<li><strong>image_type</strong> (<em>TYPE</em>) – Description</li>
+<li><strong>vehicle_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><em>optional</em>) – Description</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Description</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">TYPE</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="airsimneurips.client.MultirotorClient.simGetImages">
+<code class="descname">simGetImages</code><span class="sig-paren">(</span><em>requests</em>, <em>vehicle_name=''</em><span class="sig-paren">)</span><a class="headerlink" href="#airsimneurips.client.MultirotorClient.simGetImages" title="Permalink to this definition">¶</a></dt>
+<dd><p>Summary</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>requests</strong> (<em>TYPE</em>) – Description</li>
+<li><strong>vehicle_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><em>optional</em>) – Description</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Description</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">TYPE</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="airsimneurips.client.MultirotorClient.simGetObjectPose">
+<code class="descname">simGetObjectPose</code><span class="sig-paren">(</span><em>object_name</em><span class="sig-paren">)</span><a class="headerlink" href="#airsimneurips.client.MultirotorClient.simGetObjectPose" title="Permalink to this definition">¶</a></dt>
+<dd><p>Summary</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>object_name</strong> (<em>TYPE</em>) – Description</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Description</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">TYPE</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="airsimneurips.client.MultirotorClient.simGetSegmentationObjectID">
+<code class="descname">simGetSegmentationObjectID</code><span class="sig-paren">(</span><em>mesh_name</em><span class="sig-paren">)</span><a class="headerlink" href="#airsimneurips.client.MultirotorClient.simGetSegmentationObjectID" title="Permalink to this definition">¶</a></dt>
+<dd><p>Summary</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>mesh_name</strong> (<em>TYPE</em>) – Description</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Description</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">TYPE</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="airsimneurips.client.MultirotorClient.simGetVehiclePose">
+<code class="descname">simGetVehiclePose</code><span class="sig-paren">(</span><em>vehicle_name=''</em><span class="sig-paren">)</span><a class="headerlink" href="#airsimneurips.client.MultirotorClient.simGetVehiclePose" title="Permalink to this definition">¶</a></dt>
+<dd><p>Summary</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>vehicle_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><em>optional</em>) – Description</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Description</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">TYPE</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="airsimneurips.client.MultirotorClient.simIsPause">
+<code class="descname">simIsPause</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#airsimneurips.client.MultirotorClient.simIsPause" title="Permalink to this definition">¶</a></dt>
+<dd><p>Summary</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Description</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">TYPE</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="airsimneurips.client.MultirotorClient.simListSceneObjects">
+<code class="descname">simListSceneObjects</code><span class="sig-paren">(</span><em>name_regex='.*'</em><span class="sig-paren">)</span><a class="headerlink" href="#airsimneurips.client.MultirotorClient.simListSceneObjects" title="Permalink to this definition">¶</a></dt>
+<dd><p>Summary</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>name_regex</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><em>optional</em>) – Description</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Description</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">TYPE</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="airsimneurips.client.MultirotorClient.simLoadLevel">
+<code class="descname">simLoadLevel</code><span class="sig-paren">(</span><em>level_name</em><span class="sig-paren">)</span><a class="headerlink" href="#airsimneurips.client.MultirotorClient.simLoadLevel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Summary</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>level_name</strong> (<em>TYPE</em>) – Description</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Description</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">TYPE</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="airsimneurips.client.MultirotorClient.simPause">
+<code class="descname">simPause</code><span class="sig-paren">(</span><em>is_paused</em><span class="sig-paren">)</span><a class="headerlink" href="#airsimneurips.client.MultirotorClient.simPause" title="Permalink to this definition">¶</a></dt>
+<dd><p>Summary</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>is_paused</strong> (<em>TYPE</em>) – Description</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="airsimneurips.client.MultirotorClient.simPrintLogMessage">
+<code class="descname">simPrintLogMessage</code><span class="sig-paren">(</span><em>message</em>, <em>message_param=''</em>, <em>severity=0</em><span class="sig-paren">)</span><a class="headerlink" href="#airsimneurips.client.MultirotorClient.simPrintLogMessage" title="Permalink to this definition">¶</a></dt>
+<dd><p>Summary</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>message</strong> (<em>TYPE</em>) – Description</li>
+<li><strong>message_param</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><em>optional</em>) – Description</li>
+<li><strong>severity</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a><em>, </em><em>optional</em>) – Description</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Description</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">TYPE</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="airsimneurips.client.MultirotorClient.simSetCameraOrientation">
+<code class="descname">simSetCameraOrientation</code><span class="sig-paren">(</span><em>camera_name</em>, <em>orientation</em>, <em>vehicle_name=''</em><span class="sig-paren">)</span><a class="headerlink" href="#airsimneurips.client.MultirotorClient.simSetCameraOrientation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Summary</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>camera_name</strong> (<em>TYPE</em>) – Description</li>
+<li><strong>orientation</strong> (<em>TYPE</em>) – Description</li>
+<li><strong>vehicle_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><em>optional</em>) – Description</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="airsimneurips.client.MultirotorClient.simSetObjectPose">
+<code class="descname">simSetObjectPose</code><span class="sig-paren">(</span><em>object_name</em>, <em>pose</em>, <em>teleport=True</em><span class="sig-paren">)</span><a class="headerlink" href="#airsimneurips.client.MultirotorClient.simSetObjectPose" title="Permalink to this definition">¶</a></dt>
+<dd><p>Summary</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>object_name</strong> (<em>TYPE</em>) – Description</li>
+<li><strong>pose</strong> (<em>TYPE</em>) – Description</li>
+<li><strong>teleport</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a><em>, </em><em>optional</em>) – Description</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Description</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">TYPE</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="airsimneurips.client.MultirotorClient.simSetSegmentationObjectID">
+<code class="descname">simSetSegmentationObjectID</code><span class="sig-paren">(</span><em>mesh_name</em>, <em>object_id</em>, <em>is_name_regex=False</em><span class="sig-paren">)</span><a class="headerlink" href="#airsimneurips.client.MultirotorClient.simSetSegmentationObjectID" title="Permalink to this definition">¶</a></dt>
+<dd><p>Summary</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>mesh_name</strong> (<em>TYPE</em>) – Description</li>
+<li><strong>object_id</strong> (<em>TYPE</em>) – Description</li>
+<li><strong>is_name_regex</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a><em>, </em><em>optional</em>) – Description</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Description</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">TYPE</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="airsimneurips.client.MultirotorClient.simSetVehiclePose">
+<code class="descname">simSetVehiclePose</code><span class="sig-paren">(</span><em>pose</em>, <em>ignore_collison</em>, <em>vehicle_name=''</em><span class="sig-paren">)</span><a class="headerlink" href="#airsimneurips.client.MultirotorClient.simSetVehiclePose" title="Permalink to this definition">¶</a></dt>
+<dd><p>Summary</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>pose</strong> (<em>TYPE</em>) – Description</li>
+<li><strong>ignore_collison</strong> (<em>TYPE</em>) – Description</li>
+<li><strong>vehicle_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><em>optional</em>) – Description</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
 <dt id="airsimneurips.client.MultirotorClient.takeoffAsync">
 <code class="descname">takeoffAsync</code><span class="sig-paren">(</span><em>timeout_sec=20</em>, <em>vehicle_name=''</em><span class="sig-paren">)</span><a class="headerlink" href="#airsimneurips.client.MultirotorClient.takeoffAsync" title="Permalink to this definition">¶</a></dt>
 <dd><p>Summary</p>
@@ -687,71 +1161,27 @@ then that RC state would be ignored.</p>
 </table>
 </dd></dl>
 
+<dl class="method">
+<dt id="airsimneurips.client.MultirotorClient.waitOnLastTask">
+<code class="descname">waitOnLastTask</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#airsimneurips.client.MultirotorClient.waitOnLastTask" title="Permalink to this definition">¶</a></dt>
+<dd><p>Summary</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>timeout_sec</strong> (<em>TYPE</em><em>, </em><em>optional</em>) – Description</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Description</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">TYPE</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
 </dd></dl>
 
 <span class="target" id="module-airsimneurips.types"></span><p>Summary</p>
-<dl class="class">
-<dt id="airsimneurips.types.BarometerData">
-<em class="property">class </em><code class="descclassname">airsimneurips.types.</code><code class="descname">BarometerData</code><a class="headerlink" href="#airsimneurips.types.BarometerData" title="Permalink to this definition">¶</a></dt>
-<dd><p>Summary</p>
-<dl class="attribute">
-<dt id="airsimneurips.types.BarometerData.altitude">
-<code class="descname">altitude</code><a class="headerlink" href="#airsimneurips.types.BarometerData.altitude" title="Permalink to this definition">¶</a></dt>
-<dd><p>Description</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">TYPE</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="airsimneurips.types.BarometerData.pressure">
-<code class="descname">pressure</code><a class="headerlink" href="#airsimneurips.types.BarometerData.pressure" title="Permalink to this definition">¶</a></dt>
-<dd><p>Description</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">TYPE</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="airsimneurips.types.BarometerData.qnh">
-<code class="descname">qnh</code><a class="headerlink" href="#airsimneurips.types.BarometerData.qnh" title="Permalink to this definition">¶</a></dt>
-<dd><p>Description</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">TYPE</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="airsimneurips.types.BarometerData.time_stamp">
-<code class="descname">time_stamp</code><a class="headerlink" href="#airsimneurips.types.BarometerData.time_stamp" title="Permalink to this definition">¶</a></dt>
-<dd><p>Description</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">TYPE</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-</dd></dl>
-
 <dl class="class">
 <dt id="airsimneurips.types.CameraInfo">
 <em class="property">class </em><code class="descclassname">airsimneurips.types.</code><code class="descname">CameraInfo</code><a class="headerlink" href="#airsimneurips.types.CameraInfo" title="Permalink to this definition">¶</a></dt>
@@ -787,246 +1217,6 @@ then that RC state would be ignored.</p>
 <dl class="attribute">
 <dt id="airsimneurips.types.CameraInfo.proj_mat">
 <code class="descname">proj_mat</code><a class="headerlink" href="#airsimneurips.types.CameraInfo.proj_mat" title="Permalink to this definition">¶</a></dt>
-<dd><p>Description</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">TYPE</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="class">
-<dt id="airsimneurips.types.CarControls">
-<em class="property">class </em><code class="descclassname">airsimneurips.types.</code><code class="descname">CarControls</code><span class="sig-paren">(</span><em>throttle=0</em>, <em>steering=0</em>, <em>brake=0</em>, <em>handbrake=False</em>, <em>is_manual_gear=False</em>, <em>manual_gear=0</em>, <em>gear_immediate=True</em><span class="sig-paren">)</span><a class="headerlink" href="#airsimneurips.types.CarControls" title="Permalink to this definition">¶</a></dt>
-<dd><p>Summary</p>
-<dl class="attribute">
-<dt id="airsimneurips.types.CarControls.brake">
-<code class="descname">brake</code><a class="headerlink" href="#airsimneurips.types.CarControls.brake" title="Permalink to this definition">¶</a></dt>
-<dd><p>Description</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)">float</a></td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="airsimneurips.types.CarControls.gear_immediate">
-<code class="descname">gear_immediate</code><a class="headerlink" href="#airsimneurips.types.CarControls.gear_immediate" title="Permalink to this definition">¶</a></dt>
-<dd><p>Description</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)">bool</a></td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="airsimneurips.types.CarControls.handbrake">
-<code class="descname">handbrake</code><a class="headerlink" href="#airsimneurips.types.CarControls.handbrake" title="Permalink to this definition">¶</a></dt>
-<dd><p>Description</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)">bool</a></td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="airsimneurips.types.CarControls.is_manual_gear">
-<code class="descname">is_manual_gear</code><a class="headerlink" href="#airsimneurips.types.CarControls.is_manual_gear" title="Permalink to this definition">¶</a></dt>
-<dd><p>Description</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)">bool</a></td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="airsimneurips.types.CarControls.manual_gear">
-<code class="descname">manual_gear</code><a class="headerlink" href="#airsimneurips.types.CarControls.manual_gear" title="Permalink to this definition">¶</a></dt>
-<dd><p>Description</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)">int</a></td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="airsimneurips.types.CarControls.steering">
-<code class="descname">steering</code><a class="headerlink" href="#airsimneurips.types.CarControls.steering" title="Permalink to this definition">¶</a></dt>
-<dd><p>Description</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)">float</a></td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="airsimneurips.types.CarControls.throttle">
-<code class="descname">throttle</code><a class="headerlink" href="#airsimneurips.types.CarControls.throttle" title="Permalink to this definition">¶</a></dt>
-<dd><p>Description</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)">float</a></td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="airsimneurips.types.CarControls.set_throttle">
-<code class="descname">set_throttle</code><span class="sig-paren">(</span><em>throttle_val</em>, <em>forward</em><span class="sig-paren">)</span><a class="headerlink" href="#airsimneurips.types.CarControls.set_throttle" title="Permalink to this definition">¶</a></dt>
-<dd><p>Summary</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>throttle_val</strong> (<em>TYPE</em>) – Description</li>
-<li><strong>forward</strong> (<em>TYPE</em>) – Description</li>
-</ul>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="class">
-<dt id="airsimneurips.types.CarState">
-<em class="property">class </em><code class="descclassname">airsimneurips.types.</code><code class="descname">CarState</code><a class="headerlink" href="#airsimneurips.types.CarState" title="Permalink to this definition">¶</a></dt>
-<dd><p>Summary</p>
-<dl class="attribute">
-<dt id="airsimneurips.types.CarState.collision">
-<code class="descname">collision</code><a class="headerlink" href="#airsimneurips.types.CarState.collision" title="Permalink to this definition">¶</a></dt>
-<dd><p>Description</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">TYPE</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="airsimneurips.types.CarState.gear">
-<code class="descname">gear</code><a class="headerlink" href="#airsimneurips.types.CarState.gear" title="Permalink to this definition">¶</a></dt>
-<dd><p>Description</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)">int</a></td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="airsimneurips.types.CarState.handbrake">
-<code class="descname">handbrake</code><a class="headerlink" href="#airsimneurips.types.CarState.handbrake" title="Permalink to this definition">¶</a></dt>
-<dd><p>Description</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)">bool</a></td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="airsimneurips.types.CarState.kinematics_estimated">
-<code class="descname">kinematics_estimated</code><a class="headerlink" href="#airsimneurips.types.CarState.kinematics_estimated" title="Permalink to this definition">¶</a></dt>
-<dd><p>Description</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">TYPE</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="airsimneurips.types.CarState.maxrpm">
-<code class="descname">maxrpm</code><a class="headerlink" href="#airsimneurips.types.CarState.maxrpm" title="Permalink to this definition">¶</a></dt>
-<dd><p>Description</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)">float</a></td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="airsimneurips.types.CarState.rpm">
-<code class="descname">rpm</code><a class="headerlink" href="#airsimneurips.types.CarState.rpm" title="Permalink to this definition">¶</a></dt>
-<dd><p>Description</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)">float</a></td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="airsimneurips.types.CarState.speed">
-<code class="descname">speed</code><a class="headerlink" href="#airsimneurips.types.CarState.speed" title="Permalink to this definition">¶</a></dt>
-<dd><p>Description</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)">float</a></td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="airsimneurips.types.CarState.timestamp">
-<code class="descname">timestamp</code><a class="headerlink" href="#airsimneurips.types.CarState.timestamp" title="Permalink to this definition">¶</a></dt>
 <dd><p>Description</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -1193,96 +1383,6 @@ then that RC state would be ignored.</p>
 </dd></dl>
 
 <dl class="class">
-<dt id="airsimneurips.types.EnvironmentState">
-<em class="property">class </em><code class="descclassname">airsimneurips.types.</code><code class="descname">EnvironmentState</code><a class="headerlink" href="#airsimneurips.types.EnvironmentState" title="Permalink to this definition">¶</a></dt>
-<dd><p>Summary</p>
-<dl class="attribute">
-<dt id="airsimneurips.types.EnvironmentState.air_density">
-<code class="descname">air_density</code><a class="headerlink" href="#airsimneurips.types.EnvironmentState.air_density" title="Permalink to this definition">¶</a></dt>
-<dd><p>Description</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)">float</a></td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="airsimneurips.types.EnvironmentState.air_pressure">
-<code class="descname">air_pressure</code><a class="headerlink" href="#airsimneurips.types.EnvironmentState.air_pressure" title="Permalink to this definition">¶</a></dt>
-<dd><p>Description</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)">float</a></td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="airsimneurips.types.EnvironmentState.geo_point">
-<code class="descname">geo_point</code><a class="headerlink" href="#airsimneurips.types.EnvironmentState.geo_point" title="Permalink to this definition">¶</a></dt>
-<dd><p>Description</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">TYPE</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="airsimneurips.types.EnvironmentState.gravity">
-<code class="descname">gravity</code><a class="headerlink" href="#airsimneurips.types.EnvironmentState.gravity" title="Permalink to this definition">¶</a></dt>
-<dd><p>Description</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">TYPE</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="airsimneurips.types.EnvironmentState.position">
-<code class="descname">position</code><a class="headerlink" href="#airsimneurips.types.EnvironmentState.position" title="Permalink to this definition">¶</a></dt>
-<dd><p>Description</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">TYPE</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="airsimneurips.types.EnvironmentState.temperature">
-<code class="descname">temperature</code><a class="headerlink" href="#airsimneurips.types.EnvironmentState.temperature" title="Permalink to this definition">¶</a></dt>
-<dd><p>Description</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)">float</a></td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="class">
 <dt id="airsimneurips.types.GeoPoint">
 <em class="property">class </em><code class="descclassname">airsimneurips.types.</code><code class="descname">GeoPoint</code><a class="headerlink" href="#airsimneurips.types.GeoPoint" title="Permalink to this definition">¶</a></dt>
 <dd><p>Summary</p>
@@ -1323,206 +1423,6 @@ then that RC state would be ignored.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)">float</a></td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="class">
-<dt id="airsimneurips.types.GnssFixType">
-<em class="property">class </em><code class="descclassname">airsimneurips.types.</code><code class="descname">GnssFixType</code><a class="headerlink" href="#airsimneurips.types.GnssFixType" title="Permalink to this definition">¶</a></dt>
-<dd><p>Summary</p>
-<dl class="attribute">
-<dt id="airsimneurips.types.GnssFixType.GNSS_FIX_2D_FIX">
-<code class="descname">GNSS_FIX_2D_FIX</code><a class="headerlink" href="#airsimneurips.types.GnssFixType.GNSS_FIX_2D_FIX" title="Permalink to this definition">¶</a></dt>
-<dd><p>Description</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)">int</a></td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="airsimneurips.types.GnssFixType.GNSS_FIX_3D_FIX">
-<code class="descname">GNSS_FIX_3D_FIX</code><a class="headerlink" href="#airsimneurips.types.GnssFixType.GNSS_FIX_3D_FIX" title="Permalink to this definition">¶</a></dt>
-<dd><p>Description</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)">int</a></td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="airsimneurips.types.GnssFixType.GNSS_FIX_NO_FIX">
-<code class="descname">GNSS_FIX_NO_FIX</code><a class="headerlink" href="#airsimneurips.types.GnssFixType.GNSS_FIX_NO_FIX" title="Permalink to this definition">¶</a></dt>
-<dd><p>Description</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)">int</a></td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="airsimneurips.types.GnssFixType.GNSS_FIX_TIME_ONLY">
-<code class="descname">GNSS_FIX_TIME_ONLY</code><a class="headerlink" href="#airsimneurips.types.GnssFixType.GNSS_FIX_TIME_ONLY" title="Permalink to this definition">¶</a></dt>
-<dd><p>Description</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)">int</a></td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="class">
-<dt id="airsimneurips.types.GnssReport">
-<em class="property">class </em><code class="descclassname">airsimneurips.types.</code><code class="descname">GnssReport</code><a class="headerlink" href="#airsimneurips.types.GnssReport" title="Permalink to this definition">¶</a></dt>
-<dd><p>Summary</p>
-<dl class="attribute">
-<dt id="airsimneurips.types.GnssReport.eph">
-<code class="descname">eph</code><a class="headerlink" href="#airsimneurips.types.GnssReport.eph" title="Permalink to this definition">¶</a></dt>
-<dd><p>Description</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)">float</a></td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="airsimneurips.types.GnssReport.epv">
-<code class="descname">epv</code><a class="headerlink" href="#airsimneurips.types.GnssReport.epv" title="Permalink to this definition">¶</a></dt>
-<dd><p>Description</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">TYPE</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="airsimneurips.types.GnssReport.fix_type">
-<code class="descname">fix_type</code><a class="headerlink" href="#airsimneurips.types.GnssReport.fix_type" title="Permalink to this definition">¶</a></dt>
-<dd><p>Description</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">TYPE</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="airsimneurips.types.GnssReport.geo_point">
-<code class="descname">geo_point</code><a class="headerlink" href="#airsimneurips.types.GnssReport.geo_point" title="Permalink to this definition">¶</a></dt>
-<dd><p>Description</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">TYPE</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="airsimneurips.types.GnssReport.time_utc">
-<code class="descname">time_utc</code><a class="headerlink" href="#airsimneurips.types.GnssReport.time_utc" title="Permalink to this definition">¶</a></dt>
-<dd><p>Description</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">TYPE</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="airsimneurips.types.GnssReport.velocity">
-<code class="descname">velocity</code><a class="headerlink" href="#airsimneurips.types.GnssReport.velocity" title="Permalink to this definition">¶</a></dt>
-<dd><p>Description</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">TYPE</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="class">
-<dt id="airsimneurips.types.GpsData">
-<em class="property">class </em><code class="descclassname">airsimneurips.types.</code><code class="descname">GpsData</code><a class="headerlink" href="#airsimneurips.types.GpsData" title="Permalink to this definition">¶</a></dt>
-<dd><p>Summary</p>
-<dl class="attribute">
-<dt id="airsimneurips.types.GpsData.gnss">
-<code class="descname">gnss</code><a class="headerlink" href="#airsimneurips.types.GpsData.gnss" title="Permalink to this definition">¶</a></dt>
-<dd><p>Description</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">TYPE</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="airsimneurips.types.GpsData.is_valid">
-<code class="descname">is_valid</code><a class="headerlink" href="#airsimneurips.types.GpsData.is_valid" title="Permalink to this definition">¶</a></dt>
-<dd><p>Description</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)">bool</a></td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="airsimneurips.types.GpsData.time_stamp">
-<code class="descname">time_stamp</code><a class="headerlink" href="#airsimneurips.types.GpsData.time_stamp" title="Permalink to this definition">¶</a></dt>
-<dd><p>Description</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">TYPE</td>
 </tr>
 </tbody>
 </table>
@@ -1871,68 +1771,6 @@ then that RC state would be ignored.</p>
 </dd></dl>
 
 <dl class="class">
-<dt id="airsimneurips.types.ImuData">
-<em class="property">class </em><code class="descclassname">airsimneurips.types.</code><code class="descname">ImuData</code><a class="headerlink" href="#airsimneurips.types.ImuData" title="Permalink to this definition">¶</a></dt>
-<dd><p>Summary</p>
-<dl class="attribute">
-<dt id="airsimneurips.types.ImuData.angular_velocity">
-<code class="descname">angular_velocity</code><a class="headerlink" href="#airsimneurips.types.ImuData.angular_velocity" title="Permalink to this definition">¶</a></dt>
-<dd><p>Description</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">TYPE</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="airsimneurips.types.ImuData.linear_acceleration">
-<code class="descname">linear_acceleration</code><a class="headerlink" href="#airsimneurips.types.ImuData.linear_acceleration" title="Permalink to this definition">¶</a></dt>
-<dd><p>Description</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">TYPE</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="airsimneurips.types.ImuData.orientation">
-<code class="descname">orientation</code><a class="headerlink" href="#airsimneurips.types.ImuData.orientation" title="Permalink to this definition">¶</a></dt>
-<dd><p>Description</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">TYPE</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="airsimneurips.types.ImuData.time_stamp">
-<code class="descname">time_stamp</code><a class="headerlink" href="#airsimneurips.types.ImuData.time_stamp" title="Permalink to this definition">¶</a></dt>
-<dd><p>Description</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">TYPE</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="class">
 <dt id="airsimneurips.types.KinematicsState">
 <em class="property">class </em><code class="descclassname">airsimneurips.types.</code><code class="descname">KinematicsState</code><a class="headerlink" href="#airsimneurips.types.KinematicsState" title="Permalink to this definition">¶</a></dt>
 <dd><p>Summary</p>
@@ -2049,102 +1887,6 @@ then that RC state would be ignored.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)">int</a></td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="class">
-<dt id="airsimneurips.types.LidarData">
-<em class="property">class </em><code class="descclassname">airsimneurips.types.</code><code class="descname">LidarData</code><a class="headerlink" href="#airsimneurips.types.LidarData" title="Permalink to this definition">¶</a></dt>
-<dd><p>Summary</p>
-<dl class="attribute">
-<dt id="airsimneurips.types.LidarData.point_cloud">
-<code class="descname">point_cloud</code><a class="headerlink" href="#airsimneurips.types.LidarData.point_cloud" title="Permalink to this definition">¶</a></dt>
-<dd><p>Description</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)">float</a></td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="airsimneurips.types.LidarData.pose">
-<code class="descname">pose</code><a class="headerlink" href="#airsimneurips.types.LidarData.pose" title="Permalink to this definition">¶</a></dt>
-<dd><p>Description</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">TYPE</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="airsimneurips.types.LidarData.time_stamp">
-<code class="descname">time_stamp</code><a class="headerlink" href="#airsimneurips.types.LidarData.time_stamp" title="Permalink to this definition">¶</a></dt>
-<dd><p>Description</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">TYPE</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="class">
-<dt id="airsimneurips.types.MagnetometerData">
-<em class="property">class </em><code class="descclassname">airsimneurips.types.</code><code class="descname">MagnetometerData</code><a class="headerlink" href="#airsimneurips.types.MagnetometerData" title="Permalink to this definition">¶</a></dt>
-<dd><p>Summary</p>
-<dl class="attribute">
-<dt id="airsimneurips.types.MagnetometerData.magnetic_field_body">
-<code class="descname">magnetic_field_body</code><a class="headerlink" href="#airsimneurips.types.MagnetometerData.magnetic_field_body" title="Permalink to this definition">¶</a></dt>
-<dd><p>Description</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">TYPE</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="airsimneurips.types.MagnetometerData.magnetic_field_covariance">
-<code class="descname">magnetic_field_covariance</code><a class="headerlink" href="#airsimneurips.types.MagnetometerData.magnetic_field_covariance" title="Permalink to this definition">¶</a></dt>
-<dd><p>Description</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)">float</a></td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="airsimneurips.types.MagnetometerData.time_stamp">
-<code class="descname">time_stamp</code><a class="headerlink" href="#airsimneurips.types.MagnetometerData.time_stamp" title="Permalink to this definition">¶</a></dt>
-<dd><p>Description</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">TYPE</td>
 </tr>
 </tbody>
 </table>
@@ -3218,138 +2960,6 @@ then that RC state would be ignored.</p>
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Description</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">TYPE</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="class">
-<dt id="airsimneurips.types.WeatherParameter">
-<em class="property">class </em><code class="descclassname">airsimneurips.types.</code><code class="descname">WeatherParameter</code><a class="headerlink" href="#airsimneurips.types.WeatherParameter" title="Permalink to this definition">¶</a></dt>
-<dd><p>Summary</p>
-<dl class="attribute">
-<dt id="airsimneurips.types.WeatherParameter.Dust">
-<code class="descname">Dust</code><a class="headerlink" href="#airsimneurips.types.WeatherParameter.Dust" title="Permalink to this definition">¶</a></dt>
-<dd><p>Description</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)">int</a></td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="airsimneurips.types.WeatherParameter.Enabled">
-<code class="descname">Enabled</code><a class="headerlink" href="#airsimneurips.types.WeatherParameter.Enabled" title="Permalink to this definition">¶</a></dt>
-<dd><p>Description</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)">int</a></td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="airsimneurips.types.WeatherParameter.Fog">
-<code class="descname">Fog</code><a class="headerlink" href="#airsimneurips.types.WeatherParameter.Fog" title="Permalink to this definition">¶</a></dt>
-<dd><p>Description</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)">int</a></td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="airsimneurips.types.WeatherParameter.MapleLeaf">
-<code class="descname">MapleLeaf</code><a class="headerlink" href="#airsimneurips.types.WeatherParameter.MapleLeaf" title="Permalink to this definition">¶</a></dt>
-<dd><p>Description</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)">int</a></td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="airsimneurips.types.WeatherParameter.Rain">
-<code class="descname">Rain</code><a class="headerlink" href="#airsimneurips.types.WeatherParameter.Rain" title="Permalink to this definition">¶</a></dt>
-<dd><p>Description</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)">int</a></td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="airsimneurips.types.WeatherParameter.RoadLeaf">
-<code class="descname">RoadLeaf</code><a class="headerlink" href="#airsimneurips.types.WeatherParameter.RoadLeaf" title="Permalink to this definition">¶</a></dt>
-<dd><p>Description</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)">int</a></td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="airsimneurips.types.WeatherParameter.RoadSnow">
-<code class="descname">RoadSnow</code><a class="headerlink" href="#airsimneurips.types.WeatherParameter.RoadSnow" title="Permalink to this definition">¶</a></dt>
-<dd><p>Description</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)">int</a></td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="airsimneurips.types.WeatherParameter.Roadwetness">
-<code class="descname">Roadwetness</code><a class="headerlink" href="#airsimneurips.types.WeatherParameter.Roadwetness" title="Permalink to this definition">¶</a></dt>
-<dd><p>Description</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)">int</a></td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="airsimneurips.types.WeatherParameter.Snow">
-<code class="descname">Snow</code><a class="headerlink" href="#airsimneurips.types.WeatherParameter.Snow" title="Permalink to this definition">¶</a></dt>
-<dd><p>Description</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)">int</a></td>
 </tr>
 </tbody>
 </table>
