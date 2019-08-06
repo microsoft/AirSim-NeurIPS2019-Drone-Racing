@@ -3,24 +3,15 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Documentation for airsimneurips
+airsimneurips
 =========================================
 This page documents `airsimneurips`_, the python package to be used for `Game of Drones: A NeurIPS 2019 Competition`_.
 
 .. _`airsimneurips`: https://pypi.org/project/airsimneurips/
 .. _`Game of Drones: A NeurIPS 2019 Competition`: https://github.com/microsoft/AirSim-NeurIPS2019-Drone-Racing 
 
-*****
-Indices and tables
-*****
-
 * :ref:`genindex`
 * :ref:`modindex`
-* :ref:`search`
-
-*****
-Documentation 
-*****
 
 .. automodule:: airsimneurips.client
     :members:
