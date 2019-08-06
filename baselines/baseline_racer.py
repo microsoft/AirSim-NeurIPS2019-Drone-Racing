@@ -22,8 +22,8 @@ class BaselineRacer(object):
         time.sleep(sleep_sec) # let the environment load completely
 
     def initialize_drone(self):
-        self.airsim_client.enableApiControl(True, vehicle_name=self.drone_name)
-        self.airsim_client.armDisarm(True, vehicle_name=self.drone_name)
+        self.airsim_client.enableApiControl(vehicle_name=self.drone_name)
+        self.airsim_client.arm(vehicle_name=self.drone_name)
 
         # set default values for trajectory tracker gains 
         traj_tracker_gains = airsim.TrajectoryTrackerGains(kp_cross_track = 5.0, kd_cross_track = 0.0, 
