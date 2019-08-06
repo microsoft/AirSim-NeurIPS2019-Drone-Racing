@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Documentation for airsimneurips &mdash; airsimneurips 0.0.6 documentation</title>
+  <title>Documentation for airsimneurips &mdash; airsimneurips 0.0.8 documentation</title>
   
 
   
@@ -409,18 +409,18 @@
 </dd></dl>
 
 <dl class="method">
-<dt id="airsimneurips.client.MultirotorClient.moveByAngleThrottleAsync">
-<code class="descname">moveByAngleThrottleAsync</code><span class="sig-paren">(</span><em>pitch</em>, <em>roll</em>, <em>throttle</em>, <em>yaw_rate</em>, <em>duration</em>, <em>vehicle_name=''</em><span class="sig-paren">)</span><a class="headerlink" href="#airsimneurips.client.MultirotorClient.moveByAngleThrottleAsync" title="Permalink to this definition">¶</a></dt>
+<dt id="airsimneurips.client.MultirotorClient.moveByAngleRatesThrottleAsync">
+<code class="descname">moveByAngleRatesThrottleAsync</code><span class="sig-paren">(</span><em>roll_rate</em>, <em>pitch_rate</em>, <em>yaw_rate</em>, <em>throttle</em>, <em>duration</em>, <em>vehicle_name=''</em><span class="sig-paren">)</span><a class="headerlink" href="#airsimneurips.client.MultirotorClient.moveByAngleRatesThrottleAsync" title="Permalink to this definition">¶</a></dt>
 <dd><p>Summary</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>pitch</strong> (<em>TYPE</em>) – Description</li>
-<li><strong>roll</strong> (<em>TYPE</em>) – Description</li>
-<li><strong>throttle</strong> (<em>TYPE</em>) – Description</li>
+<li><strong>roll_rate</strong> (<em>TYPE</em>) – Description</li>
+<li><strong>pitch_rate</strong> (<em>TYPE</em>) – Description</li>
 <li><strong>yaw_rate</strong> (<em>TYPE</em>) – Description</li>
+<li><strong>throttle</strong> (<em>TYPE</em>) – Description</li>
 <li><strong>duration</strong> (<em>TYPE</em>) – Description</li>
 <li><strong>vehicle_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><em>optional</em>) – Description</li>
 </ul>
@@ -437,18 +437,130 @@
 </dd></dl>
 
 <dl class="method">
-<dt id="airsimneurips.client.MultirotorClient.moveByAngleZAsync">
-<code class="descname">moveByAngleZAsync</code><span class="sig-paren">(</span><em>pitch</em>, <em>roll</em>, <em>z</em>, <em>yaw</em>, <em>duration</em>, <em>vehicle_name=''</em><span class="sig-paren">)</span><a class="headerlink" href="#airsimneurips.client.MultirotorClient.moveByAngleZAsync" title="Permalink to this definition">¶</a></dt>
+<dt id="airsimneurips.client.MultirotorClient.moveByAngleRatesZAsync">
+<code class="descname">moveByAngleRatesZAsync</code><span class="sig-paren">(</span><em>roll_rate</em>, <em>pitch_rate</em>, <em>yaw_rate</em>, <em>z</em>, <em>duration</em>, <em>vehicle_name=''</em><span class="sig-paren">)</span><a class="headerlink" href="#airsimneurips.client.MultirotorClient.moveByAngleRatesZAsync" title="Permalink to this definition">¶</a></dt>
 <dd><p>Summary</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>pitch</strong> (<em>TYPE</em>) – Description</li>
-<li><strong>roll</strong> (<em>TYPE</em>) – Description</li>
+<li><strong>roll_rate</strong> (<em>TYPE</em>) – Description</li>
+<li><strong>pitch_rate</strong> (<em>TYPE</em>) – Description</li>
+<li><strong>yaw_rate</strong> (<em>TYPE</em>) – Description</li>
 <li><strong>z</strong> (<em>TYPE</em>) – Description</li>
+<li><strong>duration</strong> (<em>TYPE</em>) – Description</li>
+<li><strong>vehicle_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><em>optional</em>) – Description</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Description</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">TYPE</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="airsimneurips.client.MultirotorClient.moveByRollPitchYawThrottleAsync">
+<code class="descname">moveByRollPitchYawThrottleAsync</code><span class="sig-paren">(</span><em>roll</em>, <em>pitch</em>, <em>yaw</em>, <em>throttle</em>, <em>duration</em>, <em>vehicle_name=''</em><span class="sig-paren">)</span><a class="headerlink" href="#airsimneurips.client.MultirotorClient.moveByRollPitchYawThrottleAsync" title="Permalink to this definition">¶</a></dt>
+<dd><p>Summary</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>roll</strong> (<em>TYPE</em>) – Description</li>
+<li><strong>pitch</strong> (<em>TYPE</em>) – Description</li>
 <li><strong>yaw</strong> (<em>TYPE</em>) – Description</li>
+<li><strong>throttle</strong> (<em>TYPE</em>) – Description</li>
+<li><strong>duration</strong> (<em>TYPE</em>) – Description</li>
+<li><strong>vehicle_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><em>optional</em>) – Description</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Description</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">TYPE</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="airsimneurips.client.MultirotorClient.moveByRollPitchYawZAsync">
+<code class="descname">moveByRollPitchYawZAsync</code><span class="sig-paren">(</span><em>roll</em>, <em>pitch</em>, <em>yaw</em>, <em>z</em>, <em>duration</em>, <em>vehicle_name=''</em><span class="sig-paren">)</span><a class="headerlink" href="#airsimneurips.client.MultirotorClient.moveByRollPitchYawZAsync" title="Permalink to this definition">¶</a></dt>
+<dd><p>Summary</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>roll</strong> (<em>TYPE</em>) – Description</li>
+<li><strong>pitch</strong> (<em>TYPE</em>) – Description</li>
+<li><strong>yaw</strong> (<em>TYPE</em>) – Description</li>
+<li><strong>z</strong> (<em>TYPE</em>) – Description</li>
+<li><strong>duration</strong> (<em>TYPE</em>) – Description</li>
+<li><strong>vehicle_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><em>optional</em>) – Description</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Description</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">TYPE</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="airsimneurips.client.MultirotorClient.moveByRollPitchYawrateThrottleAsync">
+<code class="descname">moveByRollPitchYawrateThrottleAsync</code><span class="sig-paren">(</span><em>roll</em>, <em>pitch</em>, <em>yaw_rate</em>, <em>throttle</em>, <em>duration</em>, <em>vehicle_name=''</em><span class="sig-paren">)</span><a class="headerlink" href="#airsimneurips.client.MultirotorClient.moveByRollPitchYawrateThrottleAsync" title="Permalink to this definition">¶</a></dt>
+<dd><p>Summary</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>roll</strong> (<em>TYPE</em>) – Description</li>
+<li><strong>pitch</strong> (<em>TYPE</em>) – Description</li>
+<li><strong>yaw_rate</strong> (<em>TYPE</em>) – Description</li>
+<li><strong>throttle</strong> (<em>TYPE</em>) – Description</li>
+<li><strong>duration</strong> (<em>TYPE</em>) – Description</li>
+<li><strong>vehicle_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><em>optional</em>) – Description</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Description</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">TYPE</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="airsimneurips.client.MultirotorClient.moveByRollPitchYawrateZAsync">
+<code class="descname">moveByRollPitchYawrateZAsync</code><span class="sig-paren">(</span><em>roll</em>, <em>pitch</em>, <em>yaw_rate</em>, <em>z</em>, <em>duration</em>, <em>vehicle_name=''</em><span class="sig-paren">)</span><a class="headerlink" href="#airsimneurips.client.MultirotorClient.moveByRollPitchYawrateZAsync" title="Permalink to this definition">¶</a></dt>
+<dd><p>Summary</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>roll</strong> (<em>TYPE</em>) – Description</li>
+<li><strong>pitch</strong> (<em>TYPE</em>) – Description</li>
+<li><strong>yaw_rate</strong> (<em>TYPE</em>) – Description</li>
+<li><strong>z</strong> (<em>TYPE</em>) – Description</li>
 <li><strong>duration</strong> (<em>TYPE</em>) – Description</li>
 <li><strong>vehicle_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><em>optional</em>) – Description</li>
 </ul>
@@ -508,6 +620,31 @@
 <li><strong>duration</strong> (<em>TYPE</em>) – Description</li>
 <li><strong>drivetrain</strong> (<em>TYPE</em><em>, </em><em>optional</em>) – Description</li>
 <li><strong>yaw_mode</strong> (<em>TYPE</em><em>, </em><em>optional</em>) – Description</li>
+<li><strong>vehicle_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><em>optional</em>) – Description</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Description</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">TYPE</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="airsimneurips.client.MultirotorClient.moveByYawRateAsync">
+<code class="descname">moveByYawRateAsync</code><span class="sig-paren">(</span><em>yaw_rate</em>, <em>duration</em>, <em>vehicle_name=''</em><span class="sig-paren">)</span><a class="headerlink" href="#airsimneurips.client.MultirotorClient.moveByYawRateAsync" title="Permalink to this definition">¶</a></dt>
+<dd><p>Summary</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>yaw_rate</strong> (<em>TYPE</em>) – Description</li>
+<li><strong>duration</strong> (<em>TYPE</em>) – Description</li>
 <li><strong>vehicle_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><em>optional</em>) – Description</li>
 </ul>
 </td>
@@ -644,6 +781,32 @@
 </dd></dl>
 
 <dl class="method">
+<dt id="airsimneurips.client.MultirotorClient.moveToYawAsync">
+<code class="descname">moveToYawAsync</code><span class="sig-paren">(</span><em>yaw</em>, <em>timeout_sec=3e+38</em>, <em>margin=5</em>, <em>vehicle_name=''</em><span class="sig-paren">)</span><a class="headerlink" href="#airsimneurips.client.MultirotorClient.moveToYawAsync" title="Permalink to this definition">¶</a></dt>
+<dd><p>Summary</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>yaw</strong> (<em>TYPE</em>) – Description</li>
+<li><strong>timeout_sec</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>, </em><em>optional</em>) – Description</li>
+<li><strong>margin</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a><em>, </em><em>optional</em>) – Description</li>
+<li><strong>vehicle_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><em>optional</em>) – Description</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Description</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">TYPE</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
 <dt id="airsimneurips.client.MultirotorClient.moveToZAsync">
 <code class="descname">moveToZAsync</code><span class="sig-paren">(</span><em>z</em>, <em>velocity</em>, <em>timeout_sec=3e+38</em>, <em>yaw_mode=&lt;instance&gt; {   'is_rate': True</em>, <em>'yaw_or_rate': 0.0}</em>, <em>lookahead=-1</em>, <em>adaptive_lookahead=1</em>, <em>vehicle_name=''</em><span class="sig-paren">)</span><a class="headerlink" href="#airsimneurips.client.MultirotorClient.moveToZAsync" title="Permalink to this definition">¶</a></dt>
 <dd><p>Summary</p>
@@ -710,57 +873,6 @@
 <dt id="airsimneurips.client.MultirotorClient.reset">
 <code class="descname">reset</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#airsimneurips.client.MultirotorClient.reset" title="Permalink to this definition">¶</a></dt>
 <dd><p>Summary</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="airsimneurips.client.MultirotorClient.rotateByYawRateAsync">
-<code class="descname">rotateByYawRateAsync</code><span class="sig-paren">(</span><em>yaw_rate</em>, <em>duration</em>, <em>vehicle_name=''</em><span class="sig-paren">)</span><a class="headerlink" href="#airsimneurips.client.MultirotorClient.rotateByYawRateAsync" title="Permalink to this definition">¶</a></dt>
-<dd><p>Summary</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>yaw_rate</strong> (<em>TYPE</em>) – Description</li>
-<li><strong>duration</strong> (<em>TYPE</em>) – Description</li>
-<li><strong>vehicle_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><em>optional</em>) – Description</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Description</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">TYPE</p>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="airsimneurips.client.MultirotorClient.rotateToYawAsync">
-<code class="descname">rotateToYawAsync</code><span class="sig-paren">(</span><em>yaw</em>, <em>timeout_sec=3e+38</em>, <em>margin=5</em>, <em>vehicle_name=''</em><span class="sig-paren">)</span><a class="headerlink" href="#airsimneurips.client.MultirotorClient.rotateToYawAsync" title="Permalink to this definition">¶</a></dt>
-<dd><p>Summary</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>yaw</strong> (<em>TYPE</em>) – Description</li>
-<li><strong>timeout_sec</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>, </em><em>optional</em>) – Description</li>
-<li><strong>margin</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a><em>, </em><em>optional</em>) – Description</li>
-<li><strong>vehicle_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><em>optional</em>) – Description</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Description</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">TYPE</p>
-</td>
-</tr>
-</tbody>
-</table>
 </dd></dl>
 
 <dl class="method">
