@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Documentation for airsimneurips &mdash; airsimneurips 0.0.9 documentation</title>
+  <title>Documentation for airsimneurips &mdash; airsimneurips 0.0.11 documentation</title>
   
 
   
@@ -209,23 +209,17 @@
 
 <dl class="method">
 <dt id="airsimneurips.client.MultirotorClient.disableApiControl">
-<code class="descname">disableApiControl</code><span class="sig-paren">(</span><em>is_enabled</em>, <em>vehicle_name=''</em><span class="sig-paren">)</span><a class="headerlink" href="#airsimneurips.client.MultirotorClient.disableApiControl" title="Permalink to this definition">¶</a></dt>
+<code class="descname">disableApiControl</code><span class="sig-paren">(</span><em>vehicle_name=''</em><span class="sig-paren">)</span><a class="headerlink" href="#airsimneurips.client.MultirotorClient.disableApiControl" title="Permalink to this definition">¶</a></dt>
 <dd><p>Disables API control for vehicle with name vehicle_name</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>is_enabled</strong> (<em>TYPE</em>) – Description</li>
-<li><strong>vehicle_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><em>optional</em>) – Name of vehicle to disable API control for</li>
-</ul>
-</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>vehicle_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><em>optional</em>) – Name of vehicle to disable API control for</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Success</p>
-</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Success</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)">bool</a></p>
-</td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)">bool</a></td>
 </tr>
 </tbody>
 </table>
@@ -319,7 +313,7 @@
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>vehicle_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><em>optional</em>) – Description</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>vehicle_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><em>optional</em>) – Name of the multirotor to send this command to</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Description</td>
 </tr>
@@ -353,7 +347,7 @@
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>timeout_sec</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>, </em><em>optional</em>) – Description</li>
-<li><strong>vehicle_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><em>optional</em>) – Description</li>
+<li><strong>vehicle_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><em>optional</em>) – Name of the multirotor to send this command to</li>
 </ul>
 </td>
 </tr>
@@ -374,11 +368,11 @@
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>vehicle_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><em>optional</em>) – Description</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>vehicle_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><em>optional</em>) – Name of the multirotor to send this command to</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Description</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Success</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">TYPE</td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)">bool</a></td>
 </tr>
 </tbody>
 </table>
@@ -410,7 +404,7 @@
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>timeout_sec</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a><em>, </em><em>optional</em>) – Description</li>
-<li><strong>vehicle_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><em>optional</em>) – Description</li>
+<li><strong>vehicle_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><em>optional</em>) – Name of the multirotor to send this command to</li>
 </ul>
 </td>
 </tr>
@@ -738,14 +732,14 @@ Hence, yawing with a positive angle is equivalent to rotated towards the “left
 <li><strong>duration</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – Description</li>
 <li><strong>drivetrain</strong> (<em>TYPE</em><em>, </em><em>optional</em>) – Description</li>
 <li><strong>yaw_mode</strong> (<em>TYPE</em><em>, </em><em>optional</em>) – Description</li>
-<li><strong>vehicle_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><em>optional</em>) – Description</li>
+<li><strong>vehicle_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><em>optional</em>) – Name of the multirotor to send this command to</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Description</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Success</p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">TYPE</p>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)">bool</a></p>
 </td>
 </tr>
 </tbody>
@@ -766,14 +760,14 @@ Hence, yawing with a positive angle is equivalent to rotated towards the “left
 <li><strong>duration</strong> (<em>TYPE</em>) – Description</li>
 <li><strong>drivetrain</strong> (<a class="reference internal" href="#airsimneurips.types.DrivetrainType" title="airsimneurips.types.DrivetrainType"><em>DrivetrainType</em></a><em>, </em><em>optional</em>) – Description</li>
 <li><strong>yaw_mode</strong> (<a class="reference internal" href="#airsimneurips.types.YawMode" title="airsimneurips.types.YawMode"><em>YawMode</em></a><em>, </em><em>optional</em>) – Description</li>
-<li><strong>vehicle_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><em>optional</em>) – Description</li>
+<li><strong>vehicle_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><em>optional</em>) – Name of the multirotor to send this command to</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Description</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Success</p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">TYPE</p>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)">bool</a></p>
 </td>
 </tr>
 </tbody>
@@ -788,16 +782,16 @@ Hence, yawing with a positive angle is equivalent to rotated towards the “left
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>yaw_rate</strong> (<em>TYPE</em>) – Description</li>
-<li><strong>duration</strong> (<em>TYPE</em>) – Description</li>
-<li><strong>vehicle_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><em>optional</em>) – Description</li>
+<li><strong>yaw_rate</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – Desired yaw rate, in <strong>degrees per second</strong>.</li>
+<li><strong>duration</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – Description</li>
+<li><strong>vehicle_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><em>optional</em>) – Name of the multirotor to send this command to</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Description</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Success</p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">TYPE</p>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)">bool</a></p>
 </td>
 </tr>
 </tbody>
@@ -819,7 +813,7 @@ Hence, yawing with a positive angle is equivalent to rotated towards the “left
 <li><strong>yaw_mode</strong> (<em>TYPE</em><em>, </em><em>optional</em>) – Description</li>
 <li><strong>lookahead</strong> (<em>TYPE</em><em>, </em><em>optional</em>) – Description</li>
 <li><strong>adaptive_lookahead</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a><em>, </em><em>optional</em>) – Description</li>
-<li><strong>vehicle_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><em>optional</em>) – Description</li>
+<li><strong>vehicle_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><em>optional</em>) – Name of the multirotor to send this command to</li>
 </ul>
 </td>
 </tr>
@@ -856,14 +850,14 @@ Hence, yawing with a positive angle is equivalent to rotated towards the “left
 <li><strong>add_curr_odom_velocity_constraint</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a><em>, </em><em>optional</em>) – Should only be set to true if add_curr_odom_position_constraint is True.
 If this is set to true, the trajectory planning backend will add a velocity vector constraint equivalent to the current odometry / linear velocity, so that the planned trajectory is smooth if the drone is already moving.</li>
 <li><strong>viz_traj</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a><em>, </em><em>optional</em>) – set this to True. visualize trajectory in unreal window. Note that visualization would appear in the FPV image, so this should only be used for debugging.</li>
-<li><strong>vehicle_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><em>optional</em>) – Description</li>
+<li><strong>vehicle_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><em>optional</em>) – Name of the multirotor to send this command to</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Description</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Success</p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">TYPE</p>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)">bool</a></p>
 </td>
 </tr>
 </tbody>
@@ -896,14 +890,14 @@ If this is set to true, the trajectory planning backend will add a velocity vect
 <li><strong>add_curr_odom_velocity_constraint</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a><em>, </em><em>optional</em>) – Should only be set to true if add_curr_odom_position_constraint is True.
 If this is set to true, the trajectory planning backend will add a velocity vector constraint equivalent to the current odometry / linear velocity, so that the planned trajectory is smooth if the drone is already moving.</li>
 <li><strong>viz_traj</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a><em>, </em><em>optional</em>) – set this to True. visualize trajectory in unreal window. Note that visualization would appear in the FPV image, so this should only be used for debugging.</li>
-<li><strong>vehicle_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><em>optional</em>) – Description</li>
+<li><strong>vehicle_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><em>optional</em>) – Name of the multirotor to send this command to</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Description</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Success</p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">TYPE</p>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)">bool</a></p>
 </td>
 </tr>
 </tbody>
@@ -918,23 +912,23 @@ If this is set to true, the trajectory planning backend will add a velocity vect
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>x</strong> (<em>TYPE</em>) – Description</li>
-<li><strong>y</strong> (<em>TYPE</em>) – Description</li>
-<li><strong>z</strong> (<em>TYPE</em>) – Description</li>
-<li><strong>velocity</strong> (<em>TYPE</em>) – Description</li>
+<li><strong>x</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – Description</li>
+<li><strong>y</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – Description</li>
+<li><strong>z</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – Description</li>
+<li><strong>velocity</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – Description</li>
 <li><strong>timeout_sec</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>, </em><em>optional</em>) – Description</li>
-<li><strong>drivetrain</strong> (<em>TYPE</em><em>, </em><em>optional</em>) – Description</li>
-<li><strong>yaw_mode</strong> (<em>TYPE</em><em>, </em><em>optional</em>) – Description</li>
-<li><strong>lookahead</strong> (<em>TYPE</em><em>, </em><em>optional</em>) – Description</li>
+<li><strong>drivetrain</strong> (<a class="reference internal" href="#airsimneurips.types.DrivetrainType" title="airsimneurips.types.DrivetrainType"><em>DrivetrainType</em></a><em>, </em><em>optional</em>) – Description</li>
+<li><strong>yaw_mode</strong> (<a class="reference internal" href="#airsimneurips.types.YawMode" title="airsimneurips.types.YawMode"><em>YawMode</em></a><em>, </em><em>optional</em>) – Description</li>
+<li><strong>lookahead</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>, </em><em>optional</em>) – Description</li>
 <li><strong>adaptive_lookahead</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a><em>, </em><em>optional</em>) – Description</li>
-<li><strong>vehicle_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><em>optional</em>) – Description</li>
+<li><strong>vehicle_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><em>optional</em>) – Name of the multirotor to send this command to</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Description</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Success</p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">TYPE</p>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)">bool</a></p>
 </td>
 </tr>
 </tbody>
@@ -949,17 +943,17 @@ If this is set to true, the trajectory planning backend will add a velocity vect
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>yaw</strong> (<em>TYPE</em>) – Description</li>
+<li><strong>yaw_rate</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – Desired yaw angle, in <strong>degrees per second</strong>.</li>
 <li><strong>timeout_sec</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>, </em><em>optional</em>) – Description</li>
 <li><strong>margin</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a><em>, </em><em>optional</em>) – Description</li>
-<li><strong>vehicle_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><em>optional</em>) – Description</li>
+<li><strong>vehicle_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><em>optional</em>) – Name of the multirotor to send this command to</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Description</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Success</p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">TYPE</p>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)">bool</a></p>
 </td>
 </tr>
 </tbody>
@@ -974,20 +968,20 @@ If this is set to true, the trajectory planning backend will add a velocity vect
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>z</strong> (<em>TYPE</em>) – Description</li>
-<li><strong>velocity</strong> (<em>TYPE</em>) – Description</li>
+<li><strong>z</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – Description</li>
+<li><strong>velocity</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – Description</li>
 <li><strong>timeout_sec</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>, </em><em>optional</em>) – Description</li>
-<li><strong>yaw_mode</strong> (<em>TYPE</em><em>, </em><em>optional</em>) – Description</li>
-<li><strong>lookahead</strong> (<em>TYPE</em><em>, </em><em>optional</em>) – Description</li>
+<li><strong>yaw_mode</strong> (<a class="reference internal" href="#airsimneurips.types.YawMode" title="airsimneurips.types.YawMode"><em>YawMode</em></a><em>, </em><em>optional</em>) – Description</li>
+<li><strong>lookahead</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>, </em><em>optional</em>) – Description</li>
 <li><strong>adaptive_lookahead</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a><em>, </em><em>optional</em>) – Description</li>
-<li><strong>vehicle_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><em>optional</em>) – Description</li>
+<li><strong>vehicle_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><em>optional</em>) – Name of the multirotor to send this command to</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Description</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Success</p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">TYPE</p>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)">bool</a></p>
 </td>
 </tr>
 </tbody>
@@ -1019,7 +1013,7 @@ If this is set to true, the trajectory planning backend will add a velocity vect
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><strong>pose_list</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><em>list</em></a><em>[</em><a class="reference internal" href="#airsimneurips.types.Pose" title="airsimneurips.types.Pose"><em>Pose</em></a><em>]</em>) – Description</li>
-<li><strong>vehicle_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><em>optional</em>) – Description</li>
+<li><strong>vehicle_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><em>optional</em>) – Name of the multirotor to send this command to</li>
 </ul>
 </td>
 </tr>
@@ -1036,13 +1030,15 @@ If this is set to true, the trajectory planning backend will add a velocity vect
 <dl class="method">
 <dt id="airsimneurips.client.MultirotorClient.setTrajectoryTrackerGains">
 <code class="descname">setTrajectoryTrackerGains</code><span class="sig-paren">(</span><em>gains</em>, <em>vehicle_name=''</em><span class="sig-paren">)</span><a class="headerlink" href="#airsimneurips.client.MultirotorClient.setTrajectoryTrackerGains" title="Permalink to this definition">¶</a></dt>
-<dd><table class="docutils field-list" frame="void" rules="none">
+<dd><p>Sets trajectory tracker gains for moveOnSplineAsync, moveOnSplineVelConstraintsAsync.
+Must be called once before either moveOnSpline* API is called</p>
+<table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>gains</strong> (<em>TYPE</em>) – Description</li>
-<li><strong>vehicle_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><em>optional</em>) – Description</li>
+<li><strong>gains</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><em>list</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>]</em>) – Pass TrajectoryTrackerGains().to_list() to set default values. Look at TrajectoryTrackerGains to set custom gains</li>
+<li><strong>vehicle_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><em>optional</em>) – Name of the multirotor to send this command to</li>
 </ul>
 </td>
 </tr>
@@ -1072,7 +1068,7 @@ If this is set to true, the trajectory planning backend will add a velocity vect
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>camera_name</strong> (<em>TYPE</em>) – Description</li>
-<li><strong>vehicle_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><em>optional</em>) – Description</li>
+<li><strong>vehicle_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><em>optional</em>) – Name of the multirotor to send this command to</li>
 </ul>
 </td>
 </tr>
@@ -1093,7 +1089,7 @@ If this is set to true, the trajectory planning backend will add a velocity vect
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>vehicle_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><em>optional</em>) – Description</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>vehicle_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><em>optional</em>) – Name of the multirotor to send this command to</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Description</td>
 </tr>
@@ -1110,7 +1106,7 @@ If this is set to true, the trajectory planning backend will add a velocity vect
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>vehicle_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><em>optional</em>) – Description</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>vehicle_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><em>optional</em>) – Name of the multirotor to send this command to</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Description</td>
 </tr>
@@ -1130,7 +1126,7 @@ If this is set to true, the trajectory planning backend will add a velocity vect
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>camera_name</strong> (<em>TYPE</em>) – Description</li>
 <li><strong>image_type</strong> (<em>TYPE</em>) – Description</li>
-<li><strong>vehicle_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><em>optional</em>) – Description</li>
+<li><strong>vehicle_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><em>optional</em>) – Name of the multirotor to send this command to</li>
 </ul>
 </td>
 </tr>
@@ -1153,7 +1149,7 @@ If this is set to true, the trajectory planning backend will add a velocity vect
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>requests</strong> (<em>TYPE</em>) – Description</li>
-<li><strong>vehicle_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><em>optional</em>) – Description</li>
+<li><strong>vehicle_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><em>optional</em>) – Name of the multirotor to send this command to</li>
 </ul>
 </td>
 </tr>
@@ -1208,7 +1204,7 @@ If this is set to true, the trajectory planning backend will add a velocity vect
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>vehicle_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><em>optional</em>) – Description</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>vehicle_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><em>optional</em>) – Name of the multirotor to send this command to</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Description</td>
 </tr>
@@ -1318,7 +1314,7 @@ If this is set to true, the trajectory planning backend will add a velocity vect
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><strong>camera_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Description</li>
 <li><strong>orientation</strong> (<a class="reference internal" href="#airsimneurips.types.Quaternionr" title="airsimneurips.types.Quaternionr"><em>Quaternionr</em></a>) – Desired orientation quaternion</li>
-<li><strong>vehicle_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><em>optional</em>) – Description</li>
+<li><strong>vehicle_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><em>optional</em>) – Name of the multirotor to send this command to</li>
 </ul>
 </td>
 </tr>
@@ -1384,7 +1380,7 @@ If this is set to true, the trajectory planning backend will add a velocity vect
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><strong>pose</strong> (<em>TYPE</em>) – Description</li>
 <li><strong>ignore_collison</strong> (<em>TYPE</em>) – Description</li>
-<li><strong>vehicle_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><em>optional</em>) – Description</li>
+<li><strong>vehicle_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><em>optional</em>) – Name of the multirotor to send this command to</li>
 </ul>
 </td>
 </tr>
@@ -1401,7 +1397,7 @@ If this is set to true, the trajectory planning backend will add a velocity vect
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>timeout_sec</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a><em>, </em><em>optional</em>) – Description</li>
-<li><strong>vehicle_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><em>optional</em>) – Description</li>
+<li><strong>vehicle_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><em>optional</em>) – Name of the multirotor to send this command to</li>
 </ul>
 </td>
 </tr>
@@ -2027,7 +2023,7 @@ If this is set to true, the trajectory planning backend will add a velocity vect
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">TYPE</td>
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body"><a class="reference internal" href="#airsimneurips.types.Vector3r" title="airsimneurips.types.Vector3r">Vector3r</a></td>
 </tr>
 </tbody>
 </table>
@@ -2041,7 +2037,7 @@ If this is set to true, the trajectory planning backend will add a velocity vect
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">TYPE</td>
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body"><a class="reference internal" href="#airsimneurips.types.Vector3r" title="airsimneurips.types.Vector3r">Vector3r</a></td>
 </tr>
 </tbody>
 </table>
@@ -2055,7 +2051,7 @@ If this is set to true, the trajectory planning backend will add a velocity vect
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">TYPE</td>
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body"><a class="reference internal" href="#airsimneurips.types.Vector3r" title="airsimneurips.types.Vector3r">Vector3r</a></td>
 </tr>
 </tbody>
 </table>
@@ -2069,7 +2065,7 @@ If this is set to true, the trajectory planning backend will add a velocity vect
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">TYPE</td>
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body"><a class="reference internal" href="#airsimneurips.types.Vector3r" title="airsimneurips.types.Vector3r">Vector3r</a></td>
 </tr>
 </tbody>
 </table>
@@ -2083,7 +2079,7 @@ If this is set to true, the trajectory planning backend will add a velocity vect
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">TYPE</td>
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body"><a class="reference internal" href="#airsimneurips.types.Quaternionr" title="airsimneurips.types.Quaternionr">Quaternionr</a></td>
 </tr>
 </tbody>
 </table>
@@ -2097,7 +2093,7 @@ If this is set to true, the trajectory planning backend will add a velocity vect
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">TYPE</td>
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body"><a class="reference internal" href="#airsimneurips.types.Vector3r" title="airsimneurips.types.Vector3r">Vector3r</a></td>
 </tr>
 </tbody>
 </table>
@@ -2283,7 +2279,7 @@ If this is set to true, the trajectory planning backend will add a velocity vect
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">TYPE</td>
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body"><a class="reference internal" href="#airsimneurips.types.Quaternionr" title="airsimneurips.types.Quaternionr">Quaternionr</a></td>
 </tr>
 </tbody>
 </table>
@@ -2297,7 +2293,7 @@ If this is set to true, the trajectory planning backend will add a velocity vect
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">TYPE</td>
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body"><a class="reference internal" href="#airsimneurips.types.Vector3r" title="airsimneurips.types.Vector3r">Vector3r</a></td>
 </tr>
 </tbody>
 </table>
@@ -2458,9 +2454,9 @@ If this is set to true, the trajectory planning backend will add a velocity vect
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Description</td>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">norm of quaternion</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">TYPE</td>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)">float</a></td>
 </tr>
 </tbody>
 </table>
@@ -2580,7 +2576,7 @@ If this is set to true, the trajectory planning backend will add a velocity vect
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Description</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">TYPE</td>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">np.array</td>
 </tr>
 </tbody>
 </table>
@@ -2806,15 +2802,16 @@ If this is set to true, the trajectory planning backend will add a velocity vect
 <dl class="class">
 <dt id="airsimneurips.types.TrajectoryTrackerGains">
 <em class="property">class </em><code class="descclassname">airsimneurips.types.</code><code class="descname">TrajectoryTrackerGains</code><span class="sig-paren">(</span><em>kp_cross_track=7.5</em>, <em>kd_cross_track=0.0</em>, <em>kp_vel_cross_track=5.0</em>, <em>kd_vel_cross_track=0.0</em>, <em>kp_along_track=0.4</em>, <em>kd_along_track=0.0</em>, <em>kp_vel_along_track=0.04</em>, <em>kd_vel_along_track=0.0</em>, <em>kp_z_track=2.0</em>, <em>kd_z_track=0.0</em>, <em>kp_vel_z=0.4</em>, <em>kd_vel_z=0.0</em>, <em>kp_yaw=3.0</em>, <em>kd_yaw=0.1</em><span class="sig-paren">)</span><a class="headerlink" href="#airsimneurips.types.TrajectoryTrackerGains" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="attribute">
-<dt id="airsimneurips.types.TrajectoryTrackerGains.kd_along_track">
-<code class="descname">kd_along_track</code><a class="headerlink" href="#airsimneurips.types.TrajectoryTrackerGains.kd_along_track" title="Permalink to this definition">¶</a></dt>
-<dd><p>Description</p>
+<dd><p>Struct to contain trajectory tracker gains used by the pure pursuit controller for moveBySpline and moveBySplineVelConstraints</p>
+<dl class="attribute">
+<dt id="airsimneurips.types.TrajectoryTrackerGains.kp_cross_track">
+<code class="descname">kp_cross_track</code><a class="headerlink" href="#airsimneurips.types.TrajectoryTrackerGains.kp_cross_track" title="Permalink to this definition">¶</a></dt>
+<dd><p>P gain for position error measured perpendicular to path tangent, or in the “cross track” direction</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">TYPE</td>
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)">float</a></td>
 </tr>
 </tbody>
 </table>
@@ -2823,124 +2820,12 @@ If this is set to true, the trajectory planning backend will add a velocity vect
 <dl class="attribute">
 <dt id="airsimneurips.types.TrajectoryTrackerGains.kd_cross_track">
 <code class="descname">kd_cross_track</code><a class="headerlink" href="#airsimneurips.types.TrajectoryTrackerGains.kd_cross_track" title="Permalink to this definition">¶</a></dt>
-<dd><p>Description</p>
+<dd><p>D gain for position error measured perpendicular to path tangent, or in the “cross track” direction</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">TYPE</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="airsimneurips.types.TrajectoryTrackerGains.kd_vel_along_track">
-<code class="descname">kd_vel_along_track</code><a class="headerlink" href="#airsimneurips.types.TrajectoryTrackerGains.kd_vel_along_track" title="Permalink to this definition">¶</a></dt>
-<dd><p>Description</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">TYPE</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="airsimneurips.types.TrajectoryTrackerGains.kd_vel_cross_track">
-<code class="descname">kd_vel_cross_track</code><a class="headerlink" href="#airsimneurips.types.TrajectoryTrackerGains.kd_vel_cross_track" title="Permalink to this definition">¶</a></dt>
-<dd><p>Description</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">TYPE</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="airsimneurips.types.TrajectoryTrackerGains.kd_vel_z">
-<code class="descname">kd_vel_z</code><a class="headerlink" href="#airsimneurips.types.TrajectoryTrackerGains.kd_vel_z" title="Permalink to this definition">¶</a></dt>
-<dd><p>Description</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">TYPE</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="airsimneurips.types.TrajectoryTrackerGains.kd_yaw">
-<code class="descname">kd_yaw</code><a class="headerlink" href="#airsimneurips.types.TrajectoryTrackerGains.kd_yaw" title="Permalink to this definition">¶</a></dt>
-<dd><p>Description</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">TYPE</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="airsimneurips.types.TrajectoryTrackerGains.kd_z_track">
-<code class="descname">kd_z_track</code><a class="headerlink" href="#airsimneurips.types.TrajectoryTrackerGains.kd_z_track" title="Permalink to this definition">¶</a></dt>
-<dd><p>Description</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">TYPE</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="airsimneurips.types.TrajectoryTrackerGains.kp_along_track">
-<code class="descname">kp_along_track</code><a class="headerlink" href="#airsimneurips.types.TrajectoryTrackerGains.kp_along_track" title="Permalink to this definition">¶</a></dt>
-<dd><p>Description</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">TYPE</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="airsimneurips.types.TrajectoryTrackerGains.kp_cross_track">
-<code class="descname">kp_cross_track</code><a class="headerlink" href="#airsimneurips.types.TrajectoryTrackerGains.kp_cross_track" title="Permalink to this definition">¶</a></dt>
-<dd><p>Description</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">TYPE</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="airsimneurips.types.TrajectoryTrackerGains.kp_vel_along_track">
-<code class="descname">kp_vel_along_track</code><a class="headerlink" href="#airsimneurips.types.TrajectoryTrackerGains.kp_vel_along_track" title="Permalink to this definition">¶</a></dt>
-<dd><p>Description</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">TYPE</td>
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)">float</a></td>
 </tr>
 </tbody>
 </table>
@@ -2949,40 +2834,82 @@ If this is set to true, the trajectory planning backend will add a velocity vect
 <dl class="attribute">
 <dt id="airsimneurips.types.TrajectoryTrackerGains.kp_vel_cross_track">
 <code class="descname">kp_vel_cross_track</code><a class="headerlink" href="#airsimneurips.types.TrajectoryTrackerGains.kp_vel_cross_track" title="Permalink to this definition">¶</a></dt>
-<dd><p>Description</p>
+<dd><p>P gain for velocity error measured perpendicular to path tangent, or in the “cross track” direction</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">TYPE</td>
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)">float</a></td>
 </tr>
 </tbody>
 </table>
 </dd></dl>
 
 <dl class="attribute">
-<dt id="airsimneurips.types.TrajectoryTrackerGains.kp_vel_z">
-<code class="descname">kp_vel_z</code><a class="headerlink" href="#airsimneurips.types.TrajectoryTrackerGains.kp_vel_z" title="Permalink to this definition">¶</a></dt>
-<dd><p>Description</p>
+<dt id="airsimneurips.types.TrajectoryTrackerGains.kd_vel_cross_track">
+<code class="descname">kd_vel_cross_track</code><a class="headerlink" href="#airsimneurips.types.TrajectoryTrackerGains.kd_vel_cross_track" title="Permalink to this definition">¶</a></dt>
+<dd><p>D gain for velocity error measured perpendicular to path tangent, or in the “cross track” direction</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">TYPE</td>
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)">float</a></td>
 </tr>
 </tbody>
 </table>
 </dd></dl>
 
 <dl class="attribute">
-<dt id="airsimneurips.types.TrajectoryTrackerGains.kp_yaw">
-<code class="descname">kp_yaw</code><a class="headerlink" href="#airsimneurips.types.TrajectoryTrackerGains.kp_yaw" title="Permalink to this definition">¶</a></dt>
-<dd><p>Description</p>
+<dt id="airsimneurips.types.TrajectoryTrackerGains.kp_along_track">
+<code class="descname">kp_along_track</code><a class="headerlink" href="#airsimneurips.types.TrajectoryTrackerGains.kp_along_track" title="Permalink to this definition">¶</a></dt>
+<dd><p>P gain for position error measured along path tangent</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">TYPE</td>
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)">float</a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="airsimneurips.types.TrajectoryTrackerGains.kd_along_track">
+<code class="descname">kd_along_track</code><a class="headerlink" href="#airsimneurips.types.TrajectoryTrackerGains.kd_along_track" title="Permalink to this definition">¶</a></dt>
+<dd><p>D gain for position error measured along path tangent</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)">float</a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="airsimneurips.types.TrajectoryTrackerGains.kp_vel_along_track">
+<code class="descname">kp_vel_along_track</code><a class="headerlink" href="#airsimneurips.types.TrajectoryTrackerGains.kp_vel_along_track" title="Permalink to this definition">¶</a></dt>
+<dd><p>P gain for velocity error measured along path tangent</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)">float</a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="airsimneurips.types.TrajectoryTrackerGains.kd_vel_along_track">
+<code class="descname">kd_vel_along_track</code><a class="headerlink" href="#airsimneurips.types.TrajectoryTrackerGains.kd_vel_along_track" title="Permalink to this definition">¶</a></dt>
+<dd><p>D gain for velocity error measured along path tangent</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)">float</a></td>
 </tr>
 </tbody>
 </table>
@@ -2991,12 +2918,82 @@ If this is set to true, the trajectory planning backend will add a velocity vect
 <dl class="attribute">
 <dt id="airsimneurips.types.TrajectoryTrackerGains.kp_z_track">
 <code class="descname">kp_z_track</code><a class="headerlink" href="#airsimneurips.types.TrajectoryTrackerGains.kp_z_track" title="Permalink to this definition">¶</a></dt>
-<dd><p>Description</p>
+<dd><p>P gain for position error measured along world Z axis</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">TYPE</td>
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)">float</a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="airsimneurips.types.TrajectoryTrackerGains.kd_z_track">
+<code class="descname">kd_z_track</code><a class="headerlink" href="#airsimneurips.types.TrajectoryTrackerGains.kd_z_track" title="Permalink to this definition">¶</a></dt>
+<dd><p>D gain for position error measured along world Z axis</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)">float</a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="airsimneurips.types.TrajectoryTrackerGains.kp_vel_z">
+<code class="descname">kp_vel_z</code><a class="headerlink" href="#airsimneurips.types.TrajectoryTrackerGains.kp_vel_z" title="Permalink to this definition">¶</a></dt>
+<dd><p>P gain for velocity error measured along world Z axis</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)">float</a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="airsimneurips.types.TrajectoryTrackerGains.kd_vel_z">
+<code class="descname">kd_vel_z</code><a class="headerlink" href="#airsimneurips.types.TrajectoryTrackerGains.kd_vel_z" title="Permalink to this definition">¶</a></dt>
+<dd><p>D gain for velocity error measured along world Z axis</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)">float</a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="airsimneurips.types.TrajectoryTrackerGains.kp_yaw">
+<code class="descname">kp_yaw</code><a class="headerlink" href="#airsimneurips.types.TrajectoryTrackerGains.kp_yaw" title="Permalink to this definition">¶</a></dt>
+<dd><p>P gain for yaw error</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)">float</a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="airsimneurips.types.TrajectoryTrackerGains.kd_yaw">
+<code class="descname">kd_yaw</code><a class="headerlink" href="#airsimneurips.types.TrajectoryTrackerGains.kd_yaw" title="Permalink to this definition">¶</a></dt>
+<dd><p>D gain for yaw error</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)">float</a></td>
 </tr>
 </tbody>
 </table>
@@ -3005,13 +3002,14 @@ If this is set to true, the trajectory planning backend will add a velocity vect
 <dl class="method">
 <dt id="airsimneurips.types.TrajectoryTrackerGains.to_list">
 <code class="descname">to_list</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#airsimneurips.types.TrajectoryTrackerGains.to_list" title="Permalink to this definition">¶</a></dt>
-<dd><table class="docutils field-list" frame="void" rules="none">
+<dd><p>Call this before sending to setTrajectoryTrackerGains</p>
+<table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Description</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">TYPE</td>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)">list</a>[<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)">float</a>]</td>
 </tr>
 </tbody>
 </table>
