@@ -5,7 +5,7 @@ import utils
 
 # drone_name should match the name in ~/Document/AirSim/settings.json
 class BaselineRacer(object):
-    def __init__(self, drone_name = "drone_1", plot_transform=True, viz_traj=False):
+    def __init__(self, drone_name = "drone_1", plot_transform=True, viz_traj=True):
         self.drone_name = drone_name
         self.gate_poses_ground_truth = None
         self.plot_transform = plot_transform
@@ -13,7 +13,6 @@ class BaselineRacer(object):
         self.airsim_client = airsim.MultirotorClient()
         self.airsim_client.confirmConnection()
         self.level_name = None
-        print(self.viz_traj)
     
     def load_level(self, level_name, sleep_sec = 2.0):
         self.level_name = level_name
@@ -63,19 +62,18 @@ class BaselineRacer(object):
     # scale of the vector dictates speed of the velocity constraint
     def get_gate_facing_vector_from_quaternion(self, airsim_quat, scale = 1.0):
         import numpy as np
-
-        q = np.array([airsim_quat.w_val, airsim_quat.x_val, airsim_quat.y_val, airsim_quat.z_val], dtype=np.float64, copy=True)
+        # convert gate quaternion to rotation matrix. 
+        # ref: https://en.wikipedia.org/wiki/Rotation_matrix#Quaternion; https://www.lfd.uci.edu/~gohlke/code/transformations.py.html
+        q = np.array([airsim_quat.w_val, airsim_quat.x_val, airsim_quat.y_val, airsim_quat.z_val], dtype=np.float64)
         n = np.dot(q, q)
         if n < np.finfo(float).eps:
-            return np.identity(4)
+            return airsim.Vector3r(0.0, 1.0, 0.0)
         q *= np.sqrt(2.0 / n)
         q = np.outer(q, q)
-        rotation_matrix = np.array([
-                                    [1.0-q[2, 2]-q[3, 3],     q[1, 2]-q[3, 0],     q[1, 3]+q[2, 0], 0.0],
-                                    [    q[1, 2]+q[3, 0], 1.0-q[1, 1]-q[3, 3],     q[2, 3]-q[1, 0], 0.0],
-                                    [    q[1, 3]-q[2, 0],     q[2, 3]+q[1, 0], 1.0-q[1, 1]-q[2, 2], 0.0],
-                                    [                0.0,                 0.0,                 0.0, 1.0]])
-        gate_facing_vector = rotation_matrix[:-1,1]
+        rotation_matrix = np.array([[1.0-q[2, 2]-q[3, 3],     q[1, 2]-q[3, 0],     q[1, 3]+q[2, 0]],
+                                    [    q[1, 2]+q[3, 0], 1.0-q[1, 1]-q[3, 3],     q[2, 3]-q[1, 0]],
+                                    [    q[1, 3]-q[2, 0],     q[2, 3]+q[1, 0], 1.0-q[1, 1]-q[2, 2]]])
+        gate_facing_vector = rotation_matrix[:,1]
         return airsim.Vector3r(scale * gate_facing_vector[0], scale * gate_facing_vector[1], scale * gate_facing_vector[2])
 
     def fly_through_all_gates_one_by_one_with_moveOnSpline(self):
