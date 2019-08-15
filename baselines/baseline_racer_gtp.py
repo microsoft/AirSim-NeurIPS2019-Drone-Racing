@@ -108,7 +108,7 @@ class BaselineRacerGTP(BaselineRacer):
         plot_track_arrows(self.ax, self.controller.track)
         plt.show()
 
-        # Always a good idea to sleep a little
+        # Always a good idea to take a little nap
         time.sleep(1.0)
 
         while self.airsim_client.isApiControlEnabled(vehicle_name=self.drone_name):
