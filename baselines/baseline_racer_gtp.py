@@ -35,11 +35,11 @@ class BaselineRacerGTP(BaselineRacer):
         position_airsim = []
         vels_airsim = []
         for drone_name in self.drone_names:
-            mr_state = self.airsim_client.getMultirotorState(vehicle_name=drone_name)
-            position_airsim.append(mr_state.kinematics_estimated.position)
-            vels_airsim.append(mr_state.kinematics_estimated.linear_velocity)
+            position_airsim.append(self.airsim_client.simGetObjectPose(drone_name).position)
 
         state = np.array([position.to_numpy_array() for position in position_airsim])
+
+        print(state)
 
         # Plot or update the state
         if self.line_state is None:
@@ -52,8 +52,7 @@ class BaselineRacerGTP(BaselineRacer):
 
         # Now, let's issue the new trajectory to the trajectory planner
         # Fetch the current state first, to see, if our trajectory is still planned for ahead of us
-        mr_state = self.airsim_client.getMultirotorState(vehicle_name=self.drone_name)
-        new_state_i = mr_state.kinematics_estimated.position.to_numpy_array()
+        new_state_i = self.airsim_client.simGetObjectPose(self.drone_name).position.to_numpy_array()
 
         state[i, :] = new_state_i
         replot_state(self.line_state, state)
@@ -77,24 +76,12 @@ class BaselineRacerGTP(BaselineRacer):
         # Finally issue the command to AirSim.
         # This returns a future, that we do not call .join() on, as we want to re-issue a new command
         # once we compute the next iteration of our high-level planner
-        self.airsim_client.moveOnSplineAsync(to_airsim_vectors(trajectory[k_truncate:k_truncate + 4, :]),
+        print(trajectory[k_truncate:k_truncate + 4, :])
+        self.airsim_client.moveOnSplineAsync(to_airsim_vectors(trajectory[k_truncate:k_truncate + 1, :]),
                                              add_curr_odom_position_constraint=True,
                                              add_curr_odom_velocity_constraint=True,
                                              vel_max=self.drone_params[i]["v_max"],
                                              acc_max=10.0, vehicle_name=self.drone_name)
-
-        vels = (trajectory[1:, :] - trajectory[:-1, :]) / self.traj_params.dt
-
-        # print(np.linalg.norm(vels, axis=1))
-        # print(to_airsim_vectors(vels[0:, :]))
-        # Note: Need at least 2 vertices if position_constraint is off
-        # client.moveOnSplineVelConstraintsAsync(
-        #     to_airsim_vectors(trajectories[i, k_truncate:, :]),
-        #     to_airsim_vectors(vels[k_truncate:, :]),
-        #     vel_max=8.0, acc_max=10.0,
-        #     add_curr_odom_position_constraint=True,
-        #     add_curr_odom_velocity_constraint=False,
-        #     vehicle_name=drone_name)
 
         # Refresh the updated plot
         self.fig.canvas.draw()
@@ -126,10 +113,10 @@ def main(args):
     drone_params = [
         {"r_safe": 0.4,
          "r_coll": 0.3,
-         "v_max": 15.0},
+         "v_max": 6.0},
         {"r_safe": 0.4,
          "r_coll": 0.3,
-         "v_max": 15.0}]
+         "v_max": 6.0}]
 
     # ensure you have generated the neurips planning settings file by running python generate_settings_file.py
     baseline_racer = BaselineRacerGTP(
