@@ -50,14 +50,12 @@ class BaselineRacer(object):
             add_curr_odom_velocity_constraint=False, viz_traj=self.viz_traj, vehicle_name=self.drone_name).join()
 
     def get_ground_truth_gate_poses(self):
-        gate_names_sorted_bad = sorted(self.airsim_client.simListSceneObjects("Gate.*"))
-        # gate_names_sorted_bad is of the form `GateN_GARBAGE`. for example:
-        # ['Gate0', 'Gate10_21', 'Gate11_23', 'Gate1_3', 'Gate2_5', 'Gate3_7', 'Gate4_9', 'Gate5_11', 'Gate6_13', 'Gate7_15', 'Gate8_17', 'Gate9_19']
-        # we sort them by their ibdex of occurence along the race track(N), and ignore the unreal garbage number after the underscore(GARBAGE)
-        gate_indices_bad = [int(gate_name.split('_')[0][4:]) for gate_name in gate_names_sorted_bad]
-        gate_indices_correct = sorted(range(len(gate_indices_bad)), key=lambda k:gate_indices_bad[k])
-        gate_names_sorted = [gate_names_sorted_bad[gate_idx] for gate_idx in gate_indices_correct]
-        self.gate_poses_ground_truth = [self.airsim_client.simGetObjectPose(gate_name) for gate_name in gate_names_sorted]
+        # Gate names are sth like Gate1_3, Gate13_4, etc.
+        # We wish to sort by the '1', '13', part, so we parse the int after 'Gate' and before the first underscore
+        gate_names = self.airsim_client.simListSceneObjects("Gate.*")
+        gate_names.sort(key=lambda name: int(name.split("_")[0][4:]))
+        self.gate_poses_ground_truth = [self.airsim_client.simGetObjectPose(gate_name) for gate_name in gate_names]
+        return self.gate_poses_ground_truth
 
     # scale of the vector dictates speed of the velocity constraint
     def get_gate_facing_vector_from_quaternion(self, airsim_quat, scale = 1.0):
