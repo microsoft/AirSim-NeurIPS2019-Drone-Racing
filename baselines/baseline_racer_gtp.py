@@ -77,7 +77,6 @@ class BaselineRacerGTP(BaselineRacer):
                                              add_curr_odom_position_constraint=True,
                                              add_curr_odom_velocity_constraint=True,
                                              vel_max=15.0, acc_max=10.0, vehicle_name=self.drone_name)
-        time.sleep(1.0)
 
         vels = (trajectory[1:, :] - trajectory[:-1, :]) / self.traj_params.dt
 
