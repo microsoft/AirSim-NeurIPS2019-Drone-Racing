@@ -2,7 +2,11 @@ import gtp
 from baseline_racer import BaselineRacer
 from utils import to_airsim_vector, to_airsim_vectors
 from visualize import *
-from matplotlib import pyplot as plt
+
+# Use non interactive matplotlib backend
+import matplotlib
+# matplotlib.use('Agg')
+import matplotlib.pyplot as plt
 
 import airsimneurips as airsim
 import time
@@ -13,7 +17,7 @@ import argparse
 
 class BaselineRacerGTP(BaselineRacer):
     def __init__(self, traj_params, drone_names, drone_i, drone_params):
-        super().__init__()
+        super().__init__(drone_name=drone_names[drone_i])
         self.drone_names = drone_names
         self.drone_i = drone_i
         self.drone_params = drone_params
@@ -76,7 +80,8 @@ class BaselineRacerGTP(BaselineRacer):
         self.airsim_client.moveOnSplineAsync(to_airsim_vectors(trajectory[k_truncate:k_truncate + 4, :]),
                                              add_curr_odom_position_constraint=True,
                                              add_curr_odom_velocity_constraint=True,
-                                             vel_max=15.0, acc_max=10.0, vehicle_name=self.drone_name)
+                                             vel_max=self.drone_params[i]["v_max"],
+                                             acc_max=10.0, vehicle_name=self.drone_name)
 
         vels = (trajectory[1:, :] - trajectory[:-1, :]) / self.traj_params.dt
 
@@ -136,12 +141,17 @@ def main(args):
     baseline_racer.load_level(args.level)
     baseline_racer.initialize_drone()
     baseline_racer.takeoff_with_moveOnSpline()
+
+    baseline_racer_opp = BaselineRacer(drone_name=drone_names[1])
+    baseline_racer_opp.initialize_drone()
+    baseline_racer_opp.takeoff_with_moveOnSpline()
+
     baseline_racer.run()
 
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='')
-    parser.add_argument('--dt', type=float, default=0.5)
+    parser.add_argument('--dt', type=float, default=0.25)
     parser.add_argument('--n', type=int, default=8)
     parser.add_argument('level')
     main(parser.parse_args())
