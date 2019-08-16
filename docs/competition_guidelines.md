@@ -86,29 +86,42 @@ The exact conditions for a team to qualify for the live tournament at the NeurIP
 
 ## Metrics and Scoring
 
-### Lap time (t-lap)
-The lap time is the time taken to finish a lap, i.e., pass all gates in the right order and direction. The lap time is capped at a certain maximal lap time, which is given for every racetrack. In case of a disqualification the lap time of the disqualified drone is set to be this maximal lap time.
+### Nummber of gates passed (**G**)
+This is the primary metric in the scoring strategy. The drone that navigates through the most number of gates in a 2-drone race will always be the winner.
 
-### Lag time (t-lag)
-For tiers I and III, in order to measure how well the participants perform with respect to the reference drone, another aspect of the score is determined by a *lag time*. The lag time (or split time) is the difference between the participant drone’s lap time and the reference drone's lap time. If the participant drone is in second place, the lag time will be positive.
+G = Number of gates passed / Total number of gates
 
-### Collision Avoidance. (Tier I and III)
-It is the job of the chasing drone to avoid the leading drone. In the case of a collision, penalties are always incurred to the chasing drone.
+### Lag time (**T**)
+For tiers I and III, in order to measure how well the participants perform with respect to the reference drone, another aspect of the score is determined by a *lag time*. At any instant, the lag time (or split time) is the difference between the participant drone’s lap time and the reference drone's lap time. If the participant drone is in second place, the lag time will be positive. The scoring metric only considers the lag time at the end of the race - when the chasing drone has crossed the final gate.
 
-**Collision Radius**  
-For collision purposes, the drones are modeled as simple boxes. A collision is registered any time the distance between the two drones falls below 0.3m. One drone-drone collision is allowed, for which the chasing drone incurs a flat time penalty of 3 seconds. Any subsequent collisions will disqualify the chasing drone, and the other drone is allowed to finish without an opponent.
+### Maximal lap time
 
-### Penalties (t-pen)
-There are the following three types of penalties.
-1. **Missed gates**  
-For each gate missed, the penalty incurred is a fixed time, which is dependent on the location of the gate that was missed.
-2. **Collision with environment/gate**  
-Every collision instance incurred outside a 1 second window is penalized with a 3 second time delay. Multiple collisions registered within a window of 1 second are treated as a single instance.
+For every racetrack, there is a maximum lap time ***t***<sub>max</sub>. If the participant drone is unable to complete the track within this timeframe, it is disqualified. 
+
+### Collision Penalties  
+
+**Drone-Drone collision (Tier I and III)**  
+It is the job of the chasing drone to avoid the leading drone. In the case of a collision, penalties are always incurred by the chasing drone.
+
+For collision purposes, the drones are modeled as simple boxes. A collision is registered any time the distance between the two drones falls below **d**. One drone-drone collision is allowed, for which the chasing drone incurs a flat time penalty of ***t***<sub>c</sub>. Any subsequent collisions will disqualify the chasing drone, and the other drone is allowed to finish without an opponent.
+
+**Collision with environment/gates**  
+Every collision with other objects in the environment such as the gates is penalized with a time delay represented by ***t***<sub>***e***</sub>. The drone-environment collisions are checked over a specific window of time ***t***<sub>cw</sub>. Multiple collisions registered under the window of ***t***<sub>cw</sub> are treated as a single collision.
+
+**Values**
+
+***NOTE: AS OF NOW, THESE VALUES ARE ONLY NOMINAL AND ARE SUBJECT TO CHANGE.***
+
+| Quantity | Description                                                             | Value      |
+|----------|-------------------------------------------------------------------------|------------|
+| ***t***<sub>***max***</sub>    | Maximal lap time, within which the drones should complete the track    | 100 seconds
+| ***d***        | Distance threshold for collision detection                              | 0.3 meters |
+| ***t***<sub>***c***</sub>      | Time penalty incurred by chasing drone for colliding with leading drone | 3 seconds  |
+| ***t***<sub>***e***</sub>     | Time penalty incurred by drone for colliding with environment           | 3 seconds  |
+| ***t***<sub>***cw***</sub>     | Time window for collision checking                                      | 1 second   |
 
 ### Overall Score
-The overall score is determined as the sum of the lap times and lag times, minus deductions from penalties across all tracks.
-
-![Image of time equation](time.png)
+During a two-drone race, the drone that passed through the most number of gates automatically wins. If both drones cross the same number of gates, the winner is determined by the lag time. As the drones navigate the race track, any time penalties incurred (as described above) are added to the current lap time of the drone responsible, which in turn affects the lag time between the drones. 
 
 ### Disqualifications
 There are two reasons for a disqualification: Timeouts and multiple drone-drone collisions.
@@ -119,6 +132,25 @@ If a drone does not finish within the maximal lap time of a track, it is disqual
 If a drone-drone collision happens more than once, the chasing drone is disqualified.
 
 In case of a disqualification, the score is equivalent to achieving the maximal lap time.
+
+## Race Monitoring
+
+As a drone is navigating the racetrack, the race progress is streamed to a local log file, which can be found at ``Saved/Logs/RaceLogs/[TimeStamp]_[Level]_tier_[Tier#]_[Race#].log``. This log is updated with data such as the current odometry of the drone, number of gates passed/missed, times etc. It may be useful to continually process this log file client-side. The format of the data generated in this log file can be seen through this example:
+
+```
+A odometry_XYZRPY (75.000,-200.000,2882.102,0.000,0.000,90.000)
+A gates_passed 0
+A gates_missed 0
+A collision_count 0
+A time 8
+A penalty 0
+A disqualified 0
+A finished 0
+```
+
+We have an example python script (``scripts/logging/logMonitor.py``) to help you analyze the log file. This script demonstrates how one can detect when to start a new race, which may be useful for training scenarios. 
+
+Please note that in the qualification round, participants will be required to submit these generated race logs for evaluation.
 
 ## Live Tournament Rules
 The rules for the live tournament carried out during the NeuRIPS 2019 conference will be published after feedback from the qualification round is gathered.
