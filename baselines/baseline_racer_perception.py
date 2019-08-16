@@ -213,7 +213,7 @@ class BaselineRacerPerception(BaselineRacer):
                         print("Gate detected, Measurement Taken")
                         print(self.measurement_count)
 
-                        # Calculate moving average of gate waypoints
+                        # Calculate average of gate waypoints
                         if self.measurement_count == 1: # reset average
                             measurement_estimates_mtx_1 = np.empty((0,3))
                             measurement_estimates_mtx_2 = np.empty((0,3))
