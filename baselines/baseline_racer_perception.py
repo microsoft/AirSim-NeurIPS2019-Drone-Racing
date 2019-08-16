@@ -13,6 +13,7 @@ class BaselineRacerPerception(BaselineRacer):
     def __init__(self, drone_name = "drone_1", plot_transform=False, viz_traj=False):
         BaselineRacer.__init__(self, drone_name, plot_transform, viz_traj)
         self.eps = 0.01
+        self.aspect_ratio_max = 1.4
         self.waypoint_ave_2 = np.zeros((1,3))
         self.kernel = np.ones((3,3),np.uint8)
         self.gate_corners_flat = np.float32([[[94, 64],[204, 64],[204, 174], [94, 174]]])
@@ -30,7 +31,7 @@ class BaselineRacerPerception(BaselineRacer):
         self.waypoint_gate_3 = np.array([0,0.0,-1.0,1.0]).T.reshape(4,1)
         self.gate_points_3D = 1.5*np.array([[0,0,0],[-1.0,1.0,0],[1.0,1.0,0],[1.0,-1.0,0],[-1.0,-1.0,0]])
 
-    # Find area of polygon
+    # Find area of gate
     def find_gate_area(self, x_coords ,y_coords):
         area_numerator = 0
         for i in range(4):
@@ -41,7 +42,7 @@ class BaselineRacerPerception(BaselineRacer):
         gate_area = abs(area_numerator/2.0)
         return gate_area
 
-    # Find four gate corners given more than four points
+    # Find four gate corners with largest area given more than four points
     def find_four_gate_corners_largest_area(self, gate_corners):
         gate_corners = gate_corners.reshape(len(gate_corners),2)
         gate_corner_combinations = list(combinations(gate_corners,4))
@@ -71,7 +72,7 @@ class BaselineRacerPerception(BaselineRacer):
         for i in range(4):
             if aspect_ratio_mtx[0,i] < 1.0:
                 aspect_ratio_mtx[0,i] = 1/aspect_ratio_mtx[0,i]
-            if aspect_ratio_mtx[0,i] > 1.4:
+            if aspect_ratio_mtx[0,i] > self.aspect_ratio_max:
                 large_aspect_ratio = aspect_ratio_mtx[0,i]
         return large_aspect_ratio
 
@@ -80,8 +81,6 @@ class BaselineRacerPerception(BaselineRacer):
         q1 = state.orientation.x_val
         q2 = state.orientation.y_val
         q3 = state.orientation.z_val
-
-        # rotation matrix between quad body frame and global frame
         rot_matrix_quad2global = np.array([[1-2*(q2**2+q3**2), 2*(q1*q2-q0*q3), 2*(q1*q3-q0*q2)],
                                         [2*(q1*q2 + q0*q3), 1-2*(q1**2+q3**2), 2*(q2*q3-q0*q1)],
                                         [2*(q1*q3-q0*q2), 2*(q1*q0+q2*q3), 1-2*(q1**2+q2**2)]])
@@ -104,7 +103,6 @@ class BaselineRacerPerception(BaselineRacer):
         #self.airsim_client.plot_transform([self.gate_poses_ground_truth[0]], vehicle_name=self.drone_name)
         self.airsim_client.moveOnSplineAsync([self.gate_poses_ground_truth[0].position], vel_max = 2.0, acc_max = 5.0, viz_traj=self.viz_traj, vehicle_name=self.drone_name)
         time.sleep(2)
-        waypoint_2 = airsim.Vector3r(0,10,self.gate_poses_ground_truth[0].position.z_val)
         while self.airsim_client.isApiControlEnabled(vehicle_name=self.drone_name):
             # Take image
             response = self.airsim_client.simGetImages([airsim.ImageRequest("fpv_cam", airsim.ImageType.Scene, False, False)])
@@ -139,7 +137,7 @@ class BaselineRacerPerception(BaselineRacer):
                         gate_corners = self.find_four_gate_corners_largest_area(gate_corners)
                     if len(gate_corners) == 4:
                         aspect_ratio = self.find_aspect_ratio(gate_corners)
-                        if aspect_ratio <= 1.4:
+                        if aspect_ratio <= self.aspect_ratio_max:
                             largest_area = cv2.contourArea(contour)
                             gate_corners_best = gate_corners
 
