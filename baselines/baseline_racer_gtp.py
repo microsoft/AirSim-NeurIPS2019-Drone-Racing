@@ -128,9 +128,11 @@ def main(args):
     baseline_racer.initialize_drone()
     baseline_racer.takeoff_with_moveOnSpline()
 
-    baseline_racer_opp = BaselineRacer(drone_name=drone_names[1])
+    baseline_racer_opp = BaselineRacer(drone_name=drone_names[1], plot_transform=False)
     baseline_racer_opp.initialize_drone()
     baseline_racer_opp.takeoff_with_moveOnSpline()
+    baseline_racer_opp.get_ground_truth_gate_poses()
+    baseline_racer_opp.fly_through_all_gates_at_once_with_moveOnSpline()
 
     baseline_racer.run()
 
