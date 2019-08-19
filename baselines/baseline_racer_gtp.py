@@ -76,8 +76,7 @@ class BaselineRacerGTP(BaselineRacer):
         # Finally issue the command to AirSim.
         # This returns a future, that we do not call .join() on, as we want to re-issue a new command
         # once we compute the next iteration of our high-level planner
-        print(trajectory[k_truncate:k_truncate + 4, :])
-        self.airsim_client.moveOnSplineAsync(to_airsim_vectors(trajectory[k_truncate:k_truncate + 1, :]),
+        self.airsim_client.moveOnSplineAsync(to_airsim_vectors(trajectory[k_truncate:, :]),
                                              add_curr_odom_position_constraint=True,
                                              add_curr_odom_velocity_constraint=True,
                                              vel_max=self.drone_params[i]["v_max"],
