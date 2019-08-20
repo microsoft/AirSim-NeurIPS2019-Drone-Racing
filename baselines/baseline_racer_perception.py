@@ -123,10 +123,9 @@ class BaselineRacerPerception(BaselineRacer):
             # gate_contours, hierarchy = cv2.findContours(dilated_gate, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
 
             print("got image")
-            cv2.imshow("image_rgb", image_rgb)
-            # cv2.imshow("mask", mask)
-            # cv2.imshow("dilated_gate", dilated_gate)
-            # cv2.imshow("eroded_gate", eroded_gate)
+            cv2.imshow("mask", mask)
+            cv2.imshow("dilated_gate", dilated_gate)
+            cv2.imshow("eroded_gate", eroded_gate)
             cv2.waitKey(1)
 
             largest_area = 0.0
