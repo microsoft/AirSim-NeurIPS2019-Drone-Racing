@@ -16,12 +16,14 @@ import argparse
 
 
 class BaselineRacerGTP(BaselineRacer):
-    def __init__(self, traj_params, drone_names, drone_i, drone_params):
+    def __init__(self, traj_params, drone_names, drone_i, drone_params, plot_gtp=False):
         super().__init__(drone_name=drone_names[drone_i], plot_transform=True, viz_traj=True)
         self.drone_names = drone_names
         self.drone_i = drone_i
         self.drone_params = drone_params
         self.traj_params = traj_params
+
+        self.plot_gtp = plot_gtp
 
         self.controller = None
 
@@ -33,19 +35,18 @@ class BaselineRacerGTP(BaselineRacer):
     def update_and_plan(self):
         # Retrieve the current state from AirSim
         position_airsim = []
-        vels_airsim = []
         for drone_name in self.drone_names:
             position_airsim.append(self.airsim_client.simGetObjectPose(drone_name).position)
 
         state = np.array([position.to_numpy_array() for position in position_airsim])
 
-        # print(state)
-
-        # Plot or update the state
-        # if self.line_state is None:
-        #     self.line_state, = plot_state(self.ax, state)
-        # else:
-        #     replot_state(self.line_state, state)
+        if self.plot_gtp:
+            print(state)
+            # Plot or update the state
+            if self.line_state is None:
+                self.line_state, = plot_state(self.ax, state)
+            else:
+                replot_state(self.line_state, state)
 
         i = self.drone_i
         trajectory = self.controller.callback(i, state, [])
@@ -55,7 +56,9 @@ class BaselineRacerGTP(BaselineRacer):
         new_state_i = self.airsim_client.simGetObjectPose(self.drone_name).position.to_numpy_array()
 
         state[i, :] = new_state_i
-        # replot_state(self.line_state, state)
+
+        if self.plot_gtp:
+            replot_state(self.line_state, state)
 
         # As we move while computing the trajectory,
         # make sure that we only issue the part of the trajectory, that is still ahead of us
@@ -67,11 +70,12 @@ class BaselineRacerGTP(BaselineRacer):
         if k_truncate == self.traj_params.n:
             k_truncate = self.traj_params.n - 1
 
-        # Let's plot or update the 2D trajectory
-        # if self.lines[i] is None:
-        #     self.lines[i], = plot_trajectory_2d(self.ax, trajectory[k_truncate:, :])
-        # else:
-        #     replot_trajectory_2d(self.lines[i], trajectory[k_truncate:, :])
+        if self.plot_gtp:
+            # Let's plot or update the 2D trajectory
+            if self.lines[i] is None:
+                self.lines[i], = plot_trajectory_2d(self.ax, trajectory[k_truncate:, :])
+            else:
+                replot_trajectory_2d(self.lines[i], trajectory[k_truncate:, :])
 
         # Finally issue the command to AirSim.
         # This returns a future, that we do not call .join() on, as we want to re-issue a new command
@@ -82,9 +86,10 @@ class BaselineRacerGTP(BaselineRacer):
                                              vel_max=self.drone_params[i]["v_max"],
                                              acc_max=30.0, viz_traj=True, vehicle_name=self.drone_name)
 
-        # Refresh the updated plot
-        # self.fig.canvas.draw()
-        # self.fig.canvas.flush_events()
+        if self.plot_gtp:
+            # Refresh the updated plot
+            self.fig.canvas.draw()
+            self.fig.canvas.flush_events()
 
     def run(self):
         gate_poses = self.get_ground_truth_gate_poses()
@@ -93,11 +98,12 @@ class BaselineRacerGTP(BaselineRacer):
         # so let's instantiate two
         self.controller = gtp.Controller(self.traj_params, self.drone_params, gate_poses)
 
-        # Let's plot the gates, and the fitted track.
-        # plot_gates_2d(self.ax, gate_poses)
-        # plot_track(self.ax, self.controller.track)
-        # plot_track_arrows(self.ax, self.controller.track)
-        # plt.show()
+        if self.plot_gtp:
+            # Let's plot the gates, and the fitted track.
+            plot_gates_2d(self.ax, gate_poses)
+            plot_track(self.ax, self.controller.track)
+            plot_track_arrows(self.ax, self.controller.track)
+            plt.show()
 
         # Always a good idea to take a little nap
         time.sleep(1.0)
@@ -105,6 +111,7 @@ class BaselineRacerGTP(BaselineRacer):
         while self.airsim_client.isApiControlEnabled(vehicle_name=self.drone_name):
             # time.sleep(0.2)
             self.update_and_plan()
+
 
 def main(args):
     drone_names = ["drone_0", "drone_1"]
@@ -137,6 +144,7 @@ def main(args):
 
     baseline_racer_opp.fly_through_all_gates_at_once_with_moveOnSpline()
     baseline_racer.run()
+
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='')

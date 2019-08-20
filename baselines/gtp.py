@@ -96,7 +96,7 @@ class Controller:
 
     # Based on current trajectories, compute the best-response (BR) of player i,
     # and return it.
-    def best_response(self, i_0, state, trajectories, mus):
+    def best_response(self, i_0, state, trajectories):
         i_1 = (i_0 + 1) % 2
         v_ego = self.drone_params[i_0]["v_max"]
         r_coll_ego = self.drone_params[i_0]["r_coll"]
@@ -195,27 +195,30 @@ class Controller:
 
         return p.value
 
-    def iterative_br(self, state, n):
+    def iterative_br(self, i_ego, state, n_game_iterations, n_sqp_iterations):
         trajectories = [
             self.init_trajectory(i, state[i, :]) for i in [0, 1]
         ]
-        mus = None  # TODO: Use mus
-        for i_game in range(n):
-            for i in [0, 1]:
-                for i_sqp in range(3):
-                    trajectories[i] = self.best_response(i, state, trajectories, mus)
+        for i_game in range(n_game_iterations - 1):
+            for i in [i_ego, (i_ego + 1) % 2]:
+                for i_sqp in range(n_sqp_iterations):
+                    trajectories[i] = self.best_response(i, state, trajectories)
+
+        # One last time for i_ego
+        for i_sqp in range(n_sqp_iterations):
+            trajectories[i_ego] = self.best_response(i_ego, state, trajectories)
+
         return trajectories
 
     def callback(self, i_0, state, images):
         # For Tier I, images is simply empty, so let's ignore that
         # Use state of both players to plan
         # Assume other player goes
-        trajectories = self.iterative_br(state, 1)
+        trajectories = self.iterative_br(i_0, state, 2, 3)
         return trajectories[i_0]
 
     # If trajectory at time k projected onto the track tangent is ahead of state_i, return k
     def truncate(self, i, state_i, trajectory):
-        v_ego = self.drone_params[i]["v_max"]
         _, _, t, _, _, _ = self.track.track_frame_at(state_i)
         for k in range(self.n_steps):
             if t.dot(trajectory[k, :] - state_i) > 0.0:
