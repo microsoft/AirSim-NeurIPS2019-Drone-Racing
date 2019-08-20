@@ -100,9 +100,11 @@ class BaselineRacerPerception(BaselineRacer):
     def run(self):
         # Move through first gate
         self.get_ground_truth_gate_poses()
-        #self.airsim_client.plot_transform([self.gate_poses_ground_truth[0]], vehicle_name=self.drone_name)
+        if self.plot_transform:
+            self.airsim_client.plot_transform([self.gate_poses_ground_truth[0]], vehicle_name=self.drone_name)
         self.airsim_client.moveOnSplineAsync([self.gate_poses_ground_truth[0].position], vel_max = 2.0, acc_max = 5.0, viz_traj=self.viz_traj, vehicle_name=self.drone_name)
         time.sleep(2)
+
         while self.airsim_client.isApiControlEnabled(vehicle_name=self.drone_name):
             # Take image
             response = self.airsim_client.simGetImages([airsim.ImageRequest("fpv_cam", airsim.ImageType.Scene, False, False)])
@@ -120,9 +122,11 @@ class BaselineRacerPerception(BaselineRacer):
             __, gate_contours, hierarchy = cv2.findContours(dilated_gate, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
             # gate_contours, hierarchy = cv2.findContours(dilated_gate, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
 
-            cv2.imshow("mask", mask)
-            cv2.imshow("dilated_gate", dilated_gate)
-            cv2.imshow("eroded_gate", eroded_gate)
+            print("got image")
+            cv2.imshow("image_rgb", image_rgb)
+            # cv2.imshow("mask", mask)
+            # cv2.imshow("dilated_gate", dilated_gate)
+            # cv2.imshow("eroded_gate", eroded_gate)
             cv2.waitKey(1)
 
             largest_area = 0.0
@@ -179,6 +183,8 @@ class BaselineRacerPerception(BaselineRacer):
                 quad_to_next_gate_dist = abs(np.linalg.norm(np.array([state.position.x_val,state.position.y_val,state.position.z_val]) - self.waypoint_ave_2))
                 if quad_to_next_gate_dist < 3.0 and self.close_count == 0:
                     print("Too close to gate")
+                    if self.plot_transform:
+                        self.airsim_client.plot_transform([airsim.Pose(waypoint_3, airsim.Quaternionr())], vehicle_name=self.drone_name)
                     self.airsim_client.moveOnSplineAsync([waypoint_3], vel_max = 2.0, acc_max = 2.0, add_curr_odom_position_constraint=True, add_curr_odom_velocity_constraint=True, viz_traj=self.viz_traj, vehicle_name=self.drone_name)
                     time.sleep(2)
                     self.measurement_count = 0
@@ -227,8 +233,12 @@ class BaselineRacerPerception(BaselineRacer):
                         waypoint_2 = airsim.Vector3r(self.waypoint_ave_2[0,0],self.waypoint_ave_2[0,1], self.waypoint_ave_2[0,2])
                         waypoint_3 = airsim.Vector3r(waypoint_ave_3[0,0],waypoint_ave_3[0,1], waypoint_ave_3[0,2])
 
+                        if self.plot_transform:
+                            self.airsim_client.plot_transform([airsim.Pose(waypoint_2, airsim.Quaternionr())], vehicle_name=self.drone_name)
                         self.airsim_client.moveOnSplineAsync([waypoint_2], vel_max = 2.0, acc_max = 2.0, add_curr_odom_position_constraint=True, add_curr_odom_velocity_constraint=True, viz_traj=self.viz_traj, vehicle_name=self.drone_name)
                         #self.airsim_client.moveOnSplineAsync([waypoint_1,waypoint_2,waypoint_3], vel_max = 2.0, acc_max = 2.0, add_curr_odom_position_constraint=True, add_curr_odom_velocity_constraint=True, viz_traj=self.viz_traj, vehicle_name=self.drone_name)
+
+            #time.sleep(0.5)
 
 def main(args):
     # ensure you have generated the neurips planning settings file by running python generate_settings_file.py
@@ -241,7 +251,7 @@ def main(args):
 if __name__ == "__main__":
     parser = ArgumentParser()
     parser.add_argument('--level_name', type=str, choices=["Soccer_Field_Easy"], default="Soccer_Field_Easy")
-    parser.add_argument('--plot_transform', dest='plot_transform', action='store_false', default=False)
-    parser.add_argument('--viz_traj', dest='viz_traj', action='store_false', default=False)
+    parser.add_argument('--plot_transform', dest='plot_transform', action='store_true', default=False)
+    parser.add_argument('--viz_traj', dest='viz_traj', action='store_true', default=False)
     args = parser.parse_args()
     main(args)
