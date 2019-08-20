@@ -96,7 +96,7 @@ class Controller:
 
     # Based on current trajectories, compute the best-response (BR) of player i,
     # and return it.
-    def best_response(self, i_0, state, trajectories, mus):
+    def best_response(self, i_0, state, trajectories):
         i_1 = (i_0 + 1) % 2
         v_ego = self.drone_params[i_0]["v_max"]
         r_coll_ego = self.drone_params[i_0]["r_coll"]
@@ -199,15 +199,14 @@ class Controller:
         trajectories = [
             self.init_trajectory(i, state[i, :]) for i in [0, 1]
         ]
-        mus = None  # TODO: Use mus
         for i_game in range(n_game_iterations - 1):
             for i in [i_ego, (i_ego + 1) % 2]:
                 for i_sqp in range(n_sqp_iterations):
-                    trajectories[i] = self.best_response(i, state, trajectories, mus)
+                    trajectories[i] = self.best_response(i, state, trajectories)
 
         # One last time for i_ego
         for i_sqp in range(n_sqp_iterations):
-            trajectories[i_ego] = self.best_response(i_ego, state, trajectories, mus)
+            trajectories[i_ego] = self.best_response(i_ego, state, trajectories)
 
         return trajectories
 
