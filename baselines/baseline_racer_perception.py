@@ -26,9 +26,9 @@ class BaselineRacerPerception(BaselineRacer):
         self.lower_green = np.array([0, 210, 0])
         self.upper_green = np.array([200, 255, 200])
         self.dist_coeff = np.zeros((1,5))
-        self.waypoint_gate_1 = np.array([0,0.0,+1.0,1.0]).T.reshape(4,1)
-        self.waypoint_gate_2 = np.array([0.0,0.0,0.0,1.0]).T.reshape(4,1)
-        self.waypoint_gate_3 = np.array([0,0.0,-1.0,1.0]).T.reshape(4,1)
+        self.waypoint_gate_1 = np.array([0.0, 0.0, +1.0, 1.0]).T.reshape(4,1)
+        self.waypoint_gate_2 = np.array([0.0, 0.0, 0.0, 1.0]).T.reshape(4,1)
+        self.waypoint_gate_3 = np.array([0.0, 0.0, -1.0, 1.0]).T.reshape(4,1)
         self.gate_points_3D = 1.5*np.array([[0,0,0],[-1.0,1.0,0],[1.0,1.0,0],[1.0,-1.0,0],[-1.0,-1.0,0]])
 
     # Find area of gate
@@ -174,7 +174,7 @@ class BaselineRacerPerception(BaselineRacer):
                 rot_translation_matrix_gate2quad = np.concatenate((rot_translation_matrix_gate2quad, np.array([0,0,0,1]).reshape(1,4)), axis=0)
 
                 # gate frame waypoint to global frame waypoint
-                waypoint_glob_1 = self.gate_frame_waypoint_to_global_waypoint(state,rot_translation_matrix_gate2quad,rot_matrix_quad2global,self.waypoint_gate_2)
+                waypoint_glob_1 = self.gate_frame_waypoint_to_global_waypoint(state,rot_translation_matrix_gate2quad,rot_matrix_quad2global,self.waypoint_gate_1)
                 waypoint_glob_2 = self.gate_frame_waypoint_to_global_waypoint(state,rot_translation_matrix_gate2quad,rot_matrix_quad2global,self.waypoint_gate_2)
                 waypoint_glob_3 = self.gate_frame_waypoint_to_global_waypoint(state,rot_translation_matrix_gate2quad,rot_matrix_quad2global,self.waypoint_gate_3)
 
