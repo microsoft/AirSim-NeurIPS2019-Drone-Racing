@@ -170,10 +170,12 @@ class Controller:
         r_coll_opp = self.drone_params[i_opp]["r_coll"]
         r_safe_ego = self.drone_params[i_ego]["r_safe"]
         r_safe_opp = self.drone_params[i_opp]["r_safe"]
+        d_coll = r_coll_ego + r_coll_opp
+        d_safe = r_safe_ego + r_safe_opp
 
         p = cp.Variable(shape=(self.n_steps, 3))
 
-        # Dynamical Constraints:
+        # === Dynamical Constraints ===
         # ||p_0 - p[0]|| <= v*dt
         init_dyn_constraint = cp.SOC(cp.Constant(v_ego * self.dt), cp.Constant(state[i_ego, :]) - p[0, :])
 
@@ -181,6 +183,7 @@ class Controller:
         dyn_constraints = [init_dyn_constraint] + [
             cp.SOC(cp.Constant(v_ego * self.dt), p[k + 1, :] - p[k, :]) for k in range(self.n_steps - 1)]
 
+        # === Track Constraints ===
         track_constraints = []
         track_obj = cp.Constant(0)
         # exponentially decreasing weight
@@ -198,6 +201,7 @@ class Controller:
                     cp.pos(n.T @ p[k, :] - n.dot(c) - (width - r_coll_ego)) +
                     cp.pos(-(n.T @ p[k, :] - n.dot(c) + (width - r_coll_ego))))
 
+        # === Non-Collision Constraints ===
         non_collision_constraints = []
         nc_obj = cp.Constant(0)
         nc_relax_obj = cp.Constant(0)
@@ -207,45 +211,49 @@ class Controller:
         for k in range(self.n_steps):
             p_opp = trajectories[i_opp][k, :]
             p_ego = trajectories[i_ego][k, :]
+
+            # Compute beta, the normal direction vector pointing from the ego's drone position to the opponent's
             beta = p_opp - p_ego
             if np.linalg.norm(beta) >= 1e-5:
+                # Only normalize if norm is large enough
                 beta /= np.linalg.norm(beta)
-            #     n.T * (p_opp - p_ego) >= r_coll_opp + r_coll_ego
-            non_collision_constraints.append(beta.dot(p_opp) - beta.T @ p[k, :] >= r_coll_opp + r_coll_ego)
-            # <=> -n.T * p_ego >= r_coll_opp + r_coll_ego - n.T * p_opp
-            # <=> n.T * p_ego <= n.T * p_opp - (r_coll_opp + r_coll_ego)
 
-            # For objective use safety radii
-            nc_obj += (non_collision_objective_exp ** k) * cp.pos(
-                (r_safe_opp + r_safe_ego) - (beta.dot(p_opp) - beta.T @ p[k, :]))
+            #     n.T * (p_opp - p_ego) >= d_coll
+            non_collision_constraints.append(beta.dot(p_opp) - beta.T @ p[k, :] >= d_coll)
 
-            nc_relax_obj += (non_collision_objective_exp ** k) * cp.pos(
-                (r_coll_opp + r_coll_ego) - (beta.dot(p_opp) - beta.T @ p[k, :]))
+            # For normal non-collision objective use safety distance
+            nc_obj += (non_collision_objective_exp ** k) * cp.pos(d_safe - (beta.dot(p_opp) - beta.T @ p[k, :]))
+            # For relaxed non-collision objective use collision distance
+            nc_relax_obj += (non_collision_objective_exp ** k) * cp.pos(d_coll - (beta.dot(p_opp) - beta.T @ p[k, :]))
 
         # Take the tangent t at the last trajectory point
-        # This serves
+        # This serves as an approximation to the total track progress
         _, _, t, _, _, _ = self.track.track_frame_at(trajectories[i_ego][-1, :])
         obj = -t.T @ p[-1, :]
+
+        # Create the problem in cxvpy and solve it.
         prob = cp.Problem(cp.Minimize(obj + self.nc_weight * nc_obj),
                           dyn_constraints + track_constraints + non_collision_constraints)
         prob.solve()
 
         if np.isinf(prob.value):
             print("Relaxing track constraints")
-            # If still not feasible, relax track constraints
-            # It has to be an infeasible problem, as the dynamical constraints keep it bounded
+            # If the problem is not feasible, relax track constraints
+            # Assert it is indeed an infeasible problem and not unbounded (in which case value is -inf).
+            # (The dynamical constraints keep the problem bounded.)
             assert prob.value >= 0.0
 
-            # Solve relaxed problem (non-collision constraint -> non-collision objective)
+            # Solve relaxed problem (track constraint -> track objective)
             relaxed_prob = cp.Problem(cp.Minimize(obj + self.nc_weight * nc_obj + self.track_relax_weight * track_obj),
                                       dyn_constraints + non_collision_constraints)
             relaxed_prob.solve()
 
             if np.isinf(relaxed_prob.value):
                 print("Relaxing non collision constraints")
-                # There's a problem with solving the system
-                # It has to be an infeasible problem, as the dynamical constraints keep it bounded
-                assert prob.value >= 0.0
+                # If the problem is still infeasible, relax non-collision constraints
+                # Again, assert it is indeed an infeasible problem and not unbounded (in which case value is -inf).
+                # (The dynamical constraints keep the problem bounded.)
+                assert relaxed_prob.value >= 0.0
 
                 # Solve relaxed problem (non-collision constraint -> non-collision objective)
                 relaxed_prob = cp.Problem(cp.Minimize(obj + self.nc_weight * nc_obj + self.nc_relax_weight * nc_relax_obj),
@@ -271,10 +279,16 @@ class Controller:
 
         return trajectories[i_ego]
 
-    # If trajectory at time k projected onto the track tangent is ahead of state_i, return k
-    def truncate(self, i, state_i, trajectory):
-        _, _, t, _, _, _ = self.track.track_frame_at(state_i)
+    def truncate(self, p_i, trajectory):
+        """
+        Truncates the trajectory at time k, so that the next point is 'ahead' of p_i.
+        A point p is ahead of p_i, if p-p_i projected onto the track tangent is positive
+        :param p_i: The position of the drone
+        :param trajectory: The trajectory to be truncated
+        :return: k, the index of the first point ahead of p_i
+        """
+        _, _, t, _, _, _ = self.track.track_frame_at(p_i)
         for k in range(self.n_steps):
-            if t.dot(trajectory[k, :] - state_i) > 0.0:
+            if t.dot(trajectory[k, :] - p_i) > 0.0:
                 return k, t
         return self.n_steps, t
