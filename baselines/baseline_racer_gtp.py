@@ -75,7 +75,7 @@ class BaselineRacerGTP(BaselineRacer):
             k_truncate = self.traj_params.n - 1
 
         if self.plot_gtp:
-            # Let's plot or update the 2D trajectory
+            # For our 2D trajectory, let's plot or update
             if self.lines[i] is None:
                 self.lines[i], = plot_trajectory_2d(self.ax, trajectory[k_truncate:, :])
             else:
@@ -158,7 +158,7 @@ def main(args):
         drone_names=drone_names,
         drone_i=0,
         drone_params=drone_params,
-        use_vel_constraints=args.vel_constraints, plot_gtp=False)
+        use_vel_constraints=args.vel_constraints, plot_gtp=args.plot_gtp)
 
     baseline_racer_opp = BaselineRacer(drone_name=drone_names[1], plot_transform=True, viz_traj=True)
 
@@ -168,9 +168,9 @@ def main(args):
     baseline_racer_opp.initialize_drone()
 
     baseline_racer_opp.takeoff_with_moveOnSpline()
-    baseline_racer_opp.get_ground_truth_gate_poses()
     baseline_racer.takeoff_with_moveOnSpline()
 
+    baseline_racer_opp.get_ground_truth_gate_poses()
     baseline_racer_opp.fly_through_all_gates_at_once_with_moveOnSpline()
     baseline_racer.run()
 
@@ -180,5 +180,6 @@ if __name__ == "__main__":
     parser.add_argument('--dt', type=float, default=0.25)
     parser.add_argument('--n', type=int, default=12)
     parser.add_argument('--vel_constraints', dest='vel_constraints', action='store_true', default=False)
+    parser.add_argument('--plot_gtp', dest='plot_gtp', action='store_true', default=False)
     parser.add_argument('level')
     main(parser.parse_args())
