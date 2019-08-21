@@ -102,7 +102,7 @@ class BaselineRacer(object):
         if(self.plot_transform):
             self.airsim_client.plot_transform(self.gate_poses_ground_truth, vehicle_name=self.drone_name)
 
-        return self.airsim_client.moveOnSplineAsync([gate_pose.position for gate_pose in self.gate_poses_ground_truth], vel_max=6.0, acc_max=10.0,
+        return self.airsim_client.moveOnSplineAsync([gate_pose.position for gate_pose in self.gate_poses_ground_truth], vel_max=20.0, acc_max=10.0,
             add_curr_odom_position_constraint=True, add_curr_odom_velocity_constraint=False, viz_traj=self.viz_traj, vehicle_name=self.drone_name)
 
     def fly_through_all_gates_one_by_one_with_moveOnSplineVelConstraints(self):

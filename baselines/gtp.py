@@ -72,7 +72,36 @@ class SplinedTrack:
                self.track_widths[i], self.track_heights[i]
 
 
-# Every participant must supply a class called Controller
+# ==== OVERVIEW ====
+# Given the state of both drones 0 and 1, this controller iteratively computes trajectories for both drones, that are
+# collision-free and stay within the track and conform to the dynamical model (maximal speed).
+# These trajectories are specified as 'n_steps' points every 'dt' seconds.
+#
+# ==== ITERATIVE BEST RESPONSE ====
+# Initially, these trajectories are sampled to follow the track (for more information on the track see above).
+# Then, fixing the trajectory for drone 1, the trajectory for drone 0 is optimized.
+# Next, vice versa, the trajectory for drone 1 is optimized while keeping the trajectory for drone 0 fixed.
+# This is done iteratively until either the change becomes small, or a fixed number of iterations is reached.
+# The hope is that eventually we arrive at a fixed-point, i. e. after optimizing for both drones we get the same
+# trajectories again.
+#
+# ==== COMPUTING THE BEST RESPONSE ====
+# Since some of the constraints are non-convex quadratic constraint (namely the non-collision constraint),
+# the optimized trajectory is found in an iteratively fashion (sequential quadratic program, short SQP) by linearizing
+# the non-collision constraints around the current guess.
+#
+# ==== PARAMETERS ====
+# i_ego         The index of the 'ego' drone
+# i_opp         The index of the opponent drone
+# dt            Sampling time for trajectories
+# n_steps       Length of the trajectories
+# n_game_iters  Number of game iterations (how often the best response is computed for drone i_0)
+# n_sqp_iters   Number of SQP iterations (how often the constraints are linearized and the optimization is solved)
+# drone_params
+#   r_coll      Collision radius, see competition guidelines.
+#   r_safe      Safety radius, see competition guidelines
+#   v_max       Maximal velocity, determines how far waypoints can be apart
+#   a_max       Maximal acceleration, not used here.
 class Controller:
     def __init__(self, params, drone_params, gate_poses):
         self.dt = params.dt
@@ -116,7 +145,7 @@ class Controller:
         # Dynamical Constraints:
         # ||p_0 - p[0]|| <= v*dt
         init_dyn_constraint = cp.SOC(cp.Constant(v_ego * self.dt), cp.Constant(state[i_0, :]) - p[0, :])
-        # dyn_constraints = []
+
         # ||p[k+1] - p[k]|| <= v*dt
         dyn_constraints = [init_dyn_constraint] + [
             cp.SOC(cp.Constant(v_ego * self.dt), p[k + 1, :] - p[k, :]) for k in range(N - 1)]
@@ -149,6 +178,7 @@ class Controller:
             p_opp = trajectories[i_1][k, :]
             p_ego = trajectories[i_0][k, :]
             beta = p_opp - p_ego
+            # TODO: Fix this.
             assert np.linalg.norm(beta) >= 1e-6
             beta /= np.linalg.norm(beta)
             #     n.T * (p_opp - p_ego) >= r_coll_opp + r_coll_ego
@@ -195,7 +225,7 @@ class Controller:
 
         return p.value
 
-    def iterative_br(self, i_ego, state, n_game_iterations, n_sqp_iterations):
+    def iterative_br(self, i_ego, state, n_game_iterations=2, n_sqp_iterations=3):
         trajectories = [
             self.init_trajectory(i, state[i, :]) for i in [0, 1]
         ]
@@ -208,14 +238,7 @@ class Controller:
         for i_sqp in range(n_sqp_iterations):
             trajectories[i_ego] = self.best_response(i_ego, state, trajectories)
 
-        return trajectories
-
-    def callback(self, i_0, state, images):
-        # For Tier I, images is simply empty, so let's ignore that
-        # Use state of both players to plan
-        # Assume other player goes
-        trajectories = self.iterative_br(i_0, state, 2, 3)
-        return trajectories[i_0]
+        return trajectories[i_ego]
 
     # If trajectory at time k projected onto the track tangent is ahead of state_i, return k
     def truncate(self, i, state_i, trajectory):
