@@ -59,8 +59,6 @@ class BaselineRacerGTP(BaselineRacer):
         # Fetch the current state first, to see, if our trajectory is still planned for ahead of us
         new_state_i = self.airsim_client.simGetObjectPose(self.drone_name).position.to_numpy_array()
 
-        state[i, :] = new_state_i
-
         if self.plot_gtp:
             replot_state(self.line_state, state)
 
@@ -75,7 +73,7 @@ class BaselineRacerGTP(BaselineRacer):
             k_truncate = self.traj_params.n - 1
 
         if self.plot_gtp:
-            # Let's plot or update the 2D trajectory
+            # For our 2D trajectory, let's plot or update
             if self.lines[i] is None:
                 self.lines[i], = plot_trajectory_2d(self.ax, trajectory[k_truncate:, :])
             else:
@@ -123,7 +121,7 @@ class BaselineRacerGTP(BaselineRacer):
 
         # We pretend we have two different controllers for the drones,
         # so let's instantiate two
-        self.controller = gtp.Controller(self.traj_params, self.drone_params, gate_poses)
+        self.controller = gtp.IBRController(self.traj_params, self.drone_params, gate_poses)
 
         if self.plot_gtp:
             # Let's plot the gates, and the fitted track.
@@ -158,7 +156,7 @@ def main(args):
         drone_names=drone_names,
         drone_i=0,
         drone_params=drone_params,
-        use_vel_constraints=args.vel_constraints, plot_gtp=False)
+        use_vel_constraints=args.vel_constraints, plot_gtp=args.plot_gtp)
 
     baseline_racer_opp = BaselineRacer(drone_name=drone_names[1], plot_transform=True, viz_traj=True)
 
@@ -168,10 +166,12 @@ def main(args):
     baseline_racer_opp.initialize_drone()
 
     baseline_racer_opp.takeoff_with_moveOnSpline()
-    baseline_racer_opp.get_ground_truth_gate_poses()
     baseline_racer.takeoff_with_moveOnSpline()
 
+    baseline_racer_opp.get_ground_truth_gate_poses()
     baseline_racer_opp.fly_through_all_gates_at_once_with_moveOnSpline()
+    # Give him a little advantage
+    time.sleep(2)
     baseline_racer.run()
 
 
@@ -180,5 +180,6 @@ if __name__ == "__main__":
     parser.add_argument('--dt', type=float, default=0.25)
     parser.add_argument('--n', type=int, default=12)
     parser.add_argument('--vel_constraints', dest='vel_constraints', action='store_true', default=False)
+    parser.add_argument('--plot_gtp', dest='plot_gtp', action='store_true', default=False)
     parser.add_argument('level')
     main(parser.parse_args())
