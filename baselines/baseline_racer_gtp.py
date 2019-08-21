@@ -66,7 +66,7 @@ class BaselineRacerGTP(BaselineRacer):
 
         # As we move while computing the trajectory,
         # make sure that we only issue the part of the trajectory, that is still ahead of us
-        k_truncate, t = self.controller.truncate(i, new_state_i, trajectory[:, :])
+        k_truncate, t = self.controller.truncate(new_state_i, trajectory[:, :])
 
         print("k_truncate", k_truncate)
 
