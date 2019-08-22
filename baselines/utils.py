@@ -65,4 +65,5 @@ class AirSimSettingsCreator(object):
         instance = self.__class__()
         instance.add_minimal()
         instance.add_multirotor(vehicle_name = "drone_1", pose = Pose(Position(), Rotation()))
+        instance.add_multirotor(vehicle_name = "drone_2", pose = Pose(Position(0.,1.,0), Rotation()))
         instance.write_airsim_settings_file()

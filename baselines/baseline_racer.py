@@ -13,13 +13,23 @@ class BaselineRacer(object):
         self.airsim_client = airsim.MultirotorClient()
         self.airsim_client.confirmConnection()
         self.level_name = None
-    
+
+    # loads desired level
     def load_level(self, level_name, sleep_sec = 2.0):
         self.level_name = level_name
         self.airsim_client.simLoadLevel(self.level_name)
         self.airsim_client.confirmConnection() # failsafe
         time.sleep(sleep_sec) # let the environment load completely
 
+    # Starts an instance of a race in your given level, if valid
+    def start_race(self, tier=3):
+        self.airsim_client.simStartRace(tier)
+
+    # Resets a current race: moves players to start positions, timer and penalties reset
+    def reset_race(self):
+        self.airsim_client.simResetRace(tier)
+
+    # arms drone, enable APIs, set default traj tracker gains
     def initialize_drone(self):
         self.airsim_client.enableApiControl(vehicle_name=self.drone_name)
         self.airsim_client.arm(vehicle_name=self.drone_name)
@@ -39,16 +49,21 @@ class BaselineRacer(object):
     def takeoffAsync(self):
         self.airsim_client.takeoffAsync().join()
 
+    # like takeoffAsync(), but with moveOnSpline()
     def takeoff_with_moveOnSpline(self, takeoff_height = 0.1):
         if self.level_name == "ZhangJiaJie_Medium":
             takeoff_height = 0.3
-        takeoff_waypoint = airsim.Vector3r(0, 0, -takeoff_height)
+
+        start_position = self.airsim_client.simGetVehiclePose(vehicle_name=self.drone_name).position
+        takeoff_waypoint = airsim.Vector3r(start_position.x_val, start_position.y_val, -takeoff_height)
+
         if(self.plot_transform):
             self.airsim_client.plot_transform([airsim.Pose(takeoff_waypoint, airsim.Quaternionr())], vehicle_name=self.drone_name)
 
         self.airsim_client.moveOnSplineAsync([takeoff_waypoint], vel_max=15.0, acc_max=5.0, add_curr_odom_position_constraint=True, 
             add_curr_odom_velocity_constraint=False, viz_traj=self.viz_traj, vehicle_name=self.drone_name).join()
 
+    # stores gate ground truth poses as a list of airsim.Pose() objects in self.gate_poses_ground_truth
     def get_ground_truth_gate_poses(self):
         gate_names_sorted_bad = sorted(self.airsim_client.simListSceneObjects("Gate.*"))
         # gate_names_sorted_bad is of the form `GateN_GARBAGE`. for example:
@@ -59,7 +74,8 @@ class BaselineRacer(object):
         gate_names_sorted = [gate_names_sorted_bad[gate_idx] for gate_idx in gate_indices_correct]
         self.gate_poses_ground_truth = [self.airsim_client.simGetObjectPose(gate_name) for gate_name in gate_names_sorted]
 
-    # scale of the vector dictates speed of the velocity constraint
+    # this is utility function to get a velocity constraint which can be passed to moveOnSplineVelConstraints() 
+    # the "scale" parameter scales the gate facing vector accordingly, thereby dictating the speed of the velocity constraint
     def get_gate_facing_vector_from_quaternion(self, airsim_quat, scale = 1.0):
         import numpy as np
         # convert gate quaternion to rotation matrix. 
@@ -161,6 +177,7 @@ def main(args):
     # ensure you have generated the neurips planning settings file by running python generate_settings_file.py
     baseline_racer = BaselineRacer(drone_name="drone_1", plot_transform=args.plot_transform, viz_traj=args.viz_traj)
     baseline_racer.load_level(args.level_name)
+    baseline_racer.start_race(args.race_tier)
     baseline_racer.initialize_drone()
     baseline_racer.takeoff_with_moveOnSpline()
     baseline_racer.get_ground_truth_gate_poses()
@@ -177,12 +194,15 @@ def main(args):
         if args.planning_and_control_api == "moveOnSplineVelConstraints":
             baseline_racer.fly_through_all_gates_one_by_one_with_moveOnSplineVelConstraints()
 
+    baseline_racer.reset_race()
+
 if __name__ == "__main__":
     parser = ArgumentParser()
     parser.add_argument('--level_name', type=str, choices=["Soccer_Field_Easy", "Soccer_Field_Medium", "ZhangJiaJie_Medium", "Building99_Hard"], default="ZhangJiaJie_Medium")
     parser.add_argument('--planning_baseline_type', type=str, choices=["all_gates_at_once","all_gates_one_by_one"], default="all_gates_at_once")
     parser.add_argument('--planning_and_control_api', type=str, choices=["moveOnSpline", "moveOnSplineVelConstraints"], default="moveOnSpline")
-    parser.add_argument('--plot_transform', dest='plot_transform', action='store_true', default=False)
-    parser.add_argument('--viz_traj', dest='viz_traj', action='store_true', default=False)
+    parser.add_argument('--enable_plot_transform', dest='plot_transform', action='store_true', default=False)
+    parser.add_argument('--enable_viz_traj', dest='viz_traj', action='store_true', default=False)
+    parser.add_argument('--race_tier', type=int, choices=[1,2,3], default=3)
     args = parser.parse_args()
     main(args)
