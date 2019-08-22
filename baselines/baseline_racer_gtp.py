@@ -59,8 +59,6 @@ class BaselineRacerGTP(BaselineRacer):
         # Fetch the current state first, to see, if our trajectory is still planned for ahead of us
         new_state_i = self.airsim_client.simGetObjectPose(self.drone_name).position.to_numpy_array()
 
-        state[i, :] = new_state_i
-
         if self.plot_gtp:
             replot_state(self.line_state, state)
 
@@ -172,6 +170,8 @@ def main(args):
 
     baseline_racer_opp.get_ground_truth_gate_poses()
     baseline_racer_opp.fly_through_all_gates_at_once_with_moveOnSpline()
+    # Give him a little advantage
+    time.sleep(2)
     baseline_racer.run()
 
 
