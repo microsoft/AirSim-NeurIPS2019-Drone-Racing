@@ -71,7 +71,7 @@ class SplinedTrack:
                self.track_widths[i], self.track_heights[i]
 
 
-class Controller:
+class IBRController:
     """
     OVERVIEW:
     Given the state of both drones 0 and 1, this controller iteratively computes trajectories for both drones, that are

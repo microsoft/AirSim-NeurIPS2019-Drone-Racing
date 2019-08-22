@@ -121,7 +121,7 @@ class BaselineRacerGTP(BaselineRacer):
 
         # We pretend we have two different controllers for the drones,
         # so let's instantiate two
-        self.controller = gtp.Controller(self.traj_params, self.drone_params, gate_poses)
+        self.controller = gtp.IBRController(self.traj_params, self.drone_params, gate_poses)
 
         if self.plot_gtp:
             # Let's plot the gates, and the fitted track.
