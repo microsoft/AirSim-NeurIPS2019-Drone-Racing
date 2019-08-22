@@ -82,7 +82,7 @@ class IBRController:
     Initially, these trajectories are sampled to follow the track (for more information on the track see above).
     Then, fixing the trajectory for drone 1, the trajectory for drone 0 is optimized.
     Next, vice versa, the trajectory for drone 1 is optimized while keeping the trajectory for drone 0 fixed.
-    This is done iteratively until either the change becomes small, or a fixed number of iterations is reached.
+    This is done iteratively for a fixed number of iterations.
     The hope is that eventually we arrive at a fixed-point, i. e. after optimizing for both drones we get the same
     trajectories again.
 
@@ -130,10 +130,10 @@ class IBRController:
         v_ego = self.drone_params[i_0]["v_max"]
         trajectory = np.zeros(shape=(self.n_steps, 3))
         p = np.copy(p_0)  # Copy state as it gets modified throughout the loop
-        for i in range(self.n_steps):
+        for k in range(self.n_steps):
             idx, c, t, n, width, height = self.track.track_frame_at(p)
             p += self.dt * v_ego * t
-            trajectory[i, :] = p
+            trajectory[k, :] = p
         return trajectory
 
     def best_response(self, i_ego, state, trajectories):
@@ -202,7 +202,7 @@ class IBRController:
                     cp.pos(-(n.T @ p[k, :] - n.dot(c) + (width - r_coll_ego))))
 
         # === Non-Collision Constraints ===
-        non_collision_constraints = []
+        nc_constraints = []
         nc_obj = cp.Constant(0)
         nc_relax_obj = cp.Constant(0)
         # exponentially decreasing weight
@@ -219,7 +219,7 @@ class IBRController:
                 beta /= np.linalg.norm(beta)
 
             #     n.T * (p_opp - p_ego) >= d_coll
-            non_collision_constraints.append(beta.dot(p_opp) - beta.T @ p[k, :] >= d_coll)
+            nc_constraints.append(beta.dot(p_opp) - beta.T @ p[k, :] >= d_coll)
 
             # For normal non-collision objective use safety distance
             nc_obj += (non_collision_objective_exp ** k) * cp.pos(d_safe - (beta.dot(p_opp) - beta.T @ p[k, :]))
@@ -233,7 +233,7 @@ class IBRController:
 
         # Create the problem in cxvpy and solve it.
         prob = cp.Problem(cp.Minimize(obj + self.nc_weight * nc_obj),
-                          dyn_constraints + track_constraints + non_collision_constraints)
+                          dyn_constraints + track_constraints + nc_constraints)
         prob.solve()
 
         if np.isinf(prob.value):
@@ -245,7 +245,7 @@ class IBRController:
 
             # Solve relaxed problem (track constraint -> track objective)
             relaxed_prob = cp.Problem(cp.Minimize(obj + self.nc_weight * nc_obj + self.track_relax_weight * track_obj),
-                                      dyn_constraints + non_collision_constraints)
+                                      dyn_constraints + nc_constraints)
             relaxed_prob.solve()
 
             if np.isinf(relaxed_prob.value):
@@ -264,7 +264,7 @@ class IBRController:
 
         return p.value
 
-    def iterative_br(self, i_ego, state, n_game_iterations=2, n_sqp_iterations=3):
+    def iterative_br(self, i_ego, state, n_game_iterations=2, n_sqp_iterations=2):
         trajectories = [
             self.init_trajectory(i, state[i, :]) for i in [0, 1]
         ]

@@ -52,8 +52,7 @@ class BaselineRacerGTP(BaselineRacer):
             else:
                 replot_state(self.line_state, state)
 
-        i = self.drone_i
-        trajectory = self.controller.iterative_br(i, state)
+        trajectory = self.controller.iterative_br(self.drone_i, state)
 
         # Now, let's issue the new trajectory to the trajectory planner
         # Fetch the current state first, to see, if our trajectory is still planned for ahead of us
@@ -74,10 +73,10 @@ class BaselineRacerGTP(BaselineRacer):
 
         if self.plot_gtp:
             # For our 2D trajectory, let's plot or update
-            if self.lines[i] is None:
-                self.lines[i], = plot_trajectory_2d(self.ax, trajectory[k_truncate:, :])
+            if self.lines[self.drone_i] is None:
+                self.lines[self.drone_i], = plot_trajectory_2d(self.ax, trajectory[k_truncate:, :])
             else:
-                replot_trajectory_2d(self.lines[i], trajectory[k_truncate:, :])
+                replot_trajectory_2d(self.lines[self.drone_i], trajectory[k_truncate:, :])
 
         # Finally issue the command to AirSim.
         if not self.use_vel_constraints:
@@ -86,8 +85,8 @@ class BaselineRacerGTP(BaselineRacer):
             self.airsim_client.moveOnSplineAsync(to_airsim_vectors(trajectory[k_truncate:, :]),
                                                  add_curr_odom_position_constraint=True,
                                                  add_curr_odom_velocity_constraint=True,
-                                                 vel_max=self.drone_params[i]["v_max"],
-                                                 acc_max=self.drone_params[i]["a_max"],
+                                                 vel_max=self.drone_params[self.drone_i]["v_max"],
+                                                 acc_max=self.drone_params[self.drone_i]["a_max"],
                                                  viz_traj=True, vehicle_name=self.drone_name)
         else:
             # Compute the velocity as the difference between waypoints
@@ -105,9 +104,9 @@ class BaselineRacerGTP(BaselineRacer):
             self.airsim_client.moveOnSplineVelConstraintsAsync(to_airsim_vectors(trajectory[k_truncate:, :]),
                                                                to_airsim_vectors(vel_constraints),
                                                                add_curr_odom_position_constraint=True,
-                                                               add_curr_odom_velocity_constraint=False,
-                                                               vel_max=self.drone_params[i]["v_max"],
-                                                               acc_max=self.drone_params[i]["a_max"],
+                                                               add_curr_odom_velocity_constraint=True,
+                                                               vel_max=self.drone_params[self.drone_i]["v_max"],
+                                                               acc_max=self.drone_params[self.drone_i]["a_max"],
                                                                viz_traj=True,
                                                                vehicle_name=self.drone_name)
 
@@ -130,9 +129,6 @@ class BaselineRacerGTP(BaselineRacer):
             plot_track_arrows(self.ax, self.controller.track)
             plt.show()
 
-        # Always a good idea to take a little nap
-        time.sleep(1.0)
-
         while self.airsim_client.isApiControlEnabled(vehicle_name=self.drone_name):
             self.update_and_plan()
 
@@ -144,11 +140,11 @@ def main(args):
         {"r_safe": 0.4,
          "r_coll": 0.3,
          "v_max": 20.0,
-         "a_max": 20.0},
+         "a_max": 10.0},
         {"r_safe": 0.4,
          "r_coll": 0.3,
          "v_max": 20.0,
-         "a_max": 20.0}]
+         "a_max": 10.0}]
 
     # ensure you have generated the neurips planning settings file by running python generate_settings_file.py
     baseline_racer = BaselineRacerGTP(
@@ -171,13 +167,13 @@ def main(args):
     baseline_racer_opp.get_ground_truth_gate_poses()
     baseline_racer_opp.fly_through_all_gates_at_once_with_moveOnSpline()
     # Give him a little advantage
-    time.sleep(2)
+    time.sleep(2.0)
     baseline_racer.run()
 
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='')
-    parser.add_argument('--dt', type=float, default=0.25)
+    parser.add_argument('--dt', type=float, default=0.1)
     parser.add_argument('--n', type=int, default=12)
     parser.add_argument('--vel_constraints', dest='vel_constraints', action='store_true', default=False)
     parser.add_argument('--plot_gtp', dest='plot_gtp', action='store_true', default=False)
