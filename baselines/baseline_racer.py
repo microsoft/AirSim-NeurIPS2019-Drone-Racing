@@ -17,6 +17,11 @@ class BaselineRacer(object):
 
         self.airsim_client = airsim.MultirotorClient()
         self.airsim_client.confirmConnection()
+        # we need two airsim MultirotorClient objects because the comm lib we use (rpclib) is not thread safe
+        # so we poll images in a thread using one airsim MultirotorClient object
+        # and use another airsim MultirotorClient for querying state commands 
+        self.airsim_client_images = airsim.MultirotorClient()
+        self.airsim_client_images.confirmConnection()
         self.level_name = None
 
         self.image_callback_thread = threading.Thread(target=self.repeat_timer_image_callback, args=(self.image_callback, 0.03))
@@ -42,6 +47,7 @@ class BaselineRacer(object):
     # arms drone, enable APIs, set default traj tracker gains
     def initialize_drone(self):
         self.airsim_client.enableApiControl(vehicle_name=self.drone_name)
+        self.airsim_client_images.enableApiControl(vehicle_name=self.drone_name)
         self.airsim_client.arm(vehicle_name=self.drone_name)
 
         # set default values for trajectory tracker gains 
@@ -186,7 +192,7 @@ class BaselineRacer(object):
     def image_callback(self):
         # get uncompressed fpv cam image
         request = [airsim.ImageRequest("fpv_cam", airsim.ImageType.Scene, False, False)]
-        response = self.airsim_client.simGetImages(request)
+        response = self.airsim_client_images.simGetImages(request)
         img_rgb_1d = np.fromstring(response[0].image_data_uint8, dtype=np.uint8) 
         img_rgb = img_rgb_1d.reshape(response[0].height, response[0].width, 3)
         if self.viz_image_cv2:
