@@ -29,19 +29,19 @@ def process(line):
 
     if tokens[1] == "disqualified" and tokens[2] == '1' and tokens[0] not in disqualified_racers:
         disqualified_racers.add(tokens[0])
-        handleNewDisqualify(tokens[0])
+        handle_disqualified_racer(tokens[0])
         return
 
     if tokens[1] == "finished" and tokens[2] == '1' and tokens[0] not in finished_racers:
         finished_racers.add(tokens[0])
-        handleNewFinish(tokens[0])
+        handle_finished_racer(tokens[0])
         return
 
-def handleNewDisqualify(racer_name):
+def handle_disqualified_racer(racer_name):
     print(racer_name + " has been disqualified!")
     #Start a new race.
 
-def handleNewFinish(racer_name):
+def handle_finished_racer(racer_name):
     print(racer_name + " has finished!")
     #Start a new race.
 
