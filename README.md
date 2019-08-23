@@ -78,8 +78,8 @@ There are two ways to swap between levels, either via AirSIm API or by the UI me
       See all the [baseline arguments here](https://github.com/microsoft/AirSim-NeurIPS2019-Drone-Racing/blob/master/baselines/baseline_racer.py#L184-#L188) 
 	```shell
 	$ python baseline_racer.py \
-		--viz_traj \
-		--plot_transform \
+		--enable_viz_traj \
+		--enable_plot_transform \
 		--planning_baseline_type all_gates_at_once \
 		--planning_and_control_api moveOnSpline \
 		--level_name ZhangJiaJie_Medium 
