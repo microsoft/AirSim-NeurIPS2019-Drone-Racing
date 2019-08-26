@@ -42,7 +42,7 @@ class BaselineRacer(object):
 
     # Resets a current race: moves players to start positions, timer and penalties reset
     def reset_race(self):
-        self.airsim_client.simResetRace(tier)
+        self.airsim_client.simResetRace()
 
     # arms drone, enable APIs, set default traj tracker gains
     def initialize_drone(self):
