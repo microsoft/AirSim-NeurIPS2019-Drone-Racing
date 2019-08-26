@@ -22,6 +22,8 @@ class BaselineRacer(object):
         # and use another airsim MultirotorClient for querying state commands 
         self.airsim_client_images = airsim.MultirotorClient()
         self.airsim_client_images.confirmConnection()
+        self.airsim_client_odom = airsim.MultirotorClient()
+        self.airsim_client_odom.confirmConnection()
         self.level_name = None
 
         self.image_callback_thread = threading.Thread(target=self.repeat_timer_image_callback, args=(self.image_callback, 0.03))
@@ -47,7 +49,6 @@ class BaselineRacer(object):
     # arms drone, enable APIs, set default traj tracker gains
     def initialize_drone(self):
         self.airsim_client.enableApiControl(vehicle_name=self.drone_name)
-        self.airsim_client_images.enableApiControl(vehicle_name=self.drone_name)
         self.airsim_client.arm(vehicle_name=self.drone_name)
 
         # set default values for trajectory tracker gains 
@@ -201,7 +202,7 @@ class BaselineRacer(object):
 
     def odometry_callback(self):
         # get uncompressed fpv cam image
-        drone_state = self.airsim_client.getMultirotorState()
+        drone_state = self.airsim_client_odom.getMultirotorState()
         # in world frame:
         position = drone_state.kinematics_estimated.position 
         orientation = drone_state.kinematics_estimated.orientation
@@ -256,15 +257,15 @@ def main(args):
 
     if args.planning_baseline_type == "all_gates_at_once" :
         if args.planning_and_control_api == "moveOnSpline":
-            baseline_racer.fly_through_all_gates_at_once_with_moveOnSpline()
+            baseline_racer.fly_through_all_gates_at_once_with_moveOnSpline().join()
         if args.planning_and_control_api == "moveOnSplineVelConstraints":
-            baseline_racer.fly_through_all_gates_at_once_with_moveOnSplineVelConstraints()
+            baseline_racer.fly_through_all_gates_at_once_with_moveOnSplineVelConstraints().join()
 
     if args.planning_baseline_type == "all_gates_one_by_one":
         if args.planning_and_control_api == "moveOnSpline":
-            baseline_racer.fly_through_all_gates_one_by_one_with_moveOnSpline()
+            baseline_racer.fly_through_all_gates_one_by_one_with_moveOnSpline().join()
         if args.planning_and_control_api == "moveOnSplineVelConstraints":
-            baseline_racer.fly_through_all_gates_one_by_one_with_moveOnSplineVelConstraints()
+            baseline_racer.fly_through_all_gates_one_by_one_with_moveOnSplineVelConstraints().join()
 
     baseline_racer.stop_image_callback_thread()
     baseline_racer.stop_odometry_callback_thread()
