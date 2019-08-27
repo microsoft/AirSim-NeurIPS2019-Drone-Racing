@@ -28,7 +28,7 @@ class BaselineRacerPerception(BaselineRacer):
         self.dist_coeff = np.zeros((1,5))
         self.waypoint_gate_1 = np.array([0.0, 0.0, +1.0, 1.0]).T.reshape(4,1)
         self.waypoint_gate_2 = np.array([0.0, 0.0, 0.0, 1.0]).T.reshape(4,1)
-        self.waypoint_gate_3 = np.array([0.0, 0.0, -1.0, 1.0]).T.reshape(4,1)
+        self.waypoint_gate_3 = np.array([0.0, 0.0, -2.0, 1.0]).T.reshape(4,1)
         self.gate_points_3D = 1.5*np.array([[0,0,0],[-1.0,1.0,0],[1.0,1.0,0],[1.0,-1.0,0],[-1.0,-1.0,0]])
 
     # Find area of gate
@@ -236,7 +236,7 @@ class BaselineRacerPerception(BaselineRacer):
                             self.airsim_client.plot_transform([airsim.Pose(waypoint_2, airsim.Quaternionr())], vehicle_name=self.drone_name)
                         self.airsim_client.moveOnSplineAsync([waypoint_2], vel_max = 2.0, acc_max = 2.0, add_curr_odom_position_constraint=True, add_curr_odom_velocity_constraint=True, viz_traj=self.viz_traj, vehicle_name=self.drone_name)
                         #self.airsim_client.moveOnSplineAsync([waypoint_1,waypoint_2,waypoint_3], vel_max = 2.0, acc_max = 2.0, add_curr_odom_position_constraint=True, add_curr_odom_velocity_constraint=True, viz_traj=self.viz_traj, vehicle_name=self.drone_name)
-
+                        #time.sleep(0.5)
             #time.sleep(0.5)
 
 def main(args):
