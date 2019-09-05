@@ -60,7 +60,7 @@ class BaselineRacer(object):
                                                             kp_vel_z = 0.4, kd_vel_z = 0.0, 
                                                             kp_yaw = 3.0, kd_yaw = 0.1)
 
-        self.airsim_client.setTrajectoryTrackerGains(traj_tracker_gains.to_list(), vehicle_name=self.drone_name)
+        self.airsim_client.setTrajectoryTrackerGains(traj_tracker_gains, vehicle_name=self.drone_name)
         time.sleep(0.2)
 
     def takeoffAsync(self):
