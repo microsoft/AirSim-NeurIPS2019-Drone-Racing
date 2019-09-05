@@ -25,7 +25,7 @@ class BaselineRacerPerception(BaselineRacer):
         self.wrong_gate_count = 0
 
         self.lower_green1 = np.array([0, 120, 0])
-        self.upper_green1 = np.array([50, 255, 170])
+        self.upper_green1 = np.array([50, 255, 50])
         self.lower_green2 = np.array([0, 175, 0])
         self.upper_green2 = np.array([150, 255, 200])
 
@@ -105,8 +105,7 @@ class BaselineRacerPerception(BaselineRacer):
         # Move through first gate
         self.get_ground_truth_gate_poses()
         self.airsim_client.moveOnSplineAsync([self.gate_poses_ground_truth[0].position], vel_max=2.0, acc_max=5.0, add_position_constraint=True, add_velocity_constraint=False,
-            add_acceleration_constraint=False, viz_traj=self.viz_traj, viz_traj_color_rgba=self.viz_traj_color_rgba, vehicle_name=self.drone_name)
-
+           add_acceleration_constraint=False, viz_traj=self.viz_traj, viz_traj_color_rgba=self.viz_traj_color_rgba, vehicle_name=self.drone_name)
         time.sleep(2)
         while self.airsim_client.isApiControlEnabled(vehicle_name=self.drone_name):
             # Take image
