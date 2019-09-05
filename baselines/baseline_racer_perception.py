@@ -214,14 +214,14 @@ class BaselineRacerPerception(BaselineRacer):
                     quad_to_measurement_dist = abs(np.linalg.norm(waypoint_glob_2-np.array([state.position.x_val,state.position.y_val,state.position.z_val])))
                     if measurement_diff > 0.5: # if new measurement is very far from previous measurements, wrong gate is measured
                         print("wrong gate", self.wrong_gate_count)
-                        if self.wrong_gate_count > 10: # if wrong gate is measured over 10 times, reset the average
+                        if self.wrong_gate_count > 5: # if wrong gate is measured over 10 times, reset the average
                             self.measurement_count = 0
                             self.waypoint_ave_2 = copy.deepcopy(waypoint_glob_2)
                         self.wrong_gate_count += 1
                     elif quad_to_measurement_dist > 20: # if new measurement is very far from quad, wrong gate is measured
                         print("wrong gate", self.wrong_gate_count)
                         print(quad_to_measurement_dist)
-                        if self.wrong_gate_count > 10: # if wrong gate is measured over 10 times, reset the average
+                        if self.wrong_gate_count > 5: # if wrong gate is measured over 10 times, reset the average
                             self.measurement_count = 0
                             #self.airsim_client.moveByYawRateAsync(yaw_rate=-15.0, duration=0.05, vehicle_name=self.drone_name).join() # rotate counter clockwise to look for next gate
                             #self.waypoint_ave_2 = copy.deepcopy(waypoint_glob_2)
