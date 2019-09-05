@@ -10,8 +10,10 @@ import numpy as np
 import time
 
 class BaselineRacerPerception(BaselineRacer):
-    def __init__(self, drone_name = "drone_1", plot_transform=False, viz_traj=False):
-        BaselineRacer.__init__(self, drone_name, plot_transform, viz_traj)
+    #def __init__(self, drone_name = "drone_1", plot_transform=False, viz_traj=False):
+    def __init__(self, drone_name = "drone_1",  viz_traj=True, viz_traj_color_rgba=[1.0, 0.0, 0.0, 1.0], viz_image_cv2=True):
+        #BaselineRacer.__init__(self, drone_name, plot_transform, viz_traj)
+        BaselineRacer.__init__(self, drone_name, viz_traj, viz_traj_color_rgba, viz_image_cv2)
         self.eps = 0.01
         self.aspect_ratio_max = 1.4
         self.waypoint_ave_2 = np.zeros((1,3))
@@ -23,13 +25,19 @@ class BaselineRacerPerception(BaselineRacer):
         self.measurement_count = 0
         self.close_count = 1
         self.wrong_gate_count = 0
-        self.lower_green = np.array([0, 210, 0])
-        self.upper_green = np.array([200, 255, 200])
+        #self.lower_green = np.array([0, 210, 0])
+        #self.upper_green = np.array([200, 255, 200])
+        self.lower_green = np.array([0, 150, 0])
+        self.upper_green = np.array([255, 255, 110])
         self.dist_coeff = np.zeros((1,5))
         self.waypoint_gate_1 = np.array([0.0, 0.0, +1.0, 1.0]).T.reshape(4,1)
         self.waypoint_gate_2 = np.array([0.0, 0.0, 0.0, 1.0]).T.reshape(4,1)
         self.waypoint_gate_3 = np.array([0.0, 0.0, -2.0, 1.0]).T.reshape(4,1)
         self.gate_points_3D = 1.5*np.array([[0,0,0],[-1.0,1.0,0],[1.0,1.0,0],[1.0,-1.0,0],[-1.0,-1.0,0]])
+        self.viz_traj = viz_traj
+        self.viz_traj_color_rgba = viz_traj_color_rgba
+        self.drone_name = drone_name
+        self.viz_image_cv2 = viz_image_cv2
 
     # Find area of gate
     def find_gate_area(self, x_coords ,y_coords):
@@ -100,9 +108,12 @@ class BaselineRacerPerception(BaselineRacer):
     def run(self):
         # Move through first gate
         self.get_ground_truth_gate_poses()
-        if self.plot_transform:
-            self.airsim_client.plot_transform([self.gate_poses_ground_truth[0]], vehicle_name=self.drone_name)
-        self.airsim_client.moveOnSplineAsync([self.gate_poses_ground_truth[0].position], vel_max = 2.0, acc_max = 5.0, viz_traj=self.viz_traj, vehicle_name=self.drone_name)
+        # if self.plot_transform:
+        #     self.airsim_client.plot_transform([self.gate_poses_ground_truth[0]], vehicle_name=self.drone_name)
+        # self.airsim_client.moveOnSplineAsync([self.gate_poses_ground_truth[0].position], vel_max = 2.0, acc_max = 5.0, viz_traj=self.viz_traj, vehicle_name=self.drone_name)
+        self.airsim_client.moveOnSplineAsync([self.gate_poses_ground_truth[0].position], vel_max=2.0, acc_max=5.0, add_position_constraint=True, add_velocity_constraint=False,
+            add_acceleration_constraint=False, viz_traj=self.viz_traj, viz_traj_color_rgba=self.viz_traj_color_rgba, vehicle_name=self.drone_name)
+
         time.sleep(2)
 
         while self.airsim_client.isApiControlEnabled(vehicle_name=self.drone_name):
@@ -117,6 +128,7 @@ class BaselineRacerPerception(BaselineRacer):
 
             # Find corners of the gate
             mask = cv2.inRange(image_rgb,self.lower_green,self.upper_green)
+            #print(mask)
             dilated_gate = cv2.dilate(mask,self.kernel, iterations=8)
             eroded_gate = cv2.erode(dilated_gate,self.kernel, iterations=8)
             __, gate_contours, hierarchy = cv2.findContours(dilated_gate, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
@@ -182,10 +194,13 @@ class BaselineRacerPerception(BaselineRacer):
                 quad_to_next_gate_dist = abs(np.linalg.norm(np.array([state.position.x_val,state.position.y_val,state.position.z_val]) - self.waypoint_ave_2))
                 if quad_to_next_gate_dist < 3.0 and self.close_count == 0:
                     print("Too close to gate")
-                    if self.plot_transform:
-                        self.airsim_client.plot_transform([airsim.Pose(waypoint_3, airsim.Quaternionr())], vehicle_name=self.drone_name)
-                    self.airsim_client.moveOnSplineAsync([waypoint_3], vel_max = 2.0, acc_max = 2.0, add_curr_odom_position_constraint=True, add_curr_odom_velocity_constraint=True, viz_traj=self.viz_traj, vehicle_name=self.drone_name)
-                    time.sleep(2)
+                    #if self.plot_transform:
+                    #    self.airsim_client.plot_transform([airsim.Pose(waypoint_3, airsim.Quaternionr())], vehicle_name=self.drone_name)
+                    #self.airsim_client.moveOnSplineAsync([waypoint_3], vel_max = 2.0, acc_max = 2.0, add_curr_odom_position_constraint=True, add_curr_odom_velocity_constraint=True, viz_traj=self.viz_traj, vehicle_name=self.drone_name)
+                    # self.airsim_client.moveOnSplineAsync([waypoint_3], vel_max=2.0, acc_max=2.0, add_position_constraint=True, add_velocity_constraint=False,
+                    #     add_acceleration_constraint=False, viz_traj=self.viz_traj, viz_traj_color_rgba=self.viz_traj_color_rgba, vehicle_name=self.drone_name)
+
+                    time.sleep(3)
                     self.measurement_count = 0
                     self.wrong_gate_count = 0
                     self.close_count = 1
@@ -205,6 +220,11 @@ class BaselineRacerPerception(BaselineRacer):
                         self.wrong_gate_count += 1
                     elif quad_to_measurement_dist > 20: # if new measurement is very far from quad, wrong gate is measured
                         print("wrong gate", self.wrong_gate_count)
+                        print(quad_to_measurement_dist)
+                        if self.wrong_gate_count > 10: # if wrong gate is measured over 10 times, reset the average
+                            self.measurement_count = 0
+                            #self.airsim_client.moveByYawRateAsync(yaw_rate=-15.0, duration=0.05, vehicle_name=self.drone_name).join() # rotate counter clockwise to look for next gate
+                            #self.waypoint_ave_2 = copy.deepcopy(waypoint_glob_2)
                     else:
                         cv2.circle(image_rgb, (int(gate_center_pixel[0]), int(gate_center_pixel[1])), 10, (255, 0, 0), -1)
                         cv2.circle(image_rgb, (int(gate_corners_plot[0][0]), int(gate_corners_plot[0][1])), 10, (255, 100, 0), -1)
@@ -232,16 +252,20 @@ class BaselineRacerPerception(BaselineRacer):
                         waypoint_2 = airsim.Vector3r(self.waypoint_ave_2[0,0],self.waypoint_ave_2[0,1], self.waypoint_ave_2[0,2])
                         waypoint_3 = airsim.Vector3r(waypoint_ave_3[0,0],waypoint_ave_3[0,1], waypoint_ave_3[0,2])
 
-                        if self.plot_transform:
-                            self.airsim_client.plot_transform([airsim.Pose(waypoint_2, airsim.Quaternionr())], vehicle_name=self.drone_name)
-                        self.airsim_client.moveOnSplineAsync([waypoint_2], vel_max = 2.0, acc_max = 2.0, add_curr_odom_position_constraint=True, add_curr_odom_velocity_constraint=True, viz_traj=self.viz_traj, vehicle_name=self.drone_name)
+                        #if self.plot_transform:
+                        #    self.airsim_client.plot_transform([airsim.Pose(waypoint_2, airsim.Quaternionr())], vehicle_name=self.drone_name)
+                        #self.airsim_client.moveOnSplineAsync([waypoint_2], vel_max = 2.0, acc_max = 2.0, add_curr_odom_position_constraint=True, add_curr_odom_velocity_constraint=True, viz_traj=self.viz_traj, vehicle_name=self.drone_name)
+                        self.airsim_client.moveOnSplineAsync([waypoint_1, waypoint_2, waypoint_3], vel_max=2.0, acc_max=2.0, add_position_constraint=True, add_velocity_constraint=False,
+                            add_acceleration_constraint=False, viz_traj=self.viz_traj, viz_traj_color_rgba=self.viz_traj_color_rgba, vehicle_name=self.drone_name)
+
                         #self.airsim_client.moveOnSplineAsync([waypoint_1,waypoint_2,waypoint_3], vel_max = 2.0, acc_max = 2.0, add_curr_odom_position_constraint=True, add_curr_odom_velocity_constraint=True, viz_traj=self.viz_traj, vehicle_name=self.drone_name)
                         #time.sleep(0.5)
             #time.sleep(0.5)
 
 def main(args):
     # ensure you have generated the neurips planning settings file by running python generate_settings_file.py
-    baseline_racer = BaselineRacerPerception(drone_name="drone_1", plot_transform=args.plot_transform, viz_traj=args.viz_traj)
+    #baseline_racer = BaselineRacerPerception(drone_name="drone_1", plot_transform=args.plot_transform, viz_traj=args.viz_traj)
+    baseline_racer = BaselineRacerPerception(drone_name="drone_1", viz_traj=args.viz_traj, viz_traj_color_rgba=[1.0, 1.0, 0.0, 1.0], viz_image_cv2=args.viz_image_cv2)
     baseline_racer.load_level(args.level_name)
     baseline_racer.initialize_drone()
     baseline_racer.takeoff_with_moveOnSpline()
@@ -250,7 +274,8 @@ def main(args):
 if __name__ == "__main__":
     parser = ArgumentParser()
     parser.add_argument('--level_name', type=str, choices=["Soccer_Field_Easy"], default="Soccer_Field_Easy")
-    parser.add_argument('--plot_transform', dest='plot_transform', action='store_true', default=False)
+    #parser.add_argument('--plot_transform', dest='plot_transform', action='store_true', default=False)
     parser.add_argument('--viz_traj', dest='viz_traj', action='store_true', default=False)
+    parser.add_argument('--enable_viz_image_cv2', dest='viz_image_cv2', action='store_true', default=False)
     args = parser.parse_args()
     main(args)
