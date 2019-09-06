@@ -14,7 +14,7 @@ class BaselineRacerPerception(BaselineRacer):
         BaselineRacer.__init__(self, drone_name, viz_traj, viz_traj_color_rgba, viz_image_cv2)
         self.eps = 0.01
         self.aspect_ratio_max = 1.4
-        self.waypoint_ave_2 = np.zeros((1,3))
+        self.waypoint_ave_1 = np.zeros((1,3))
         self.kernel = np.ones((3,3),np.uint8)
         self.gate_corners_flat = np.float32([[[94, 64],[204, 64],[204, 174], [94, 174]]])
         self.camera_matrix = np.array([[160.000, 0.000000, 160.000], [0.000000, 160.000, 120.000], [0.000000, 0.000000, 1.000000]])
@@ -23,16 +23,13 @@ class BaselineRacerPerception(BaselineRacer):
         self.measurement_count = 0
         self.close_count = 1
         self.wrong_gate_count = 0
-
         self.lower_green1 = np.array([0, 120, 0])
         self.upper_green1 = np.array([50, 255, 50])
         self.lower_green2 = np.array([0, 175, 0])
         self.upper_green2 = np.array([150, 255, 200])
-
         self.dist_coeff = np.zeros((1,5))
-        self.waypoint_gate_1 = np.array([0.0, 0.0, +1.0, 1.0]).T.reshape(4,1)
-        self.waypoint_gate_2 = np.array([0.0, 0.0, 0.0, 1.0]).T.reshape(4,1)
-        self.waypoint_gate_3 = np.array([0.0, 0.0, -5.0, 1.0]).T.reshape(4,1)
+        self.waypoint_gate_1 = np.array([0.0, 0.0, 0.0, 1.0]).T.reshape(4,1)
+        self.waypoint_gate_2 = np.array([0.0, 0.0, -4.0, 1.0]).T.reshape(4,1)
         self.gate_points_3D = 1.5*np.array([[0,0,0],[-1.0,1.0,0],[1.0,1.0,0],[1.0,-1.0,0],[-1.0,-1.0,0]])
 
     # Find area of gate
@@ -112,6 +109,7 @@ class BaselineRacerPerception(BaselineRacer):
             response = self.airsim_client.simGetImages([airsim.ImageRequest("fpv_cam", airsim.ImageType.Scene, False, False)])
             img1d = np.fromstring(response[0].image_data_uint8, dtype=np.uint8) # get numpy array
             image_rgb = img1d.reshape(response[0].height, response[0].width, 3)
+
             # get rotation matrix from quad frame to global frame
             state = self.airsim_client.simGetVehiclePose()
             rot_matrix_quad2global = self.get_rotation_matrix_quad_frame_to_global_frame(state)
@@ -153,7 +151,6 @@ class BaselineRacerPerception(BaselineRacer):
                 print("Gate NOT detected")
                 if self.no_gate_count > 50: # If no gate has been detected for over 50 attempts, rotate to look for gate.
                     self.airsim_client.moveByYawRateAsync(yaw_rate=-15.0, duration=0.05, vehicle_name=self.drone_name).join() # rotate counter clockwise to look for next gate
-
             else:
                 self.no_gate_count = 0
                 gate_corners_best = order_points(gate_corners_best.reshape(4,2))
@@ -179,36 +176,34 @@ class BaselineRacerPerception(BaselineRacer):
                 # gate frame waypoint to global frame waypoint
                 waypoint_glob_1 = self.gate_frame_waypoint_to_global_waypoint(state,rot_translation_matrix_gate2quad,rot_matrix_quad2global,self.waypoint_gate_1)
                 waypoint_glob_2 = self.gate_frame_waypoint_to_global_waypoint(state,rot_translation_matrix_gate2quad,rot_matrix_quad2global,self.waypoint_gate_2)
-                waypoint_glob_3 = self.gate_frame_waypoint_to_global_waypoint(state,rot_translation_matrix_gate2quad,rot_matrix_quad2global,self.waypoint_gate_3)
 
                 # if quad is too close to next waypoint, move through gate without taking measurements
-                quad_to_next_gate_dist = abs(np.linalg.norm(np.array([state.position.x_val,state.position.y_val,state.position.z_val]) - self.waypoint_ave_2))
+                quad_to_next_gate_dist = abs(np.linalg.norm(np.array([state.position.x_val,state.position.y_val,state.position.z_val]) - self.waypoint_ave_1))
                 if quad_to_next_gate_dist < 3.0 and self.close_count == 0:
                     print("Too close to gate")
-                    time.sleep(5)
+                    time.sleep(3)
                     self.measurement_count = 0
                     self.wrong_gate_count = 0
                     self.close_count = 1
-                    self.waypoint_ave_2 = copy.deepcopy(waypoint_glob_2)
+                    self.waypoint_ave_1 = copy.deepcopy(waypoint_glob_1)
                 else:
                     if self.close_count == 1: # right after passing through gate, reset the average
-                        self.waypoint_ave_2 = copy.deepcopy(waypoint_glob_2)
+                        self.waypoint_ave_1 = copy.deepcopy(waypoint_glob_1)
                         self.measurement_count = 0
                     self.close_count = 0
-                    measurement_diff = abs(np.linalg.norm(waypoint_glob_2-self.waypoint_ave_2))
-                    quad_to_measurement_dist = abs(np.linalg.norm(waypoint_glob_2-np.array([state.position.x_val,state.position.y_val,state.position.z_val])))
+                    measurement_diff = abs(np.linalg.norm(waypoint_glob_1-self.waypoint_ave_1))
+                    quad_to_measurement_dist = abs(np.linalg.norm(waypoint_glob_1-np.array([state.position.x_val,state.position.y_val,state.position.z_val])))
                     if measurement_diff > 0.5: # if new measurement is very far from previous measurements, wrong gate is measured
                         print("wrong gate", self.wrong_gate_count)
-                        if self.wrong_gate_count > 5: # if wrong gate is measured over 10 times, reset the average
+                        if self.wrong_gate_count > 5: # if wrong gate is measured over 5 times, reset the average
                             self.measurement_count = 0
-                            self.waypoint_ave_2 = copy.deepcopy(waypoint_glob_2)
+                            self.waypoint_ave_1 = copy.deepcopy(waypoint_glob_1)
                         self.wrong_gate_count += 1
                     elif quad_to_measurement_dist > 20: # if new measurement is very far from quad, wrong gate is measured
                         print("wrong gate", self.wrong_gate_count)
                         print(quad_to_measurement_dist)
-                        if self.wrong_gate_count > 5: # if wrong gate is measured over 10 times, reset the average
+                        if self.wrong_gate_count > 5: # if wrong gate is measured over 5 times, reset the average
                             self.measurement_count = 0
-                            self.airsim_client.moveByYawRateAsync(yaw_rate=-15.0, duration=0.05, vehicle_name=self.drone_name).join() # rotate counter clockwise to look for next gate
                     else:
                         cv2.circle(image_rgb, (int(gate_center_pixel[0]), int(gate_center_pixel[1])), 10, (255, 0, 0), -1)
                         cv2.circle(image_rgb, (int(gate_corners_plot[0][0]), int(gate_corners_plot[0][1])), 10, (255, 100, 0), -1)
@@ -226,17 +221,14 @@ class BaselineRacerPerception(BaselineRacer):
                         if self.measurement_count == 1: # reset average
                             measurement_estimates_mtx_1 = np.empty((0,3))
                             measurement_estimates_mtx_2 = np.empty((0,3))
-                            measurement_estimates_mtx_3 = np.empty((0,3))
-                        waypoint_ave_1 = self.get_average_waypoint(measurement_estimates_mtx_1,waypoint_glob_1)
-                        self.waypoint_ave_2 = self.get_average_waypoint(measurement_estimates_mtx_2,waypoint_glob_2)
-                        waypoint_ave_3 = self.get_average_waypoint(measurement_estimates_mtx_3,waypoint_glob_3)
+                        self.waypoint_ave_1 = self.get_average_waypoint(measurement_estimates_mtx_1,waypoint_glob_1)
+                        waypoint_ave_2 = self.get_average_waypoint(measurement_estimates_mtx_2,waypoint_glob_2)
 
                         # waypoints
-                        waypoint_1 = airsim.Vector3r(waypoint_ave_1[0,0],waypoint_ave_1[0,1], waypoint_ave_1[0,2])
-                        waypoint_2 = airsim.Vector3r(self.waypoint_ave_2[0,0],self.waypoint_ave_2[0,1], self.waypoint_ave_2[0,2])
-                        waypoint_3 = airsim.Vector3r(waypoint_ave_3[0,0],waypoint_ave_3[0,1], waypoint_ave_3[0,2])
+                        waypoint_1 = airsim.Vector3r(self.waypoint_ave_1[0,0],self.waypoint_ave_1[0,1], self.waypoint_ave_1[0,2])
+                        waypoint_2 = airsim.Vector3r(waypoint_ave_2[0,0],waypoint_ave_2[0,1], waypoint_ave_2[0,2])
 
-                        self.airsim_client.moveOnSplineAsync([waypoint_1, waypoint_2, waypoint_3], vel_max=2.0, acc_max=2.0, add_position_constraint=True, add_velocity_constraint=False,
+                        self.airsim_client.moveOnSplineAsync([waypoint_1, waypoint_2], vel_max=2.0, acc_max=4.0, add_position_constraint=True, add_velocity_constraint=False,
                             add_acceleration_constraint=False, viz_traj=self.viz_traj, viz_traj_color_rgba=self.viz_traj_color_rgba, vehicle_name=self.drone_name)
 
 def main(args):
