@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Game of Drones: Leaderboard</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="_static/css/bootstrap.min.css" rel="stylesheet">
+    <link href="_static/css/dataTables.bootstrap.css" rel="stylesheet">
+  </head>
+
+  <header class="main-header" role="banner">
+    <img class="center-block" src="_static/images/banner_zhangjiajie.png" alt="Banner Image"/>
+  </header>
+  <body>
+    <br>
+    <h1 class="text-center">Game of Drones: Leaderboard</h1>  
+
+    <p class="text-center">
+        <a style="width: 200px;" class="btn btn-primary btn-lg" onclick = toggle_tier_1()>Tier 1</a>
+        <a style="width: 200px;" class="btn btn-primary btn-lg" onclick = toggle_tier_2()>Tier 2</a>
+        <a style="width: 200px;" class="btn btn-primary btn-lg" onclick = toggle_tier_3()>Tier 3</a>
+    </p>
+
+    <div id='tier-1-tracks' class="center-block">
+      <p class="text-center">
+          <a style="width: 300px;" class="btn btn-info btn-lg" onclick = toggle_tier_1_Soccer_Field_Easy()>Tier 1: Soccer_Field_Easy</a>
+          <a style="width: 300px;" class="btn btn-info btn-lg" onclick = toggle_tier_1_Soccer_Field_Medium()>Tier 1: Soccer_Field_Medium</a>
+          <a style="width: 300px;" class="btn btn-info btn-lg" onclick = toggle_tier_1_ZhangJiaJie_Medium()>Tier 1: ZhangJiaJie_Medium</a>
+          <a style="width: 300px;" class="btn btn-info btn-lg" onclick = toggle_tier_1_Building99_Hard()>Tier 1: Building99_Hard</a>
+      </p>
+    </div>
+
+    <div id='tier-2-tracks' style="display:none" class="center-block">
+      <p class="text-center">
+          <a style="width: 300px;" class="btn btn-info btn-lg" onclick = toggle_tier_2_Soccer_Field_Easy()>Tier 2: Soccer_Field_Easy</a>
+          <a style="width: 300px;" class="btn btn-info btn-lg" onclick = toggle_tier_2_Soccer_Field_Medium()>Tier 2: Soccer_Field_Medium</a>
+          <a style="width: 300px;" class="btn btn-info btn-lg" onclick = toggle_tier_2_ZhangJiaJie_Medium()>Tier 2: ZhangJiaJie_Medium</a>
+          <a style="width: 300px;" class="btn btn-info btn-lg" onclick = toggle_tier_2_Building99_Hard()>Tier 2: Building99_Hard</a>
+      </p>
+    </div>
+
+    <div id='tier-3-tracks' style="display:none" class="center-block">
+      <p class="text-center">
+          <a style="width: 300px;" class="btn btn-info btn-lg" onclick = toggle_tier_3_Soccer_Field_Easy()>Tier 3: Soccer_Field_Easy</a>
+          <a style="width: 300px;" class="btn btn-info btn-lg" onclick = toggle_tier_3_Soccer_Field_Medium()>Tier 3: Soccer_Field_Medium</a>
+          <a style="width: 300px;" class="btn btn-info btn-lg" onclick = toggle_tier_3_ZhangJiaJie_Medium()>Tier 3: ZhangJiaJie_Medium</a>
+          <a style="width: 300px;" class="btn btn-info btn-lg" onclick = toggle_tier_3_Building99_Hard()>Tier 3: Building99_Hard</a>
+      </p>
+    </div>
+
+    <div id='tier-1-Soccer_Field_Easy' class="container-fluid center-block">
+      <h2 class="text-center">Tier 1: Soccer_Field_Easy</h2>
+      <div id='table-tier-1-Soccer_Field_Easy'></div>
+    </div><!-- /.container -->
+
+    <div id='tier-1-Soccer_Field_Medium' class="container-fluid center-block" style="display:none">
+      <h2 class="text-center">Tier 1: Soccer_Field_Medium</h2>
+      <div id='table-tier-1-Soccer_Field_Medium'></div>
+    </div><!-- /.container -->
+
+    <div id='tier-1-ZhangJiaJie_Medium' class="container-fluid center-block" style="display:none">
+      <h2 class="text-center">Tier 1: ZhangJiaJie_Medium</h2>
+      <div id='table-tier-1-ZhangJiaJie_Medium'></div>
+    </div><!-- /.container -->
+
+    <div id='tier-1-Building99_Hard' class="container-fluid center-block" style="display:none">
+      <h2 class="text-center">Tier 1: Building99_Hard</h2>
+      <div id='table-tier-1-Building99_Hard'></div>
+    </div><!-- /.container -->
+
+    <div id='tier-2-Soccer_Field_Easy' class="container-fluid center-block" style="display:none">
+      <h2 class="text-center">Tier 2: Soccer_Field_Easy</h2>
+      <div id='table-tier-2-Soccer_Field_Easy'></div>
+    </div><!-- /.container -->
+
+    <div id='tier-2-Soccer_Field_Medium' class="container-fluid center-block" style="display:none">
+      <h2 class="text-center">Tier 2: Soccer_Field_Medium</h2>
+      <div id='table-tier-2-Soccer_Field_Medium'></div>
+    </div><!-- /.container -->
+
+    <div id='tier-2-ZhangJiaJie_Medium' class="container-fluid center-block" style="display:none">
+      <h2 class="text-center">Tier 2: ZhangJiaJie_Medium</h2>
+      <div id='table-tier-2-ZhangJiaJie_Medium'></div>
+    </div><!-- /.container -->
+
+    <div id='tier-2-Building99_Hard' class="container-fluid center-block" style="display:none">
+      <h2 class="text-center">Tier 2: Building99_Hard</h2>
+      <div id='table-tier-2-Building99_Hard'></div>
+    </div><!-- /.container -->
+
+    <div id='tier-3-Soccer_Field_Easy' class="container-fluid center-block" style="display:none">
+      <h2 class="text-center">Tier 3: Soccer_Field_Easy</h2>
+      <div id='table-tier-3-Soccer_Field_Easy'></div>
+    </div><!-- /.container -->
+
+    <div id='tier-3-Soccer_Field_Medium' class="container-fluid center-block" style="display:none">
+      <h2 class="text-center">Tier 3: Soccer_Field_Medium</h2>
+      <div id='table-tier-3-Soccer_Field_Medium'></div>
+    </div><!-- /.container -->
+
+    <div id='tier-3-ZhangJiaJie_Medium' class="container-fluid center-block" style="display:none">
+      <h2 class="text-center">Tier 3: ZhangJiaJie_Medium</h2>
+      <div id='table-tier-3-ZhangJiaJie_Medium'></div>
+    </div><!-- /.container -->
+
+    <div id='tier-3-Building99_Hard' class="container-fluid center-block" style="display:none">
+      <h2 class="text-center">Tier 3: Building99_Hard</h2>
+      <div id='table-tier-3-Building99_Hard'></div>
+    </div><!-- /.container -->
+
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script type="text/javascript" src="_static/js/jquery.min.js"></script>
+    <script type="text/javascript" src="_static/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="_static/js/jquery.csv.min.js"></script>
+    <script type="text/javascript" src="_static/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="_static/js/dataTables.bootstrap.js"></script>
+    <script type="text/javascript" src="_static/js/csv_to_html_table.js"></script>
+
+    <script type="text/javascript">
+      CsvToHtmlTable.init({
+        csv_path: '_static/data/tier_1_Soccer_Field_Easy.csv',
+        element: 'table-tier-1-Soccer_Field_Easy', 
+        allow_download: false,
+        csv_options: {separator: ',', delimiter: '"'},
+        datatables_options: {"paging": false}
+      });
+    </script>
+    <script type="text/javascript">
+      CsvToHtmlTable.init({
+        csv_path: '_static/data/tier_1_Soccer_Field_Medium.csv',
+        element: 'table-tier-1-Soccer_Field_Medium', 
+        allow_download: false,
+        csv_options: {separator: ',', delimiter: '"'},
+        datatables_options: {"paging": false}
+      });
+    </script>
+    <script type="text/javascript">
+      CsvToHtmlTable.init({
+        csv_path: '_static/data/tier_1_ZhangJiaJie_Medium.csv',
+        element: 'table-tier-1-ZhangJiaJie_Medium', 
+        allow_download: false,
+        csv_options: {separator: ',', delimiter: '"'},
+        datatables_options: {"paging": false}
+      });
+    </script>
+    <script type="text/javascript">
+      CsvToHtmlTable.init({
+        csv_path: '_static/data/tier_1_Building99_Hard.csv',
+        element: 'table-tier-1-Building99_Hard', 
+        allow_download: false,
+        csv_options: {separator: ',', delimiter: '"'},
+        datatables_options: {"paging": false}
+      });
+    </script>
+
+    <script type="text/javascript">
+      CsvToHtmlTable.init({
+        csv_path: '_static/data/tier_2_Soccer_Field_Easy.csv',
+        element: 'table-tier-2-Soccer_Field_Easy', 
+        allow_download: false,
+        csv_options: {separator: ',', delimiter: '"'},
+        datatables_options: {"paging": false}
+      });
+    </script>
+    <script type="text/javascript">
+      CsvToHtmlTable.init({
+        csv_path: '_static/data/tier_2_Soccer_Field_Medium.csv',
+        element: 'table-tier-2-Soccer_Field_Medium', 
+        allow_download: false,
+        csv_options: {separator: ',', delimiter: '"'},
+        datatables_options: {"paging": false}
+      });
+    </script>
+    <script type="text/javascript">
+      CsvToHtmlTable.init({
+        csv_path: '_static/data/tier_2_ZhangJiaJie_Medium.csv',
+        element: 'table-tier-2-ZhangJiaJie_Medium', 
+        allow_download: false,
+        csv_options: {separator: ',', delimiter: '"'},
+        datatables_options: {"paging": false}
+      });
+    </script>
+    <script type="text/javascript">
+      CsvToHtmlTable.init({
+        csv_path: '_static/data/tier_2_Building99_Hard.csv',
+        element: 'table-tier-2-Building99_Hard', 
+        allow_download: false,
+        csv_options: {separator: ',', delimiter: '"'},
+        datatables_options: {"paging": false}
+      });
+    </script>
+
+    <script type="text/javascript">
+      CsvToHtmlTable.init({
+        csv_path: '_static/data/tier_3_Soccer_Field_Easy.csv',
+        element: 'table-tier-3-Soccer_Field_Easy', 
+        allow_download: false,
+        csv_options: {separator: ',', delimiter: '"'},
+        datatables_options: {"paging": false}
+      });
+    </script>
+    <script type="text/javascript">
+      CsvToHtmlTable.init({
+        csv_path: '_static/data/tier_3_Soccer_Field_Medium.csv',
+        element: 'table-tier-3-Soccer_Field_Medium', 
+        allow_download: false,
+        csv_options: {separator: ',', delimiter: '"'},
+        datatables_options: {"paging": false}
+      });
+    </script>
+    <script type="text/javascript">
+      CsvToHtmlTable.init({
+        csv_path: '_static/data/tier_3_ZhangJiaJie_Medium.csv',
+        element: 'table-tier-3-ZhangJiaJie_Medium', 
+        allow_download: false,
+        csv_options: {separator: ',', delimiter: '"'},
+        datatables_options: {"paging": false}
+      });
+    </script>
+    <script type="text/javascript">
+      CsvToHtmlTable.init({
+        csv_path: '_static/data/tier_3_Building99_Hard.csv',
+        element: 'table-tier-3-Building99_Hard', 
+        allow_download: false,
+        csv_options: {separator: ',', delimiter: '"'},
+        datatables_options: {"paging": false}
+      });
+    </script>
+
+    <script>
+    function toggle_tier_1() {
+      var tier_1_tracks = document.getElementById("tier-1-tracks");
+      var tier_2_tracks = document.getElementById("tier-2-tracks");
+      var tier_3_tracks = document.getElementById("tier-3-tracks");
+      tier_1_tracks.style.display = "block";
+      tier_2_tracks.style.display = "none";
+      tier_3_tracks.style.display = "none";
+    }
+    </script>
+
+    <script>
+    function toggle_tier_2() {
+      var tier_1_tracks = document.getElementById("tier-1-tracks");
+      var tier_2_tracks = document.getElementById("tier-2-tracks");
+      var tier_3_tracks = document.getElementById("tier-3-tracks");
+      tier_1_tracks.style.display = "none";
+      tier_2_tracks.style.display = "block";
+      tier_3_tracks.style.display = "none";
+    }
+    </script>
+
+    <script>
+    function toggle_tier_3() {
+      var tier_1_tracks = document.getElementById("tier-1-tracks");
+      var tier_2_tracks = document.getElementById("tier-2-tracks");
+      var tier_3_tracks = document.getElementById("tier-3-tracks");
+      tier_1_tracks.style.display = "none";
+      tier_2_tracks.style.display = "none";
+      tier_3_tracks.style.display = "block";
+    }
+    </script>
+
+    <script>
+    function toggle_tier_1_Soccer_Field_Easy() {
+      var table_tier_1_Soccer_Field_Easy = document.getElementById("tier-1-Soccer_Field_Easy");
+      var table_tier_1_Soccer_Field_Medium = document.getElementById("tier-1-Soccer_Field_Medium");
+      var table_tier_1_ZhangJiaJie_Medium = document.getElementById("tier-1-ZhangJiaJie_Medium");
+      var table_tier_1_Building99_Hard = document.getElementById("tier-1-Building99_Hard");
+
+      var table_tier_2_Soccer_Field_Easy = document.getElementById("tier-2-Soccer_Field_Easy");
+      var table_tier_2_Soccer_Field_Medium = document.getElementById("tier-2-Soccer_Field_Medium");
+      var table_tier_2_ZhangJiaJie_Medium = document.getElementById("tier-2-ZhangJiaJie_Medium");
+      var table_tier_2_Building99_Hard = document.getElementById("tier-2-Building99_Hard");
+
+      var table_tier_3_Soccer_Field_Easy = document.getElementById("tier-3-Soccer_Field_Easy");
+      var table_tier_3_Soccer_Field_Medium = document.getElementById("tier-3-Soccer_Field_Medium");
+      var table_tier_3_ZhangJiaJie_Medium = document.getElementById("tier-3-ZhangJiaJie_Medium");
+      var table_tier_3_Building99_Hard = document.getElementById("tier-3-Building99_Hard");
+
+      table_tier_1_Soccer_Field_Easy.style.display = "block";
+      table_tier_1_Soccer_Field_Medium.style.display = "none";
+      table_tier_1_ZhangJiaJie_Medium.style.display = "none";
+      table_tier_1_Building99_Hard.style.display = "none";
+
+      table_tier_2_Soccer_Field_Easy.style.display = "none";
+      table_tier_2_Soccer_Field_Medium.style.display = "none";
+      table_tier_2_ZhangJiaJie_Medium.style.display = "none";
+      table_tier_2_Building99_Hard.style.display = "none";
+
+      table_tier_3_Soccer_Field_Easy.style.display = "none";
+      table_tier_3_Soccer_Field_Medium.style.display = "none";
+      table_tier_3_ZhangJiaJie_Medium.style.display = "none";
+      table_tier_3_Building99_Hard.style.display = "none";
+    }
+    </script>
+
+    <script>
+    function toggle_tier_1_Soccer_Field_Medium() {
+      var table_tier_1_Soccer_Field_Easy = document.getElementById("tier-1-Soccer_Field_Easy");
+      var table_tier_1_Soccer_Field_Medium = document.getElementById("tier-1-Soccer_Field_Medium");
+      var table_tier_1_ZhangJiaJie_Medium = document.getElementById("tier-1-ZhangJiaJie_Medium");
+      var table_tier_1_Building99_Hard = document.getElementById("tier-1-Building99_Hard");
+
+      var table_tier_2_Soccer_Field_Easy = document.getElementById("tier-2-Soccer_Field_Easy");
+      var table_tier_2_Soccer_Field_Medium = document.getElementById("tier-2-Soccer_Field_Medium");
+      var table_tier_2_ZhangJiaJie_Medium = document.getElementById("tier-2-ZhangJiaJie_Medium");
+      var table_tier_2_Building99_Hard = document.getElementById("tier-2-Building99_Hard");
+
+      var table_tier_3_Soccer_Field_Easy = document.getElementById("tier-3-Soccer_Field_Easy");
+      var table_tier_3_Soccer_Field_Medium = document.getElementById("tier-3-Soccer_Field_Medium");
+      var table_tier_3_ZhangJiaJie_Medium = document.getElementById("tier-3-ZhangJiaJie_Medium");
+      var table_tier_3_Building99_Hard = document.getElementById("tier-3-Building99_Hard");
+
+      table_tier_1_Soccer_Field_Easy.style.display = "none";
+      table_tier_1_Soccer_Field_Medium.style.display = "block";
+      table_tier_1_ZhangJiaJie_Medium.style.display = "none";
+      table_tier_1_Building99_Hard.style.display = "none";
+
+      table_tier_2_Soccer_Field_Easy.style.display = "none";
+      table_tier_2_Soccer_Field_Medium.style.display = "none";
+      table_tier_2_ZhangJiaJie_Medium.style.display = "none";
+      table_tier_2_Building99_Hard.style.display = "none";
+
+      table_tier_3_Soccer_Field_Easy.style.display = "none";
+      table_tier_3_Soccer_Field_Medium.style.display = "none";
+      table_tier_3_ZhangJiaJie_Medium.style.display = "none";
+      table_tier_3_Building99_Hard.style.display = "none";
+    }
+    </script>
+
+    <script>
+    function toggle_tier_1_ZhangJiaJie_Medium() {
+      var table_tier_1_Soccer_Field_Easy = document.getElementById("tier-1-Soccer_Field_Easy");
+      var table_tier_1_Soccer_Field_Medium = document.getElementById("tier-1-Soccer_Field_Medium");
+      var table_tier_1_ZhangJiaJie_Medium = document.getElementById("tier-1-ZhangJiaJie_Medium");
+      var table_tier_1_Building99_Hard = document.getElementById("tier-1-Building99_Hard");
+
+      var table_tier_2_Soccer_Field_Easy = document.getElementById("tier-2-Soccer_Field_Easy");
+      var table_tier_2_Soccer_Field_Medium = document.getElementById("tier-2-Soccer_Field_Medium");
+      var table_tier_2_ZhangJiaJie_Medium = document.getElementById("tier-2-ZhangJiaJie_Medium");
+      var table_tier_2_Building99_Hard = document.getElementById("tier-2-Building99_Hard");
+
+      var table_tier_3_Soccer_Field_Easy = document.getElementById("tier-3-Soccer_Field_Easy");
+      var table_tier_3_Soccer_Field_Medium = document.getElementById("tier-3-Soccer_Field_Medium");
+      var table_tier_3_ZhangJiaJie_Medium = document.getElementById("tier-3-ZhangJiaJie_Medium");
+      var table_tier_3_Building99_Hard = document.getElementById("tier-3-Building99_Hard");
+
+      table_tier_1_Soccer_Field_Easy.style.display = "none";
+      table_tier_1_Soccer_Field_Medium.style.display = "none";
+      table_tier_1_ZhangJiaJie_Medium.style.display = "block";
+      table_tier_1_Building99_Hard.style.display = "none";
+
+      table_tier_2_Soccer_Field_Easy.style.display = "none";
+      table_tier_2_Soccer_Field_Medium.style.display = "none";
+      table_tier_2_ZhangJiaJie_Medium.style.display = "none";
+      table_tier_2_Building99_Hard.style.display = "none";
+
+      table_tier_3_Soccer_Field_Easy.style.display = "none";
+      table_tier_3_Soccer_Field_Medium.style.display = "none";
+      table_tier_3_ZhangJiaJie_Medium.style.display = "none";
+      table_tier_3_Building99_Hard.style.display = "none";
+    }
+    </script>
+
+    <script>
+    function toggle_tier_1_Building99_Hard() {
+      var table_tier_1_Soccer_Field_Easy = document.getElementById("tier-1-Soccer_Field_Easy");
+      var table_tier_1_Soccer_Field_Medium = document.getElementById("tier-1-Soccer_Field_Medium");
+      var table_tier_1_ZhangJiaJie_Medium = document.getElementById("tier-1-ZhangJiaJie_Medium");
+      var table_tier_1_Building99_Hard = document.getElementById("tier-1-Building99_Hard");
+
+      var table_tier_2_Soccer_Field_Easy = document.getElementById("tier-2-Soccer_Field_Easy");
+      var table_tier_2_Soccer_Field_Medium = document.getElementById("tier-2-Soccer_Field_Medium");
+      var table_tier_2_ZhangJiaJie_Medium = document.getElementById("tier-2-ZhangJiaJie_Medium");
+      var table_tier_2_Building99_Hard = document.getElementById("tier-2-Building99_Hard");
+
+      var table_tier_3_Soccer_Field_Easy = document.getElementById("tier-3-Soccer_Field_Easy");
+      var table_tier_3_Soccer_Field_Medium = document.getElementById("tier-3-Soccer_Field_Medium");
+      var table_tier_3_ZhangJiaJie_Medium = document.getElementById("tier-3-ZhangJiaJie_Medium");
+      var table_tier_3_Building99_Hard = document.getElementById("tier-3-Building99_Hard");
+
+      table_tier_1_Soccer_Field_Easy.style.display = "none";
+      table_tier_1_Soccer_Field_Medium.style.display = "none";
+      table_tier_1_ZhangJiaJie_Medium.style.display = "none";
+      table_tier_1_Building99_Hard.style.display = "block";
+
+      table_tier_2_Soccer_Field_Easy.style.display = "none";
+      table_tier_2_Soccer_Field_Medium.style.display = "none";
+      table_tier_2_ZhangJiaJie_Medium.style.display = "none";
+      table_tier_2_Building99_Hard.style.display = "none";
+
+      table_tier_3_Soccer_Field_Easy.style.display = "none";
+      table_tier_3_Soccer_Field_Medium.style.display = "none";
+      table_tier_3_ZhangJiaJie_Medium.style.display = "none";
+      table_tier_3_Building99_Hard.style.display = "none";
+    }
+    </script>
+
+    <script>
+    function toggle_tier_2_Soccer_Field_Easy() {
+      var table_tier_1_Soccer_Field_Easy = document.getElementById("tier-1-Soccer_Field_Easy");
+      var table_tier_1_Soccer_Field_Medium = document.getElementById("tier-1-Soccer_Field_Medium");
+      var table_tier_1_ZhangJiaJie_Medium = document.getElementById("tier-1-ZhangJiaJie_Medium");
+      var table_tier_1_Building99_Hard = document.getElementById("tier-1-Building99_Hard");
+
+      var table_tier_2_Soccer_Field_Easy = document.getElementById("tier-2-Soccer_Field_Easy");
+      var table_tier_2_Soccer_Field_Medium = document.getElementById("tier-2-Soccer_Field_Medium");
+      var table_tier_2_ZhangJiaJie_Medium = document.getElementById("tier-2-ZhangJiaJie_Medium");
+      var table_tier_2_Building99_Hard = document.getElementById("tier-2-Building99_Hard");
+
+      var table_tier_3_Soccer_Field_Easy = document.getElementById("tier-3-Soccer_Field_Easy");
+      var table_tier_3_Soccer_Field_Medium = document.getElementById("tier-3-Soccer_Field_Medium");
+      var table_tier_3_ZhangJiaJie_Medium = document.getElementById("tier-3-ZhangJiaJie_Medium");
+      var table_tier_3_Building99_Hard = document.getElementById("tier-3-Building99_Hard");
+
+      table_tier_1_Soccer_Field_Easy.style.display = "none";
+      table_tier_1_Soccer_Field_Medium.style.display = "none";
+      table_tier_1_ZhangJiaJie_Medium.style.display = "none";
+      table_tier_1_Building99_Hard.style.display = "none";
+
+      table_tier_2_Soccer_Field_Easy.style.display = "block";
+      table_tier_2_Soccer_Field_Medium.style.display = "none";
+      table_tier_2_ZhangJiaJie_Medium.style.display = "none";
+      table_tier_2_Building99_Hard.style.display = "none";
+
+      table_tier_3_Soccer_Field_Easy.style.display = "none";
+      table_tier_3_Soccer_Field_Medium.style.display = "none";
+      table_tier_3_ZhangJiaJie_Medium.style.display = "none";
+      table_tier_3_Building99_Hard.style.display = "none";
+    }
+    </script>
+
+    <script>
+    function toggle_tier_2_Soccer_Field_Medium() {
+      var table_tier_1_Soccer_Field_Easy = document.getElementById("tier-1-Soccer_Field_Easy");
+      var table_tier_1_Soccer_Field_Medium = document.getElementById("tier-1-Soccer_Field_Medium");
+      var table_tier_1_ZhangJiaJie_Medium = document.getElementById("tier-1-ZhangJiaJie_Medium");
+      var table_tier_1_Building99_Hard = document.getElementById("tier-1-Building99_Hard");
+
+      var table_tier_2_Soccer_Field_Easy = document.getElementById("tier-2-Soccer_Field_Easy");
+      var table_tier_2_Soccer_Field_Medium = document.getElementById("tier-2-Soccer_Field_Medium");
+      var table_tier_2_ZhangJiaJie_Medium = document.getElementById("tier-2-ZhangJiaJie_Medium");
+      var table_tier_2_Building99_Hard = document.getElementById("tier-2-Building99_Hard");
+
+      var table_tier_3_Soccer_Field_Easy = document.getElementById("tier-3-Soccer_Field_Easy");
+      var table_tier_3_Soccer_Field_Medium = document.getElementById("tier-3-Soccer_Field_Medium");
+      var table_tier_3_ZhangJiaJie_Medium = document.getElementById("tier-3-ZhangJiaJie_Medium");
+      var table_tier_3_Building99_Hard = document.getElementById("tier-3-Building99_Hard");
+
+      table_tier_1_Soccer_Field_Easy.style.display = "none";
+      table_tier_1_Soccer_Field_Medium.style.display = "none";
+      table_tier_1_ZhangJiaJie_Medium.style.display = "none";
+      table_tier_1_Building99_Hard.style.display = "none";
+
+      table_tier_2_Soccer_Field_Easy.style.display = "none";
+      table_tier_2_Soccer_Field_Medium.style.display = "block";
+      table_tier_2_ZhangJiaJie_Medium.style.display = "none";
+      table_tier_2_Building99_Hard.style.display = "none";
+
+      table_tier_3_Soccer_Field_Easy.style.display = "none";
+      table_tier_3_Soccer_Field_Medium.style.display = "none";
+      table_tier_3_ZhangJiaJie_Medium.style.display = "none";
+      table_tier_3_Building99_Hard.style.display = "none";
+    }
+    </script>
+
+    <script>
+    function toggle_tier_2_ZhangJiaJie_Medium() {
+      var table_tier_1_Soccer_Field_Easy = document.getElementById("tier-1-Soccer_Field_Easy");
+      var table_tier_1_Soccer_Field_Medium = document.getElementById("tier-1-Soccer_Field_Medium");
+      var table_tier_1_ZhangJiaJie_Medium = document.getElementById("tier-1-ZhangJiaJie_Medium");
+      var table_tier_1_Building99_Hard = document.getElementById("tier-1-Building99_Hard");
+
+      var table_tier_2_Soccer_Field_Easy = document.getElementById("tier-2-Soccer_Field_Easy");
+      var table_tier_2_Soccer_Field_Medium = document.getElementById("tier-2-Soccer_Field_Medium");
+      var table_tier_2_ZhangJiaJie_Medium = document.getElementById("tier-2-ZhangJiaJie_Medium");
+      var table_tier_2_Building99_Hard = document.getElementById("tier-2-Building99_Hard");
+
+      var table_tier_3_Soccer_Field_Easy = document.getElementById("tier-3-Soccer_Field_Easy");
+      var table_tier_3_Soccer_Field_Medium = document.getElementById("tier-3-Soccer_Field_Medium");
+      var table_tier_3_ZhangJiaJie_Medium = document.getElementById("tier-3-ZhangJiaJie_Medium");
+      var table_tier_3_Building99_Hard = document.getElementById("tier-3-Building99_Hard");
+
+      table_tier_1_Soccer_Field_Easy.style.display = "none";
+      table_tier_1_Soccer_Field_Medium.style.display = "none";
+      table_tier_1_ZhangJiaJie_Medium.style.display = "none";
+      table_tier_1_Building99_Hard.style.display = "none";
+
+      table_tier_2_Soccer_Field_Easy.style.display = "none";
+      table_tier_2_Soccer_Field_Medium.style.display = "none";
+      table_tier_2_ZhangJiaJie_Medium.style.display = "block";
+      table_tier_2_Building99_Hard.style.display = "none";
+
+      table_tier_3_Soccer_Field_Easy.style.display = "none";
+      table_tier_3_Soccer_Field_Medium.style.display = "none";
+      table_tier_3_ZhangJiaJie_Medium.style.display = "none";
+      table_tier_3_Building99_Hard.style.display = "none";
+    }
+    </script>
+
+    <script>
+    function toggle_tier_2_Building99_Hard() {
+      var table_tier_1_Soccer_Field_Easy = document.getElementById("tier-1-Soccer_Field_Easy");
+      var table_tier_1_Soccer_Field_Medium = document.getElementById("tier-1-Soccer_Field_Medium");
+      var table_tier_1_ZhangJiaJie_Medium = document.getElementById("tier-1-ZhangJiaJie_Medium");
+      var table_tier_1_Building99_Hard = document.getElementById("tier-1-Building99_Hard");
+
+      var table_tier_2_Soccer_Field_Easy = document.getElementById("tier-2-Soccer_Field_Easy");
+      var table_tier_2_Soccer_Field_Medium = document.getElementById("tier-2-Soccer_Field_Medium");
+      var table_tier_2_ZhangJiaJie_Medium = document.getElementById("tier-2-ZhangJiaJie_Medium");
+      var table_tier_2_Building99_Hard = document.getElementById("tier-2-Building99_Hard");
+
+      var table_tier_3_Soccer_Field_Easy = document.getElementById("tier-3-Soccer_Field_Easy");
+      var table_tier_3_Soccer_Field_Medium = document.getElementById("tier-3-Soccer_Field_Medium");
+      var table_tier_3_ZhangJiaJie_Medium = document.getElementById("tier-3-ZhangJiaJie_Medium");
+      var table_tier_3_Building99_Hard = document.getElementById("tier-3-Building99_Hard");
+
+      table_tier_1_Soccer_Field_Easy.style.display = "none";
+      table_tier_1_Soccer_Field_Medium.style.display = "none";
+      table_tier_1_ZhangJiaJie_Medium.style.display = "none";
+      table_tier_1_Building99_Hard.style.display = "none";
+
+      table_tier_2_Soccer_Field_Easy.style.display = "none";
+      table_tier_2_Soccer_Field_Medium.style.display = "none";
+      table_tier_2_ZhangJiaJie_Medium.style.display = "none";
+      table_tier_2_Building99_Hard.style.display = "block";
+
+      table_tier_3_Soccer_Field_Easy.style.display = "none";
+      table_tier_3_Soccer_Field_Medium.style.display = "none";
+      table_tier_3_ZhangJiaJie_Medium.style.display = "none";
+      table_tier_3_Building99_Hard.style.display = "none";
+    }
+    </script>
+
+    <script>
+    function toggle_tier_3_Soccer_Field_Easy() {
+      var table_tier_1_Soccer_Field_Easy = document.getElementById("tier-1-Soccer_Field_Easy");
+      var table_tier_1_Soccer_Field_Medium = document.getElementById("tier-1-Soccer_Field_Medium");
+      var table_tier_1_ZhangJiaJie_Medium = document.getElementById("tier-1-ZhangJiaJie_Medium");
+      var table_tier_1_Building99_Hard = document.getElementById("tier-1-Building99_Hard");
+
+      var table_tier_2_Soccer_Field_Easy = document.getElementById("tier-2-Soccer_Field_Easy");
+      var table_tier_2_Soccer_Field_Medium = document.getElementById("tier-2-Soccer_Field_Medium");
+      var table_tier_2_ZhangJiaJie_Medium = document.getElementById("tier-2-ZhangJiaJie_Medium");
+      var table_tier_2_Building99_Hard = document.getElementById("tier-2-Building99_Hard");
+
+      var table_tier_3_Soccer_Field_Easy = document.getElementById("tier-3-Soccer_Field_Easy");
+      var table_tier_3_Soccer_Field_Medium = document.getElementById("tier-3-Soccer_Field_Medium");
+      var table_tier_3_ZhangJiaJie_Medium = document.getElementById("tier-3-ZhangJiaJie_Medium");
+      var table_tier_3_Building99_Hard = document.getElementById("tier-3-Building99_Hard");
+
+      table_tier_1_Soccer_Field_Easy.style.display = "none";
+      table_tier_1_Soccer_Field_Medium.style.display = "none";
+      table_tier_1_ZhangJiaJie_Medium.style.display = "none";
+      table_tier_1_Building99_Hard.style.display = "none";
+
+      table_tier_2_Soccer_Field_Easy.style.display = "none";
+      table_tier_2_Soccer_Field_Medium.style.display = "none";
+      table_tier_2_ZhangJiaJie_Medium.style.display = "none";
+      table_tier_2_Building99_Hard.style.display = "none";
+
+      table_tier_3_Soccer_Field_Easy.style.display = "block";
+      table_tier_3_Soccer_Field_Medium.style.display = "none";
+      table_tier_3_ZhangJiaJie_Medium.style.display = "none";
+      table_tier_3_Building99_Hard.style.display = "none";
+    }
+    </script>
+
+    <script>
+    function toggle_tier_3_Soccer_Field_Medium() {
+      var table_tier_1_Soccer_Field_Easy = document.getElementById("tier-1-Soccer_Field_Easy");
+      var table_tier_1_Soccer_Field_Medium = document.getElementById("tier-1-Soccer_Field_Medium");
+      var table_tier_1_ZhangJiaJie_Medium = document.getElementById("tier-1-ZhangJiaJie_Medium");
+      var table_tier_1_Building99_Hard = document.getElementById("tier-1-Building99_Hard");
+
+      var table_tier_2_Soccer_Field_Easy = document.getElementById("tier-2-Soccer_Field_Easy");
+      var table_tier_2_Soccer_Field_Medium = document.getElementById("tier-2-Soccer_Field_Medium");
+      var table_tier_2_ZhangJiaJie_Medium = document.getElementById("tier-2-ZhangJiaJie_Medium");
+      var table_tier_2_Building99_Hard = document.getElementById("tier-2-Building99_Hard");
+
+      var table_tier_3_Soccer_Field_Easy = document.getElementById("tier-3-Soccer_Field_Easy");
+      var table_tier_3_Soccer_Field_Medium = document.getElementById("tier-3-Soccer_Field_Medium");
+      var table_tier_3_ZhangJiaJie_Medium = document.getElementById("tier-3-ZhangJiaJie_Medium");
+      var table_tier_3_Building99_Hard = document.getElementById("tier-3-Building99_Hard");
+
+      table_tier_1_Soccer_Field_Easy.style.display = "none";
+      table_tier_1_Soccer_Field_Medium.style.display = "none";
+      table_tier_1_ZhangJiaJie_Medium.style.display = "none";
+      table_tier_1_Building99_Hard.style.display = "none";
+
+      table_tier_2_Soccer_Field_Easy.style.display = "none";
+      table_tier_2_Soccer_Field_Medium.style.display = "none";
+      table_tier_2_ZhangJiaJie_Medium.style.display = "none";
+      table_tier_2_Building99_Hard.style.display = "none";
+
+      table_tier_3_Soccer_Field_Easy.style.display = "none";
+      table_tier_3_Soccer_Field_Medium.style.display = "block";
+      table_tier_3_ZhangJiaJie_Medium.style.display = "none";
+      table_tier_3_Building99_Hard.style.display = "none";
+    }
+    </script>
+
+    <script>
+    function toggle_tier_3_ZhangJiaJie_Medium() {
+      var table_tier_1_Soccer_Field_Easy = document.getElementById("tier-1-Soccer_Field_Easy");
+      var table_tier_1_Soccer_Field_Medium = document.getElementById("tier-1-Soccer_Field_Medium");
+      var table_tier_1_ZhangJiaJie_Medium = document.getElementById("tier-1-ZhangJiaJie_Medium");
+      var table_tier_1_Building99_Hard = document.getElementById("tier-1-Building99_Hard");
+
+      var table_tier_2_Soccer_Field_Easy = document.getElementById("tier-2-Soccer_Field_Easy");
+      var table_tier_2_Soccer_Field_Medium = document.getElementById("tier-2-Soccer_Field_Medium");
+      var table_tier_2_ZhangJiaJie_Medium = document.getElementById("tier-2-ZhangJiaJie_Medium");
+      var table_tier_2_Building99_Hard = document.getElementById("tier-2-Building99_Hard");
+
+      var table_tier_3_Soccer_Field_Easy = document.getElementById("tier-3-Soccer_Field_Easy");
+      var table_tier_3_Soccer_Field_Medium = document.getElementById("tier-3-Soccer_Field_Medium");
+      var table_tier_3_ZhangJiaJie_Medium = document.getElementById("tier-3-ZhangJiaJie_Medium");
+      var table_tier_3_Building99_Hard = document.getElementById("tier-3-Building99_Hard");
+
+      table_tier_1_Soccer_Field_Easy.style.display = "none";
+      table_tier_1_Soccer_Field_Medium.style.display = "none";
+      table_tier_1_ZhangJiaJie_Medium.style.display = "none";
+      table_tier_1_Building99_Hard.style.display = "none";
+
+      table_tier_2_Soccer_Field_Easy.style.display = "none";
+      table_tier_2_Soccer_Field_Medium.style.display = "none";
+      table_tier_2_ZhangJiaJie_Medium.style.display = "none";
+      table_tier_2_Building99_Hard.style.display = "none";
+
+      table_tier_3_Soccer_Field_Easy.style.display = "none";
+      table_tier_3_Soccer_Field_Medium.style.display = "none";
+      table_tier_3_ZhangJiaJie_Medium.style.display = "block";
+      table_tier_3_Building99_Hard.style.display = "none";
+    }
+    </script>
+
+    <script>
+    function toggle_tier_3_Building99_Hard() {
+      var table_tier_1_Soccer_Field_Easy = document.getElementById("tier-1-Soccer_Field_Easy");
+      var table_tier_1_Soccer_Field_Medium = document.getElementById("tier-1-Soccer_Field_Medium");
+      var table_tier_1_ZhangJiaJie_Medium = document.getElementById("tier-1-ZhangJiaJie_Medium");
+      var table_tier_1_Building99_Hard = document.getElementById("tier-1-Building99_Hard");
+
+      var table_tier_2_Soccer_Field_Easy = document.getElementById("tier-2-Soccer_Field_Easy");
+      var table_tier_2_Soccer_Field_Medium = document.getElementById("tier-2-Soccer_Field_Medium");
+      var table_tier_2_ZhangJiaJie_Medium = document.getElementById("tier-2-ZhangJiaJie_Medium");
+      var table_tier_2_Building99_Hard = document.getElementById("tier-2-Building99_Hard");
+
+      var table_tier_3_Soccer_Field_Easy = document.getElementById("tier-3-Soccer_Field_Easy");
+      var table_tier_3_Soccer_Field_Medium = document.getElementById("tier-3-Soccer_Field_Medium");
+      var table_tier_3_ZhangJiaJie_Medium = document.getElementById("tier-3-ZhangJiaJie_Medium");
+      var table_tier_3_Building99_Hard = document.getElementById("tier-3-Building99_Hard");
+
+      table_tier_1_Soccer_Field_Easy.style.display = "none";
+      table_tier_1_Soccer_Field_Medium.style.display = "none";
+      table_tier_1_ZhangJiaJie_Medium.style.display = "none";
+      table_tier_1_Building99_Hard.style.display = "none";
+
+      table_tier_2_Soccer_Field_Easy.style.display = "none";
+      table_tier_2_Soccer_Field_Medium.style.display = "none";
+      table_tier_2_ZhangJiaJie_Medium.style.display = "none";
+      table_tier_2_Building99_Hard.style.display = "none";
+
+      table_tier_3_Soccer_Field_Easy.style.display = "none";
+      table_tier_3_Soccer_Field_Medium.style.display = "none";
+      table_tier_3_ZhangJiaJie_Medium.style.display = "none";
+      table_tier_3_Building99_Hard.style.display = "block";
+    }
+    </script>
+  </body>
+</html>

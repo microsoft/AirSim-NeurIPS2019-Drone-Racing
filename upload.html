@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Game of Drones: Submit Solution</title>
+    <link href="_static/css/bootstrap.min.css" rel="stylesheet">
+    <link href="_static/css/dataTables.bootstrap.css" rel="stylesheet">
+  </head>
+  <header class="main-header" role="banner">
+    <img class="center-block" src="_static/images/banner_zhangjiajie.png" alt="Banner Image"/>
+  </header>
+  <body>
+    <h1 class="text-center">Game of Drones: Submit Solution</h1>  
+    <br>
+  <form class="center-block" id="submit-form">
+    <div class="row">
+      <label for="team-name" class="col-md-offset-4 col-form-label">Team Name:</label>
+        <div class="col-md-offset-4">
+          <input class="form-control" style="width: 200px;" id="team-name" type="text" placeholder="Team Name" name="team-name"><br>
+        </div>
+    </div>
+    <div class="row">
+      <label for="team-id"  class="col-md-offset-4 col-form-label">Team ID:</label>
+        <div class="col-md-offset-4">
+          <input class="form-control" style="width: 200px;" id="team-id" type="text" placeholder="Team ID" name="team-id"><br>
+        </div>
+    </div>
+    <div class="row">
+      <label for="tier1-file"  class="col-md-offset-4 col-form-label">Race Logs:</label>
+        <div class="col-md-offset-4">
+          <input id="tier1-file" type="file" multiple=""><br>
+        </div>
+    </div>
+<!--     <div class="row">
+      <label for="tier2-file"  class="col-md-offset-4 col-form-label">Tier 2:</label>
+        <div class="col-md-offset-4">
+          <input id="tier2-file" type="file" multiple=""><br>
+        </div>
+    </div>
+    <div class="row">
+      <label for="tier3-file"  class="col-md-offset-4 col-form-label">Tier 3:</label>
+        <div class="col-md-offset-4">
+          <input id="tier3-file" type="file" multiple=""><br>
+        </div>
+    </div>
+ -->    
+    <div class="row">
+      <label for="report-file" class="col-md-offset-4 col-form-label">Report:</label>
+        <div class="col-md-offset-4">
+          <input id="report-file" type="file" multiple=""><br>
+        </div>
+    </div>
+  </form>
+
+    <p class="text-center"> Hitting submit once is enough! The page doesn't give feedback (yet) after hitting submit, but your files are in our server :) </p>
+    <div><br>
+      <button id="upload-button" type="button" class="btn btn-primary btn-lg center-block">Submit</button>
+    </div>
+
+    <br>
+    <br>
+    <br>
+    <script src="_static/js/azure-storage-blob.js"></script>
+    <script src="_static/js/upload.js"></script>
+  </body>
+</html>
