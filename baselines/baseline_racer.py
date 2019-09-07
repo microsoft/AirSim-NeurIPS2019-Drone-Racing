@@ -8,12 +8,12 @@ import numpy as np
 
 # drone_name should match the name in ~/Document/AirSim/settings.json
 class BaselineRacer(object):
-    def __init__(self, drone_name = "drone_1", plot_transform=True, viz_traj=True, viz_image_cv2=True):
+    def __init__(self, drone_name = "drone_1", viz_traj=True, viz_traj_color_rgba=[1.0, 0.0, 0.0, 1.0], viz_image_cv2=True):
         self.drone_name = drone_name
         self.gate_poses_ground_truth = None
-        self.plot_transform = plot_transform
         self.viz_image_cv2 = viz_image_cv2
         self.viz_traj = viz_traj
+        self.viz_traj_color_rgba = viz_traj_color_rgba
 
         self.airsim_client = airsim.MultirotorClient()
         self.airsim_client.confirmConnection()
@@ -60,7 +60,7 @@ class BaselineRacer(object):
                                                             kp_vel_z = 0.4, kd_vel_z = 0.0, 
                                                             kp_yaw = 3.0, kd_yaw = 0.1)
 
-        self.airsim_client.setTrajectoryTrackerGains(traj_tracker_gains.to_list(), vehicle_name=self.drone_name)
+        self.airsim_client.setTrajectoryTrackerGains(traj_tracker_gains, vehicle_name=self.drone_name)
         time.sleep(0.2)
 
     def takeoffAsync(self):
@@ -74,11 +74,8 @@ class BaselineRacer(object):
         start_position = self.airsim_client.simGetVehiclePose(vehicle_name=self.drone_name).position
         takeoff_waypoint = airsim.Vector3r(start_position.x_val, start_position.y_val, -takeoff_height)
 
-        if(self.plot_transform):
-            self.airsim_client.plot_transform([airsim.Pose(takeoff_waypoint, airsim.Quaternionr())], vehicle_name=self.drone_name)
-
-        self.airsim_client.moveOnSplineAsync([takeoff_waypoint], vel_max=15.0, acc_max=5.0, add_curr_odom_position_constraint=True, 
-            add_curr_odom_velocity_constraint=False, viz_traj=self.viz_traj, vehicle_name=self.drone_name).join()
+        self.airsim_client.moveOnSplineAsync([takeoff_waypoint], vel_max=15.0, acc_max=5.0, add_position_constraint=True, add_velocity_constraint=False, 
+            add_acceleration_constraint=False, viz_traj=self.viz_traj, viz_traj_color_rgba=self.viz_traj_color_rgba, vehicle_name=self.drone_name).join()
 
     # stores gate ground truth poses as a list of airsim.Pose() objects in self.gate_poses_ground_truth
     def get_ground_truth_gate_poses(self):
@@ -118,12 +115,8 @@ class BaselineRacer(object):
             vel_max = 10.0
             acc_max = 5.0
 
-        for gate_pose in self.gate_poses_ground_truth:
-            if(self.plot_transform):
-                self.airsim_client.plot_transform([gate_pose], vehicle_name=self.drone_name)
-
         return self.airsim_client.moveOnSplineAsync([gate_pose.position], vel_max=vel_max, acc_max=acc_max, 
-            add_curr_odom_position_constraint=True, add_curr_odom_velocity_constraint=False, viz_traj=self.viz_traj, vehicle_name=self.drone_name)
+            add_position_constraint=True, add_velocity_constraint=False, add_acceleration_constraint=False, viz_traj=self.viz_traj, viz_traj_color_rgba=self.viz_traj_color_rgba, vehicle_name=self.drone_name)
 
     def fly_through_all_gates_at_once_with_moveOnSpline(self):
         if self.level_name in ["Soccer_Field_Medium", "Soccer_Field_Easy", "ZhangJiaJie_Medium"] :
@@ -134,14 +127,12 @@ class BaselineRacer(object):
             vel_max = 4.0
             acc_max = 1.0
 
-        if(self.plot_transform):
-            self.airsim_client.plot_transform(self.gate_poses_ground_truth, vehicle_name=self.drone_name)
-
         return self.airsim_client.moveOnSplineAsync([gate_pose.position for gate_pose in self.gate_poses_ground_truth], vel_max=30.0, acc_max=15.0, 
-            add_curr_odom_position_constraint=True, add_curr_odom_velocity_constraint=False, viz_traj=self.viz_traj, vehicle_name=self.drone_name)
+            add_position_constraint=True, add_velocity_constraint=False, add_acceleration_constraint=False, viz_traj=self.viz_traj, viz_traj_color_rgba=self.viz_traj_color_rgba, vehicle_name=self.drone_name)
 
     def fly_through_all_gates_one_by_one_with_moveOnSplineVelConstraints(self):
-        add_curr_odom_velocity_constraint = True
+        add_velocity_constraint = True
+        add_acceleration_constraint = False
 
         if self.level_name in ["Soccer_Field_Medium", "Soccer_Field_Easy"] :
             vel_max = 15.0
@@ -157,18 +148,14 @@ class BaselineRacer(object):
             vel_max = 2.0
             acc_max = 0.5
             speed_through_gate = 0.5
-            add_curr_odom_velocity_constraint = False
-
-        for gate_pose in self.gate_poses_ground_truth:
-            if(self.plot_transform):
-                self.airsim_client.plot_transform([gate_pose], vehicle_name=self.drone_name)
+            add_velocity_constraint = False
 
         # scale param scales the gate facing vector by desired speed. 
         return self.airsim_client.moveOnSplineVelConstraintsAsync([gate_pose.position], 
                                                 [self.get_gate_facing_vector_from_quaternion(gate_pose.orientation, scale = speed_through_gate)], 
                                                 vel_max=vel_max, acc_max=acc_max, 
-                                                add_curr_odom_position_constraint=True, add_curr_odom_velocity_constraint=add_curr_odom_velocity_constraint, 
-                                                viz_traj=self.viz_traj, vehicle_name=self.drone_name)
+                                                add_position_constraint=True, add_velocity_constraint=add_velocity_constraint, add_acceleration_constraint=add_acceleration_constraint, 
+                                                viz_traj=self.viz_traj, viz_traj_color_rgba=self.viz_traj_color_rgba, vehicle_name=self.drone_name)
 
     def fly_through_all_gates_at_once_with_moveOnSplineVelConstraints(self):
         if self.level_name in ["Soccer_Field_Easy", "Soccer_Field_Medium", "ZhangJiaJie_Medium"]:
@@ -181,14 +168,11 @@ class BaselineRacer(object):
             acc_max = 2.0
             speed_through_gate = 1.0
 
-        if(self.plot_transform):
-            self.airsim_client.plot_transform(self.gate_poses_ground_truth, vehicle_name=self.drone_name)
-
         return self.airsim_client.moveOnSplineVelConstraintsAsync([gate_pose.position for gate_pose in self.gate_poses_ground_truth], 
                 [self.get_gate_facing_vector_from_quaternion(gate_pose.orientation, scale = speed_through_gate) for gate_pose in self.gate_poses_ground_truth], 
                 vel_max=15.0, acc_max=7.5, 
-                add_curr_odom_position_constraint=True, add_curr_odom_velocity_constraint=True, 
-                viz_traj=self.viz_traj, vehicle_name=self.drone_name)
+                add_position_constraint=True, add_velocity_constraint=True, add_acceleration_constraint=False, 
+                viz_traj=self.viz_traj, viz_traj_color_rgba=self.viz_traj_color_rgba, vehicle_name=self.drone_name)
 
     def image_callback(self):
         # get uncompressed fpv cam image
@@ -246,7 +230,7 @@ class BaselineRacer(object):
 
 def main(args):
     # ensure you have generated the neurips planning settings file by running python generate_settings_file.py
-    baseline_racer = BaselineRacer(drone_name="drone_1", plot_transform=args.plot_transform, viz_traj=args.viz_traj, viz_image_cv2=args.viz_image_cv2)
+    baseline_racer = BaselineRacer(drone_name="drone_1", viz_traj=args.viz_traj, viz_traj_color_rgba=[1.0, 1.0, 0.0, 1.0], viz_image_cv2=args.viz_image_cv2)
     baseline_racer.load_level(args.level_name)
     baseline_racer.start_race(args.race_tier)
     baseline_racer.initialize_drone()
@@ -276,7 +260,6 @@ if __name__ == "__main__":
     parser.add_argument('--level_name', type=str, choices=["Soccer_Field_Easy", "Soccer_Field_Medium", "ZhangJiaJie_Medium", "Building99_Hard"], default="ZhangJiaJie_Medium")
     parser.add_argument('--planning_baseline_type', type=str, choices=["all_gates_at_once","all_gates_one_by_one"], default="all_gates_at_once")
     parser.add_argument('--planning_and_control_api', type=str, choices=["moveOnSpline", "moveOnSplineVelConstraints"], default="moveOnSpline")
-    parser.add_argument('--enable_plot_transform', dest='plot_transform', action='store_true', default=False)
     parser.add_argument('--enable_viz_traj', dest='viz_traj', action='store_true', default=False)
     parser.add_argument('--enable_viz_image_cv2', dest='viz_image_cv2', action='store_true', default=False)
     parser.add_argument('--race_tier', type=int, choices=[1,2,3], default=3)
