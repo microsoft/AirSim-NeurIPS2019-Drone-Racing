@@ -28,6 +28,7 @@ Unreal environments containing race courses are released as separate downloadabl
 		```
 		./AirSimExe.sh -windowed
 		```
+	If you are having texture problems with the gates or seeing black shadows on the ground, please try running the binary with the openGL option : `./AirSimExe.sh -windowed -opengl4`. 
 
 - Windows
 	- Navigate to the `AirSim/` directory, and double-click `run.bat`
@@ -75,14 +76,15 @@ There are two ways to swap between levels, either via AirSIm API or by the UI me
 	```
     - Start the AirSim Neurips binary, [as explained above](https://github.com/microsoft/AirSim-NeurIPS2019-Drone-Racing#running-the-executable)
     - Run the code!  
-      See all the [baseline arguments here](https://github.com/microsoft/AirSim-NeurIPS2019-Drone-Racing/blob/master/baselines/baseline_racer.py#L184-#L188) 
+      See all the [baseline arguments here](https://github.com/microsoft/AirSim-NeurIPS2019-Drone-Racing/blob/master/baselines/baseline_racer.py#L260-#L265) 
 	```shell
 	$ python baseline_racer.py \
 		--enable_viz_traj \
-		--enable_plot_transform \
+		--enable_viz_image_cv2 \
 		--planning_baseline_type all_gates_at_once \
 		--planning_and_control_api moveOnSpline \
 		--level_name ZhangJiaJie_Medium 
+		--race_tier 3 \
 	```
 
 	
