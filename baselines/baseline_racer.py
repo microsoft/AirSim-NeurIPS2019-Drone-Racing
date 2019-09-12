@@ -5,6 +5,7 @@ import threading
 import time
 import utils
 import numpy as np
+import math
 
 # drone_name should match the name in ~/Document/AirSim/settings.json
 class BaselineRacer(object):
@@ -30,6 +31,8 @@ class BaselineRacer(object):
         self.odometry_callback_thread = threading.Thread(target=self.repeat_timer_odometry_callback, args=(self.odometry_callback, 0.02))
         self.is_image_thread_active = False
         self.is_odometry_thread_active = False
+
+        self.MAX_NUMBER_OF_GETOBJECTPOSE_TRIALS = 10 # see https://github.com/microsoft/AirSim-NeurIPS2019-Drone-Racing/issues/38
 
     # loads desired level
     def load_level(self, level_name, sleep_sec = 2.0):
@@ -84,9 +87,20 @@ class BaselineRacer(object):
         # ['Gate0', 'Gate10_21', 'Gate11_23', 'Gate1_3', 'Gate2_5', 'Gate3_7', 'Gate4_9', 'Gate5_11', 'Gate6_13', 'Gate7_15', 'Gate8_17', 'Gate9_19']
         # we sort them by their ibdex of occurence along the race track(N), and ignore the unreal garbage number after the underscore(GARBAGE)
         gate_indices_bad = [int(gate_name.split('_')[0][4:]) for gate_name in gate_names_sorted_bad]
-        gate_indices_correct = sorted(range(len(gate_indices_bad)), key=lambda k:gate_indices_bad[k])
+        gate_indices_correct = sorted(range(len(gate_indices_bad)), key=lambda k: gate_indices_bad[k])
         gate_names_sorted = [gate_names_sorted_bad[gate_idx] for gate_idx in gate_indices_correct]
-        self.gate_poses_ground_truth = [self.airsim_client.simGetObjectPose(gate_name) for gate_name in gate_names_sorted]
+        self.gate_poses_ground_truth = []
+        for gate_name in gate_names_sorted:
+            curr_pose = self.airsim_client.simGetObjectPose(gate_name)
+            counter = 0
+            while (math.isnan(curr_pose.position.x_val) or math.isnan(curr_pose.position.y_val) or math.isnan(curr_pose.position.z_val)) and (counter < self.MAX_NUMBER_OF_GETOBJECTPOSE_TRIALS):
+                print(f"DEBUG: {gate_name} position is nan, retrying...")
+                counter += 1
+                curr_pose = self.airsim_client.simGetObjectPose(gate_name)
+            assert not math.isnan(curr_pose.position.x_val), f"ERROR: {gate_name} curr_pose.position.x_val is still {curr_pose.position.x_val} after {cpt} trials"
+            assert not math.isnan(curr_pose.position.y_val), f"ERROR: {gate_name} curr_pose.position.y_val is still {curr_pose.position.y_val} after {cpt} trials"
+            assert not math.isnan(curr_pose.position.z_val), f"ERROR: {gate_name} curr_pose.position.z_val is still {curr_position.z_val} after {cpt} trials"
+            self.gate_poses_ground_truth.append(curr_pose)
 
     # this is utility function to get a velocity constraint which can be passed to moveOnSplineVelConstraints() 
     # the "scale" parameter scales the gate facing vector accordingly, thereby dictating the speed of the velocity constraint
