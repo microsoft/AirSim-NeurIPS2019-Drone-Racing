@@ -1,13 +1,12 @@
 # Game of Drones: A NeurIPS 2019 Competition
 
+
 ## Quickstart
-- [Competition website](https://www.microsoft.com/en-us/research/academic-program/game-of-drones-competition-at-neurips-2019/)
+- [Website](https://microsoft.github.io/AirSim-NeurIPS2019-Drone-Racing/)
+- [Register](https://www.microsoft.com/en-us/research/academic-program/game-of-drones-competition-at-neurips-2019/)
 - [Competition guidelines](https://github.com/microsoft/AirSim-NeurIPS2019-Drone-Racing/blob/master/docs/competition_guidelines.md)
 - [Linux and Windows Binaries](https://github.com/microsoft/AirSim-NeurIPS2019-Drone-Racing/releases)
-- Python API
-   - [airsimneurips @PyPI](https://pypi.org/project/airsimneurips/)
-   - [airsimneurips API doc](https://microsoft.github.io/AirSim-NeurIPS2019-Drone-Racing/)
-
+- [Python API](https://microsoft.github.io/AirSim-NeurIPS2019-Drone-Racing/api.html), [airsimneurips PyPI package](https://pypi.org/project/airsimneurips/)
 
 <img src="https://github.com/madratman/airsim_neurips_gifs/blob/master/imgs/neurips_b99_3_drones.gif?raw=true" width="285"> <img src="https://github.com/madratman/airsim_neurips_gifs/blob/master/imgs/neurips_soccer_field_8_drones.gif?raw=true" width="285"> <img src="https://github.com/madratman/airsim_neurips_gifs/blob/master/imgs/neurips_zhangjiajie_4_drones.gif?raw=true" width="285">
 
@@ -28,6 +27,7 @@ Unreal environments containing race courses are released as separate downloadabl
 		```
 		./AirSimExe.sh -windowed
 		```
+	If you are having texture problems with the gates or seeing black shadows on the ground, please try running the binary with the openGL option : `./AirSimExe.sh -windowed -opengl4`. 
 
 - Windows
 	- Navigate to the `AirSim/` directory, and double-click `run.bat`
@@ -42,7 +42,7 @@ To control your drone and get information from the environment, you will need th
 	```
 	Corollary: Do not do a `pip install airsim`, as we will have a few custom APIs specific to this competition. 
 - Resources 
-  	- [airsimneurips API doc](https://microsoft.github.io/AirSim-NeurIPS2019-Drone-Racing/)
+  	- [airsimneurips API doc](https://microsoft.github.io/AirSim-NeurIPS2019-Drone-Racing/api.html)
 	- [AirSim upstream API](https://microsoft.github.io/AirSim/docs/apis/) and [examples](https://github.com/microsoft/AirSim/tree/master/PythonClient)    
 	(Note that this is not used in the competition, however is a good learning resource)
 
@@ -75,14 +75,15 @@ There are two ways to swap between levels, either via AirSIm API or by the UI me
 	```
     - Start the AirSim Neurips binary, [as explained above](https://github.com/microsoft/AirSim-NeurIPS2019-Drone-Racing#running-the-executable)
     - Run the code!  
-      See all the [baseline arguments here](https://github.com/microsoft/AirSim-NeurIPS2019-Drone-Racing/blob/master/baselines/baseline_racer.py#L184-#L188) 
+      See all the [baseline arguments here](https://github.com/microsoft/AirSim-NeurIPS2019-Drone-Racing/blob/master/baselines/baseline_racer.py#L260-#L265) 
 	```shell
 	$ python baseline_racer.py \
 		--enable_viz_traj \
-		--enable_plot_transform \
+		--enable_viz_image_cv2 \
 		--planning_baseline_type all_gates_at_once \
 		--planning_and_control_api moveOnSpline \
 		--level_name ZhangJiaJie_Medium 
+		--race_tier 3 \
 	```
 
 	
