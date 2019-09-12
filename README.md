@@ -65,7 +65,14 @@ There are two ways to swap between levels, either via AirSIm API or by the UI me
 - UI Menu
 	- Press `F10` to toggle the level menu
 	- Click your desired level. (Note: the UI lists all the pakfiles in the `AirSim/AirSimExe/Content/Paks` directory. Ensure you downloaded the pakfile, if you are not able to see a particular environment)
-
+    
+## Submitting Results to the Leaderboards
+You can find our leaderboard [here](https://microsoft.github.io/AirSim-NeurIPS2019-Drone-Racing/leaderboard.html)
+- To submit your results to the leaderboard:
+    - Navigate to the [submission site](https://microsoft.github.io/AirSim-NeurIPS2019-Drone-Racing/upload.html), enter your team name in the proper field, and upload as many or as few race logs as you'd like. You can find race logs inside of `AirSimExe/Saved/Logs/RaceLogs` in your downloaded binary folder. The leaderboard will publish the results of a drone that is either titled `team_name` - the name of your team - or `drone_1`. While it is not mandatory to submit a report of your race algorithm during the validation round, your report will not be made public if you choose to do so. In the near future, a team ID will be emailed to each team, at which time it will become mandatory to enter your team ID along with the rest of your submission. For now, feel free to leave that field blank.
+    - The leaderboard is updated once per day at 21:00 Pacific Time. If you do not see your results after 24 hours, please email us at neuripsdronecontestinfo@gmail.com with your team name and submitted log files.
+    - This round of submissions is for **validation** and **performance comparison** with other teams only. Submissions at this time will not be used to determine which teams qualify for the live event.
+	
 ## Baselines
  - Plan and move on minimum jerk trajectory using gate ground truth poses:
     - Generate an AirSim settings.json file
@@ -86,7 +93,6 @@ There are two ways to swap between levels, either via AirSIm API or by the UI me
 		--race_tier 3 \
 	```
 
-	
 ## List of Environments in Increasing Order of Difficulty 
 - Soccer Field: A simple outdoors environment with few obstacles, and an easy to follow course.
 - ZhangJiaJie: A mountainous landscape based on a national park in the Hunan province of China.
