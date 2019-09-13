@@ -148,7 +148,7 @@ A disqualified 0
 A finished 0
 ```
 
-We have an example python script (``scripts/logging/logMonitor.py``) to help you analyze the log file. This script demonstrates how one can detect when to start a new race, which may be useful for training scenarios. 
+We have an example python script ([`scripts/logging/log_monitor.py`](https://github.com/microsoft/AirSim-NeurIPS2019-Drone-Racing/blob/master/scripts/logging/log_monitor.py)) to help you analyze the log file. This script demonstrates how one can detect when to start a new race, which may be useful for training scenarios. 
 
 Please note that in the qualification round, participants will be required to submit these generated race logs for evaluation.
 
