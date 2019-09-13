@@ -76,7 +76,7 @@ The qualification binaries with new race tracks will be released next month
 It's ok to make a submission for as little as a single track and/or a single tier.   
 You can find race logs inside of `AirSimExe/Saved/Logs/RaceLogs` in your downloaded binary folder.   
 Please read [the race monitoring section](https://github.com/microsoft/AirSim-NeurIPS2019-Drone-Racing/blob/master/docs/competition_guidelines.md#race-monitoring) in the competition guidelines for more details. 
-	- The leaderboard will publish the results of a drone that is either named `drone_1` (see `generate_settings_file.py`) or `team_name` (the name of your team). 
+	- The leaderboard will publish the results of a drone that is named `drone_1` (call [`generate_settings_file.py`](https://github.com/microsoft/AirSim-NeurIPS2019-Drone-Racing/blob/master/baselines/generate_settings_file.py) to generate an AirSim settings file, as done for the `baseline_racer` below. 
 	- At this point in time, the `report` and `Team ID` fields are optional, so you can leave them blank.   
 	You'd be require to submit a report when the qualification round opens, in order to validate the legitimacy of the submissions.    
 	We'll email Team IDs to each team, after which the `Team ID` will be required.   
