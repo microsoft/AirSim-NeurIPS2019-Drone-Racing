@@ -65,7 +65,27 @@ There are two ways to swap between levels, either via AirSIm API or by the UI me
 - UI Menu
 	- Press `F10` to toggle the level menu
 	- Click your desired level. (Note: the UI lists all the pakfiles in the `AirSim/AirSimExe/Content/Paks` directory. Ensure you downloaded the pakfile, if you are not able to see a particular environment)
-
+    
+## Submitting Results and Leaderboard
+- We have opened a validation submission pipeline so that participants can see how they are performing w.r.t. others, and for us to get feedback on how easy or hard the race tracks are currently.
+- Please note that this leaderboard is not for the qualification rounds. 
+This is effectively a dry run for you to gauge your performance and for us to gather feedback. 
+The qualification binaries with new race tracks will be released next month
+- To submit your results to the leaderboard:
+	- Navigate to the [submission site](https://microsoft.github.io/AirSim-NeurIPS2019-Drone-Racing/upload.html), enter your team name in the proper field, and upload any number of [race logs](https://github.com/microsoft/AirSim-NeurIPS2019-Drone-Racing/blob/master/docs/competition_guidelines.md#race-monitoring).   
+It's ok to make a submission for as little as a single track and/or a single tier.   
+You can find race logs inside of `AirSimExe/Saved/Logs/RaceLogs` in your downloaded binary folder.   
+Please read [the race monitoring section](https://github.com/microsoft/AirSim-NeurIPS2019-Drone-Racing/blob/master/docs/competition_guidelines.md#race-monitoring) in the competition guidelines for more details. 
+	- The leaderboard will publish the results of a drone that is named `drone_1` (call [`generate_settings_file.py`](https://github.com/microsoft/AirSim-NeurIPS2019-Drone-Racing/blob/master/baselines/generate_settings_file.py) to generate an AirSim settings file, as done for the `baseline_racer` below. 
+	- At this point in time, the `report` and `Team ID` fields are optional, so you can leave them blank.   
+	You'd be require to submit a report when the qualification round opens, in order to validate the legitimacy of the submissions.    
+	We'll email Team IDs to each team, after which the `Team ID` will be required.   
+ 	For now, feel free to leave that field blank.   
+	- The [validation leaderboard](https://microsoft.github.io/AirSim-NeurIPS2019-Drone-Racing/leaderboard.html) is updated once per day at 2100 PST.   
+	If you do not see your results after 24 hours, please [email us](mailto:neuripsdronecontestinfo@gmail.com) with your team name and submitted log files.
+	- This round of submissions is for **validation** and **performance comparison** with other teams only.  
+ 	Submissions at this time will not be used to determine which teams qualify for the live event.
+	
 ## Baselines
  - Plan and move on minimum jerk trajectory using gate ground truth poses:
     - Generate an AirSim settings.json file
@@ -86,7 +106,6 @@ There are two ways to swap between levels, either via AirSIm API or by the UI me
 		--race_tier 3 \
 	```
 
-	
 ## List of Environments in Increasing Order of Difficulty 
 - Soccer Field: A simple outdoors environment with few obstacles, and an easy to follow course.
 - ZhangJiaJie: A mountainous landscape based on a national park in the Hunan province of China.
