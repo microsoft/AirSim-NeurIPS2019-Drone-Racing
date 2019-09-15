@@ -51,8 +51,8 @@ class BaselineRacer(object):
 
     # arms drone, enable APIs, set default traj tracker gains
     def initialize_drone(self):
-        self.airsim_client.enableApiControl(vehicle_name=self.drone_name)
-        self.airsim_client.arm(vehicle_name=self.drone_name)
+        self.airsim_client.enableApiControl()
+        self.airsim_client.arm()
 
         # set default values for trajectory tracker gains 
         traj_tracker_gains = airsim.TrajectoryTrackerGains(kp_cross_track = 5.0, kd_cross_track = 0.0, 
@@ -63,7 +63,7 @@ class BaselineRacer(object):
                                                             kp_vel_z = 0.4, kd_vel_z = 0.0, 
                                                             kp_yaw = 3.0, kd_yaw = 0.1)
 
-        self.airsim_client.setTrajectoryTrackerGains(traj_tracker_gains, vehicle_name=self.drone_name)
+        self.airsim_client.setTrajectoryTrackerGains(traj_tracker_gains)
         time.sleep(0.2)
 
     def takeoffAsync(self):
@@ -74,11 +74,11 @@ class BaselineRacer(object):
         if self.level_name == "ZhangJiaJie_Medium":
             takeoff_height = 0.3
 
-        start_position = self.airsim_client.simGetVehiclePose(vehicle_name=self.drone_name).position
+        start_position = self.airsim_client.simGetVehiclePose().position
         takeoff_waypoint = airsim.Vector3r(start_position.x_val, start_position.y_val, -takeoff_height)
 
         self.airsim_client.moveOnSplineAsync([takeoff_waypoint], vel_max=15.0, acc_max=5.0, add_position_constraint=True, add_velocity_constraint=False, 
-            add_acceleration_constraint=False, viz_traj=self.viz_traj, viz_traj_color_rgba=self.viz_traj_color_rgba, vehicle_name=self.drone_name).join()
+            add_acceleration_constraint=False, viz_traj=self.viz_traj, viz_traj_color_rgba=self.viz_traj_color_rgba).join()
 
     # stores gate ground truth poses as a list of airsim.Pose() objects in self.gate_poses_ground_truth
     def get_ground_truth_gate_poses(self):
@@ -130,7 +130,7 @@ class BaselineRacer(object):
             acc_max = 5.0
 
         return self.airsim_client.moveOnSplineAsync([gate_pose.position], vel_max=vel_max, acc_max=acc_max, 
-            add_position_constraint=True, add_velocity_constraint=False, add_acceleration_constraint=False, viz_traj=self.viz_traj, viz_traj_color_rgba=self.viz_traj_color_rgba, vehicle_name=self.drone_name)
+            add_position_constraint=True, add_velocity_constraint=False, add_acceleration_constraint=False, viz_traj=self.viz_traj, viz_traj_color_rgba=self.viz_traj_color_rgba)
 
     def fly_through_all_gates_at_once_with_moveOnSpline(self):
         if self.level_name in ["Soccer_Field_Medium", "Soccer_Field_Easy", "ZhangJiaJie_Medium"] :
@@ -142,7 +142,7 @@ class BaselineRacer(object):
             acc_max = 1.0
 
         return self.airsim_client.moveOnSplineAsync([gate_pose.position for gate_pose in self.gate_poses_ground_truth], vel_max=30.0, acc_max=15.0, 
-            add_position_constraint=True, add_velocity_constraint=False, add_acceleration_constraint=False, viz_traj=self.viz_traj, viz_traj_color_rgba=self.viz_traj_color_rgba, vehicle_name=self.drone_name)
+            add_position_constraint=True, add_velocity_constraint=False, add_acceleration_constraint=False, viz_traj=self.viz_traj, viz_traj_color_rgba=self.viz_traj_color_rgba)
 
     def fly_through_all_gates_one_by_one_with_moveOnSplineVelConstraints(self):
         add_velocity_constraint = True
@@ -169,7 +169,7 @@ class BaselineRacer(object):
                                                 [self.get_gate_facing_vector_from_quaternion(gate_pose.orientation, scale = speed_through_gate)], 
                                                 vel_max=vel_max, acc_max=acc_max, 
                                                 add_position_constraint=True, add_velocity_constraint=add_velocity_constraint, add_acceleration_constraint=add_acceleration_constraint, 
-                                                viz_traj=self.viz_traj, viz_traj_color_rgba=self.viz_traj_color_rgba, vehicle_name=self.drone_name)
+                                                viz_traj=self.viz_traj, viz_traj_color_rgba=self.viz_traj_color_rgba)
 
     def fly_through_all_gates_at_once_with_moveOnSplineVelConstraints(self):
         if self.level_name in ["Soccer_Field_Easy", "Soccer_Field_Medium", "ZhangJiaJie_Medium"]:
@@ -186,7 +186,7 @@ class BaselineRacer(object):
                 [self.get_gate_facing_vector_from_quaternion(gate_pose.orientation, scale = speed_through_gate) for gate_pose in self.gate_poses_ground_truth], 
                 vel_max=15.0, acc_max=7.5, 
                 add_position_constraint=True, add_velocity_constraint=True, add_acceleration_constraint=False, 
-                viz_traj=self.viz_traj, viz_traj_color_rgba=self.viz_traj_color_rgba, vehicle_name=self.drone_name)
+                viz_traj=self.viz_traj, viz_traj_color_rgba=self.viz_traj_color_rgba)
 
     def image_callback(self):
         # get uncompressed fpv cam image
