@@ -141,7 +141,7 @@ class BaselineRacer(object):
             vel_max = 4.0
             acc_max = 1.0
 
-        return self.airsim_client.moveOnSplineAsync([gate_pose.position for gate_pose in self.gate_poses_ground_truth], vel_max=30.0, acc_max=15.0, 
+        return self.airsim_client.moveOnSplineAsync([gate_pose.position for gate_pose in self.gate_poses_ground_truth], vel_max=vel_max, acc_max=acc_max, 
             add_position_constraint=True, add_velocity_constraint=False, add_acceleration_constraint=False, viz_traj=self.viz_traj, viz_traj_color_rgba=self.viz_traj_color_rgba, vehicle_name=self.drone_name)
 
     def fly_through_all_gates_one_by_one_with_moveOnSplineVelConstraints(self):
@@ -184,7 +184,7 @@ class BaselineRacer(object):
 
         return self.airsim_client.moveOnSplineVelConstraintsAsync([gate_pose.position for gate_pose in self.gate_poses_ground_truth], 
                 [self.get_gate_facing_vector_from_quaternion(gate_pose.orientation, scale = speed_through_gate) for gate_pose in self.gate_poses_ground_truth], 
-                vel_max=15.0, acc_max=7.5, 
+                vel_max=vel_max, acc_max=acc_max, 
                 add_position_constraint=True, add_velocity_constraint=True, add_acceleration_constraint=False, 
                 viz_traj=self.viz_traj, viz_traj_color_rgba=self.viz_traj_color_rgba, vehicle_name=self.drone_name)
 
