@@ -82,5 +82,5 @@ class AirSimSettingsCreator(object):
         instance.add_multirotor(vehicle_name = "drone_1", pose = Pose(Position(), Rotation()))
         instance.add_camera(vehicle_name = "drone_1", camera_name = 'fpv_cam', relative_pose=Pose(Position(0.25, 0.0, 0.0), Rotation()), 
                 image_type = 0, image_width = 320, image_height = 240, fov_horizontal_degrees = 90)
-        instance.add_multirotor(vehicle_name = "drone_2", pose = Pose(Position(0.,1.,0), Rotation()))
+        instance.add_multirotor(vehicle_name = "drone_2", pose = Pose(Position(), Rotation()))
         instance.write_airsim_settings_file()
