@@ -97,9 +97,9 @@ class BaselineRacer(object):
                 print(f"DEBUG: {gate_name} position is nan, retrying...")
                 counter += 1
                 curr_pose = self.airsim_client.simGetObjectPose(gate_name)
-            assert not math.isnan(curr_pose.position.x_val), f"ERROR: {gate_name} curr_pose.position.x_val is still {curr_pose.position.x_val} after {cpt} trials"
-            assert not math.isnan(curr_pose.position.y_val), f"ERROR: {gate_name} curr_pose.position.y_val is still {curr_pose.position.y_val} after {cpt} trials"
-            assert not math.isnan(curr_pose.position.z_val), f"ERROR: {gate_name} curr_pose.position.z_val is still {curr_position.z_val} after {cpt} trials"
+            assert not math.isnan(curr_pose.position.x_val), f"ERROR: {gate_name} curr_pose.position.x_val is still {curr_pose.position.x_val} after {counter} trials"
+            assert not math.isnan(curr_pose.position.y_val), f"ERROR: {gate_name} curr_pose.position.y_val is still {curr_pose.position.y_val} after {counter} trials"
+            assert not math.isnan(curr_pose.position.z_val), f"ERROR: {gate_name} curr_pose.position.z_val is still {curr_pose.position.z_val} after {counter} trials"
             self.gate_poses_ground_truth.append(curr_pose)
 
     # this is utility function to get a velocity constraint which can be passed to moveOnSplineVelConstraints() 
