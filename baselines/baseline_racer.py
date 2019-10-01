@@ -70,12 +70,9 @@ class BaselineRacer(object):
         self.airsim_client.takeoffAsync().join()
 
     # like takeoffAsync(), but with moveOnSpline()
-    def takeoff_with_moveOnSpline(self, takeoff_height = 0.1):
-        if self.level_name == "ZhangJiaJie_Medium":
-            takeoff_height = 0.3
-
+    def takeoff_with_moveOnSpline(self, takeoff_height = 1.0):
         start_position = self.airsim_client.simGetVehiclePose(vehicle_name=self.drone_name).position
-        takeoff_waypoint = airsim.Vector3r(start_position.x_val, start_position.y_val, -takeoff_height)
+        takeoff_waypoint = airsim.Vector3r(start_position.x_val, start_position.y_val, start_position.z_val-takeoff_height)
 
         self.airsim_client.moveOnSplineAsync([takeoff_waypoint], vel_max=15.0, acc_max=5.0, add_position_constraint=True, add_velocity_constraint=False, 
             add_acceleration_constraint=False, viz_traj=self.viz_traj, viz_traj_color_rgba=self.viz_traj_color_rgba, vehicle_name=self.drone_name).join()
@@ -276,6 +273,6 @@ if __name__ == "__main__":
     parser.add_argument('--planning_and_control_api', type=str, choices=["moveOnSpline", "moveOnSplineVelConstraints"], default="moveOnSpline")
     parser.add_argument('--enable_viz_traj', dest='viz_traj', action='store_true', default=False)
     parser.add_argument('--enable_viz_image_cv2', dest='viz_image_cv2', action='store_true', default=False)
-    parser.add_argument('--race_tier', type=int, choices=[1,2,3], default=3)
+    parser.add_argument('--race_tier', type=int, choices=[1,2,3], default=1)
     args = parser.parse_args()
     main(args)
