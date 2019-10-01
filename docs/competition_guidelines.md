@@ -56,7 +56,7 @@ The gates are rectangular and marked using a "race-tape" checker pattern with di
 - The back side of the gate is colored red.
 
 ## Tracks
-Α race is carried out on a track consisting of a series of gates that must be traversed in order and in the correct direction. There are three tracks with increasing difficulties, which meet the following specifications.
+Α race is carried out on a track consisting of a series of gates that must be traversed in order and in the correct direction. The hardness is defined with the following specifications.
 
 1. **Easy**
    - All gates are at the same altitude above the ground (2D tracks).
@@ -103,7 +103,7 @@ For every racetrack, there is a maximum lap time ***t***<sub>max</sub>. If the p
 **Drone-Drone collision (Tier I and III)**  
 It is the job of the chasing drone to avoid the leading drone. In the case of a collision, penalties are always incurred by the chasing drone.
 
-For collision purposes, the drones are modeled as simple boxes. A collision is registered any time the distance between the two drones falls below **d**. One drone-drone collision is allowed, for which the chasing drone incurs a flat time penalty of ***t***<sub>c</sub>. Any subsequent collisions will disqualify the chasing drone, and the other drone is allowed to finish without an opponent.
+For collision purposes, the drones are modeled as simple boxes. A collision is registered any time the distance between the two drones falls below **d**. In the event of a drone-drone collision, the chasing drone is disqualified.
 
 **Collision with environment/gates**  
 Every collision with other objects in the environment such as the gates is penalized with a time delay represented by ***t***<sub>***e***</sub>. The drone-environment collisions are checked over a specific window of time ***t***<sub>cw</sub>. Multiple collisions registered under the window of ***t***<sub>cw</sub> are treated as a single collision.
@@ -129,7 +129,7 @@ There are two reasons for a disqualification: Timeouts and multiple drone-drone 
 1. **Timeout**  
 If a drone does not finish within the maximal lap time of a track, it is disqualified.
 2. **Collision with another drone**  
-If a drone-drone collision happens more than once, the chasing drone is disqualified.
+If a drone-drone collision happens, the chasing drone is disqualified.
 
 In case of a disqualification, the score is equivalent to achieving the maximal lap time.
 
