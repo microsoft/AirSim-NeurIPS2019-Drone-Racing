@@ -73,6 +73,7 @@ This is effectively a dry run for you to gauge your performance and for us to ga
 The qualification binaries with new race tracks will be released next month
 
 - How to generate logfiles for each tier:
+	- Please update your airsimneurips pythonclient (should be >=0.3.0 for validation phase of submission)
 	- Calling simStartRace with the desired tier level generates the appropriate log files.    
 	As soon as simStartRace is called, `drone_2` (MSR opponent racer) will start flying.    
 	Note that `simGetObjectPose()` will return noisy gate poses if tier=2 of tier=3 is passed to `simStartRace`   
