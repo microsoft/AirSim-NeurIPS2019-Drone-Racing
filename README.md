@@ -71,6 +71,16 @@ There are two ways to swap between levels, either via AirSIm API or by the UI me
 - Please note that this leaderboard is not for the qualification rounds. 
 This is effectively a dry run for you to gauge your performance and for us to gather feedback. 
 The qualification binaries with new race tracks will be released next month
+
+- How to generate logfiles for each tier:
+	- Calling simStartRace with the desired tier level generates the appropriate log files.    
+	As soon as simStartRace is called, `drone_2` (MSR opponent racer) will start flying.    
+	Note that `simGetObjectPose()` will return noisy gate poses if tier=2 of tier=3 is passed to `simStartRace`   
+	See `baseline_racer.py` for sample code. Note that if the `--race_tier` argument to `baseline_racer.py` is 2 or 3, `drone_2` will follow the noisy waypoints.  
+	```
+	client.simStartRace(tier=1/2/3)
+	```
+
 - To submit your results to the leaderboard:
 	- Navigate to the [submission site](https://microsoft.github.io/AirSim-NeurIPS2019-Drone-Racing/upload.html), enter your team name in the proper field, and upload any number of [race logs](https://github.com/microsoft/AirSim-NeurIPS2019-Drone-Racing/blob/master/docs/competition_guidelines.md#race-monitoring).   
 It's ok to make a submission for as little as a single track and/or a single tier.   
