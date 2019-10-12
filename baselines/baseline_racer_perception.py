@@ -120,8 +120,8 @@ class BaselineRacerPerception(BaselineRacer):
             mask = mask1 + mask2
             dilated_gate = cv2.dilate(mask,self.kernel, iterations=8)
             eroded_gate = cv2.erode(dilated_gate,self.kernel, iterations=8)
-            __, gate_contours, hierarchy = cv2.findContours(dilated_gate, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
-            # gate_contours, hierarchy = cv2.findContours(dilated_gate, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+            #__, gate_contours, hierarchy = cv2.findContours(dilated_gate, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+            gate_contours, hierarchy = cv2.findContours(dilated_gate, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
 
             print("got image")
             cv2.imshow("mask", mask)
@@ -235,6 +235,7 @@ def main(args):
     # ensure you have generated the neurips planning settings file by running python generate_settings_file.py
     baseline_racer = BaselineRacerPerception(drone_name="drone_1", viz_traj=args.viz_traj, viz_traj_color_rgba=[1.0, 1.0, 0.0, 1.0], viz_image_cv2=args.viz_image_cv2)
     baseline_racer.load_level(args.level_name)
+    baseline_racer.start_race(args.race_tier)
     baseline_racer.initialize_drone()
     baseline_racer.takeoff_with_moveOnSpline()
     baseline_racer.run()
@@ -244,5 +245,6 @@ if __name__ == "__main__":
     parser.add_argument('--level_name', type=str, choices=["Soccer_Field_Easy"], default="Soccer_Field_Easy")
     parser.add_argument('--viz_traj', dest='viz_traj', action='store_true', default=False)
     parser.add_argument('--enable_viz_image_cv2', dest='viz_image_cv2', action='store_true', default=False)
+    parser.add_argument('--race_tier', type=int, choices=[1,2,3], default=2)
     args = parser.parse_args()
     main(args)
