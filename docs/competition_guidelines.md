@@ -116,7 +116,6 @@ Every collision with other objects in the environment such as the gates is penal
 |----------|-------------------------------------------------------------------------|------------|
 | ***t***<sub>***max***</sub>    | Maximal lap time, within which the drones should complete the track    | 100 seconds
 | ***d***        | Distance threshold for collision detection                              | 0.3 meters |
-| ***t***<sub>***c***</sub>      | Time penalty incurred by chasing drone for colliding with leading drone | 3 seconds  |
 | ***t***<sub>***e***</sub>     | Time penalty incurred by drone for colliding with environment           | 3 seconds  |
 | ***t***<sub>***cw***</sub>     | Time window for collision checking                                      | 1 second   |
 
