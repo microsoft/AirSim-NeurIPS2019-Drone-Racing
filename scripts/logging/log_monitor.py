@@ -22,20 +22,23 @@ def follow(filename):
 
 def process(line):
     tokens = line.split()
-    if len(tokens) != 3:
+    if len(tokens) != 3 and len(tokens) != 5:
         print("ERROR Bad line: " + line)
         print("Tokens: " + str(tokens))
         return
 
-    if tokens[1] == "disqualified" and tokens[2] == '1' and tokens[0] not in disqualified_racers:
-        disqualified_racers.add(tokens[0])
-        handle_disqualified_racer(tokens[0])
+    if tokens[3] == "disqualified" and tokens[4] == '1' and tokens[2] not in disqualified_racers:
+        disqualified_racers.add(tokens[2])
+        handle_disqualified_racer(tokens[2])
         return
 
-    if tokens[1] == "finished" and tokens[2] == '1' and tokens[0] not in finished_racers:
-        finished_racers.add(tokens[0])
-        handle_finished_racer(tokens[0])
+    if tokens[3] == "finished" and tokens[4] == '1' and tokens[2] not in finished_racers:
+        finished_racers.add(tokens[2])
+        handle_finished_racer(tokens[2])
         return
+
+    if tokens[3] == "gates_passed":
+        handle_gate_passed(tokens[0], tokens[4]) 
 
 def handle_disqualified_racer(racer_name):
     print(racer_name + " has been disqualified!")
@@ -44,6 +47,10 @@ def handle_disqualified_racer(racer_name):
 def handle_finished_racer(racer_name):
     print(racer_name + " has finished!")
     #Start a new race.
+
+def handle_gate_passed(racer_name, gate_idx_passed):
+    # log file gate indices are 1-indexed, not 0-indexed
+    print("{} passed gate idx {}".format(racer_name, gate_idx_passed - 1))
 
 def main():
     f = open_file()
