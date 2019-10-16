@@ -27,14 +27,14 @@ def process(line):
         print("Tokens: " + str(tokens))
         return
 
-    if tokens[3] == "disqualified" and tokens[4] == '1' and tokens[2] not in disqualified_racers:
-        disqualified_racers.add(tokens[2])
-        handle_disqualified_racer(tokens[2])
+    if tokens[3] == "disqualified" and tokens[4] == '1' and tokens[0] not in disqualified_racers:
+        disqualified_racers.add(tokens[0])
+        handle_disqualified_racer(tokens[0])
         return
 
-    if tokens[3] == "finished" and tokens[4] == '1' and tokens[2] not in finished_racers:
-        finished_racers.add(tokens[2])
-        handle_finished_racer(tokens[2])
+    if tokens[3] == "finished" and tokens[4] == '1' and tokens[0] not in finished_racers:
+        finished_racers.add(tokens[0])
+        handle_finished_racer(tokens[0])
         return
 
     if tokens[3] == "gates_passed":
