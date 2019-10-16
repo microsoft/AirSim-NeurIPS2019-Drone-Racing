@@ -10,76 +10,92 @@
 
 <img src="https://github.com/madratman/airsim_neurips_gifs/blob/master/imgs/neurips_b99_3_drones.gif?raw=true" width="285"> <img src="https://github.com/madratman/airsim_neurips_gifs/blob/master/imgs/neurips_soccer_field_8_drones.gif?raw=true" width="285"> <img src="https://github.com/madratman/airsim_neurips_gifs/blob/master/imgs/neurips_zhangjiajie_4_drones.gif?raw=true" width="285">
 
-## Unreal Environments
-This competition marks the advent of a new release process for AirSim, in which we have separated out the AirSim plugin from environment content. Instead of having a series of individual executables for each environment, we have compacted all of the relevant AirSim content and API into a single binary (`AirSimExe`).    
-Unreal environments containing race courses are released as separate downloadable content (DLC) packages, in the form of `.pak` files, which can be loaded and unloaded into the main binary as needed.    
+### Downloading and running AirSim Binaries
+#### Downloading
+- Qualifier binaries and environments (v1.0)
+	- Download the v1.0 [Linux](https://github.com/microsoft/AirSim-NeurIPS2019-Drone-Racing/releases/tag/v1.0-linux) or [Windows](https://github.com/microsoft/AirSim-NeurIPS2019-Drone-Racing/releases/tag/v1.0-windows) `AirSim.zip`, and unzip it. 
+	- Download your qualifier environments (shipped in pakfiles) - `Qual_Tier_1_and_Tier_3.pak`  and ` Qual_Tier_2.pak`.
+	- Move the environment pakfiles into `AirSim/AirSimExe/Content/Paks`. 
 
-### Downloading AirSimExe and Unreal Environments 
-- Navigate to [the releases page](https://github.com/microsoft/AirSim-NeurIPS2019-Drone-Racing/releases).
-- Download the latest Windows or Linux `AirSim.zip`. 
-- Download your desired environments (pakfiles) - `Building99.pak` / ` SoccerField.pak` / `ZhangJiaJie.pak`.
-- Move the environment pakfile into `AirSim/AirSimExe/Content/Paks`. 
-- The contents in the environment pakfile will now be linked to your AirSim binary!
+- Training binaries and environments (v0.3):
+	- Download the v0.3 [Linux](https://github.com/microsoft/AirSim-NeurIPS2019-Drone-Racing/releases/tag/v0.3.0-linux) or [Windows](https://github.com/microsoft/AirSim-NeurIPS2019-Drone-Racing/releases/tag/v0.3.0) `AirSim.zip`, and unzip it. 
+	- Download training  environments (shipped in pakfiles) - `Soccer_Field.pak`, `ZhangJiaJie.pak`, and `Building99.pak`. 
+	- Move the environment pakfiles into `AirSim/AirSimExe/Content/Paks`. 
 
-### Running the Executable
+Note:
+-  `Source code (zip)` or `Source code (tar.gz)` might not be up-to-date with the master branch of this repository. It can be lagging by `n commits to master since this release`, specified on the released page.   
+	For the code on this repository, it's best to just `git clone`.  
+
+
+#### Running
 - Linux
 	- Open a terminal window, `cd` to `AirSim/` directory, and enter the following command:
 		```
-		./AirSimExe.sh -windowed
+		./AirSimExe.sh -windowed -opengl4
 		```
-	If you are having texture problems with the gates or seeing black shadows on the ground, please try running the binary with the openGL option : `./AirSimExe.sh -windowed -opengl4`. 
 
 - Windows
-	- Navigate to the `AirSim/` directory, and double-click `run.bat`
+	- Navigate to the `AirSim/` directory, and double-click `run.bat` (or `AirSimExe.exe -windowed`)
 
 ## AirSim API
-To control your drone and get information from the environment, you will need the `airsimneurips` API, which is accessible via Python. 
+- To control your drone and get information from the environment, you will need the `airsimneurips` API, which is accessible via Python.   
+We recommend you used python >= 3.6. Python 2.7 will go [out of support soon](https://pythonclock.org/)
 
-### Installation
-- To install the Python API for the Neurips competition, please use:
+- To install the Python API, do a :
 	```
 	pip install airsimneurips
 	```
-	Corollary: Do not do a `pip install airsim`, as we will have a few custom APIs specific to this competition. 
+
+- The API is documented at [airsimneurips API doc](https://microsoft.github.io/AirSim-NeurIPS2019-Drone-Racing/api.html)
+
 - Resources 
-  	- [airsimneurips API doc](https://microsoft.github.io/AirSim-NeurIPS2019-Drone-Racing/api.html)
-	- [AirSim upstream API](https://microsoft.github.io/AirSim/docs/apis/) and [examples](https://github.com/microsoft/AirSim/tree/master/PythonClient)    
-	(Note that this is not used in the competition, however is a good learning resource)
-
-## Changing Environments
-There are two ways to swap between levels, either via AirSIm API or by the UI menu.
-- API 
-	- We have added a new API `simLoadLevel(level_name="MainMenu")` to change Unreal environments on the fly.   
-	 Possible values for `level_name` are : `"Soccer_Field_Easy"`, `"Soccer_Field_Medium"`, `"ZhangJiaJie_Medium"`, `"Building99_Hard"`. 
-	Here's a quick snippet to iterate throught them all. Before trying this, please ensure you've downloaded the 	corresponding pak files from [our releases page](https://github.com/microsoft/AirSim-NeurIPS2019-Drone-Racing/releases). 
-
-	```python
-	import airsimneurips as airsim
-	client = airsim.MultirotorClient()
-	client.confirmConnection()
-	client.simLoadLevel('Soccer_Field_Easy')	
-	client.simLoadLevel('Soccer_Field_Medium')	
-	client.simLoadLevel('ZhangJiaJie_Medium')
-	client.simLoadLevel('Building99_Hard')
-	```
-- UI Menu
-	- Press `F10` to toggle the level menu
-	- Click your desired level. (Note: the UI lists all the pakfiles in the `AirSim/AirSimExe/Content/Paks` directory. Ensure you downloaded the pakfile, if you are not able to see a particular environment)
+	- Going through both open and closed issues in this repository might answer some of your questions. The search bar on top left can prove useful.    
+	- [AirSim upstream API](https://microsoft.github.io/AirSim/docs/apis/) and [examples](https://github.com/microsoft/AirSim/tree/master/PythonClient) can also be of use. However, please note that the main AirSim repo's API is not used in the competition (there's some overlap and some differences), however is a good learning resource. 
     
 ## Submitting Results and Leaderboard
-- We have opened a validation submission pipeline so that participants can see how they are performing w.r.t. others, and for us to get feedback on how easy or hard the race tracks are currently.
-- Please note that this leaderboard is not for the qualification rounds. 
-This is effectively a dry run for you to gauge your performance and for us to gather feedback. 
-The qualification binaries with new race tracks will be released next month
+- For the qualification round, we have one race track for each tier. The relevant binaries (v1.0) are available for [linux](https://github.com/microsoft/AirSim-NeurIPS2019-Drone-Racing/releases/tag/v1.0-linux) and [windows](https://github.com/microsoft/AirSim-NeurIPS2019-Drone-Racing/releases/tag/v1.0-windows)
+	- Tier 1: This is in the Soccer Field environment.    
+	THe race track is in the `Qual_Tier_1_and_Tier_3.pak` pakfile
+	- Tier 2: This is in the ZhangJiaJie environment.    
+	The race track is in the `Qual_Tier_2.pak` pakfile. 
+	- Tier 3: This is again in the Soccer Field environment.    
+	The race track is in the `Qual_Tier_1_and_Tier_3.pak` pakfile. 
 
 - How to generate logfiles for each tier:
-	- Please update your airsimneurips pythonclient (should be >=0.3.0 for validation phase of submission)
-	- Calling simStartRace with the desired tier level generates the appropriate log files.    
-	As soon as simStartRace is called, `drone_2` (MSR opponent racer) will start flying.    
-	Note that `simGetObjectPose()` will return noisy gate poses if tier=2 of tier=3 is passed to `simStartRace`   
-	See `baseline_racer.py` for sample code. Note that if the `--race_tier` argument to `baseline_racer.py` is 2 or 3, `drone_2` will follow the noisy waypoints.  
-	```
-	client.simStartRace(tier=1/2/3)
+	- Loading level and starting race:
+		- Please update your airsimneurips pythonclient (should be >=1.0.0). 
+		- Calling `simStartRace(race_tier=1, 2, or 3)` generates the appropriate log files. 
+		- Tier 1: 
+			```python
+				airsim_client.simLoadLevel('Qualifier_Tier_1')
+				airsim_client.simStartRace(1)
+			```
+
+		- Tier 2: 
+			```python
+				airsim_client.simLoadLevel('Qualifier_Tier_2')
+				airsim_client.simStartRace(2)
+			```
+
+		- Tier 3: 
+			```python
+				airsim_client.simLoadLevel('Qualifier_Tier_3')
+				airsim_client.simStartRace(3)
+				```
+	- As Tier 2 focuses on perception and Tier 3 focuses on both perception and planning, note that `simGetObjectPose` returns noisy gate poses, after `simStartRace(2)` and `simStartRace(3)` is called. 
+
+	- As soon as `simStartRace(1)`  or `simStartRace(3)` is called, `drone_2` (MSR opponent racer) will start flying. 
+
+	- See `baseline_racer.py` for sample code. The previous bullet points are being called in wrapper functions in the following snippet in `baseline_racer.py`:
+	```python
+		baseline_racer.load_level(args.level_name)
+		if args.level_name == "Qualifier_Tier_1":
+		    args.race_tier = 1
+		if args.level_name == "Qualifier_Tier_2":
+		    args.race_tier = 2
+		if args.level_name == "Qualifier_Tier_3":
+		    args.race_tier = 3
+		baseline_racer.start_race(args.race_tier)
 	```
 
 - To submit your results to the leaderboard:
@@ -88,16 +104,12 @@ It's ok to make a submission for as little as a single track and/or a single tie
 You can find race logs inside of `AirSimExe/Saved/Logs/RaceLogs` in your downloaded binary folder.   
 Please read [the race monitoring section](https://github.com/microsoft/AirSim-NeurIPS2019-Drone-Racing/blob/master/docs/competition_guidelines.md#race-monitoring) in the competition guidelines for more details. 
 	- The leaderboard will publish the results of a drone that is named `drone_1` (call [`generate_settings_file.py`](https://github.com/microsoft/AirSim-NeurIPS2019-Drone-Racing/blob/master/baselines/generate_settings_file.py) to generate an AirSim settings file, as done for the `baseline_racer` below. 
-	- At this point in time, the `report` and `Team ID` fields are optional, so you can leave them blank.   
-	You'd be require to submit a report when the qualification round opens, in order to validate the legitimacy of the submissions.    
-	We'll email Team IDs to each team, after which the `Team ID` will be required.   
- 	For now, feel free to leave that field blank.   
-	- The [validation leaderboard](https://microsoft.github.io/AirSim-NeurIPS2019-Drone-Racing/leaderboard.html) is updated once per day at 2100 PST.   
+	- Please submit a PDF file in the `report` section to help us verify the honesty of your submission for the Nov 21st deadline. 
+	- We have emailed you a private key, which should be entered in the `Team ID` field. This helps us verify it was your team who indeed made the submission.   
+	- The [leaderboard](https://microsoft.github.io/AirSim-NeurIPS2019-Drone-Racing/leaderboard.html) is updated once per day at 2100 PST.   
 	If you do not see your results after 24 hours, please [email us](mailto:neuripsdronecontestinfo@gmail.com) with your team name and submitted log files.
-	- This round of submissions is for **validation** and **performance comparison** with other teams only.  
- 	Submissions at this time will not be used to determine which teams qualify for the live event.
 	
-## Baselines
+## Sample code
  - Plan and move on minimum jerk trajectory using gate ground truth poses:
     - Generate an AirSim settings.json file
 	 ```shell
@@ -114,13 +126,39 @@ Please read [the race monitoring section](https://github.com/microsoft/AirSim-Ne
 		--planning_baseline_type all_gates_at_once \
 		--planning_and_control_api moveOnSpline \
 		--level_name ZhangJiaJie_Medium 
-		--race_tier 3 \
+		--race_tier 1 \
 	```
 
-## List of Environments in Increasing Order of Difficulty 
-- Soccer Field: A simple outdoors environment with few obstacles, and an easy to follow course.
-- ZhangJiaJie: A mountainous landscape based on a national park in the Hunan province of China.
-- Building99: A tight race course designed inside one of Microsoft's very own buildings.
+## Quick API overview 
+- Changing unreal environments  
+	There are two ways to swap between environments / "unreal level", either via AirSIm API or by the UI menu.
+	- Python API 
+	Use `simLoadLevel(level_name="MainMenu")` to change Unreal environments on the fly.   
+	 Possible values for `level_name` are : `"Soccer_Field_Easy"`, `"Soccer_Field_Medium"`, `"ZhangJiaJie_Medium"`, `"Building99_Hard"`. 
+	Here's a quick snippet to iterate throught all the training environments.   
+	Before trying this, please ensure you've downloaded the corresponding training (v0.3) / qualifier (v1.0) binaries, [as described above](https://github.com/microsoft/AirSim-NeurIPS2019-Drone-Racing#downloading-airsimexe-and-unreal-environments)
+
+		```python
+		import airsimneurips as airsim
+		client = airsim.MultirotorClient()
+		client.confirmConnection()
+
+		# use this for training environments (v0.3)
+
+		client.simLoadLevel('Soccer_Field_Easy')	
+		client.simLoadLevel('Soccer_Field_Medium')	
+		client.simLoadLevel('ZhangJiaJie_Medium')
+		client.simLoadLevel('Building99_Hard')
+
+		# use this for qualification environments (v1.0)
+		client.simLoadLevel('Qualification_Tier_1')	
+		client.simLoadLevel('Qualification_Tier_2')	
+		client.simLoadLevel('Qualification_Tier_3')	
+
+		```
+	- UI Menu
+		- Press `F10` to toggle the level menu
+		- Click your desired level. (Note: the UI lists all the pakfiles in the `AirSim/AirSimExe/Content/Paks` directory. Ensure you downloaded the pakfile, if you are not able to see a particular environment)
 
 ## Questions
 Please open a Github Issue on **this** repository (not [AirSim](https://github.com/microsoft/AirSim)) for any technical questions w.r.t. the Neurips competition. 
