@@ -113,7 +113,7 @@ It's ok to make a submission for as little as a single track and/or a single tie
 You can find race logs inside of `AirSimExe/Saved/Logs/RaceLogs` in your downloaded binary folder.   
 Please read [the race monitoring section](https://github.com/microsoft/AirSim-NeurIPS2019-Drone-Racing/blob/master/docs/competition_guidelines.md#race-monitoring) in the competition guidelines for more details. 
 	- The leaderboard will publish the results of a drone that is named `drone_1` (call [`generate_settings_file.py`](https://github.com/microsoft/AirSim-NeurIPS2019-Drone-Racing/blob/master/baselines/generate_settings_file.py) to generate an AirSim settings file, as done for the `baseline_racer` below. 
-	- Please submit a PDF file in the `report` section to help us verify the honesty of your submission for the Nov 21st deadline. 
+	- Please submit a PDF file in the `report` section to help us verify the honesty of your submission for the Nov 21st deadline. Please summarize your approach for all tiers you make a submission for, with appropriate citations. The report PDF size should not exceed 10 MB, and should be a maximum of 4 pages in length. We leave the exact format of the report to your descrition, but the [IEEE template](https://ras.papercept.net/conferences/support/tex.php) is a good choice.  
 	- We have emailed you a private key, which should be entered in the `Team ID` field. This helps us verify it was your team who indeed made the submission.   
 	- The [leaderboard](https://microsoft.github.io/AirSim-NeurIPS2019-Drone-Racing/leaderboard.html) is updated once per day at 2100 PST.   
 	If you do not see your results after 24 hours, please [email us](mailto:neuripsdronecontestinfo@gmail.com) with your team name and submitted log files.
