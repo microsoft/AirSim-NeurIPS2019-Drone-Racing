@@ -65,6 +65,21 @@ class AirSimSettingsCreator(object):
         self.settings_dict['Vehicles'][vehicle_name]["VehicleType"] = "SimpleFlight"
         self.set_pose(self.settings_dict['Vehicles'][vehicle_name], pose)
 
+    def add_camera(self, vehicle_name, camera_name, relative_pose, image_type, image_width, image_height, fov_horizontal_degrees):
+        # fetch vehicle setting dict
+        vehicle_setting = self.settings_dict['Vehicles'][vehicle_name]
+        # initialize vehicle's camera setting dict to empty 
+        vehicle_setting['Cameras'] = {}
+        vehicle_setting['Cameras'][camera_name] = {}
+        camera_setting = vehicle_setting['Cameras'][camera_name]
+        self.set_pose(camera_setting, relative_pose)
+        capture_setting = {}
+        capture_setting['Width'] = image_width
+        capture_setting['Height'] = image_height
+        capture_setting['ImageType'] = image_type
+        capture_setting['FOV_Degrees'] = fov_horizontal_degrees
+        camera_setting['CaptureSettings'] = [capture_setting]
+
     # default linux: /home/$USER/Documents/AirSim/settings.json
     # default windows: C:\\Users\\%USERNAME%\\Documents\\AirSim\\settings.json
     def write_airsim_settings_file(self, base_filename="settings.json"):
@@ -74,11 +89,14 @@ class AirSimSettingsCreator(object):
             os.makedirs(airsim_settings_dir)
         airsim_settings_abs_file_path = os.path.join(airsim_settings_dir, base_filename)
         with open(airsim_settings_abs_file_path, "w") as f:
-            json.dump(self.settings_dict, f, indent=2, sort_keys=False)
+            json.dump(self.settings_dict, f, indent=2, sort_keys=True)
 
     # usage: AirSimSettingsCreator().write_airsim_neurips_baseline_settings_file()
     def write_airsim_neurips_baseline_settings_file(self):
         instance = self.__class__()
         instance.add_minimal()
         instance.add_multirotor(vehicle_name = "drone_1", pose = Pose(Position(), Rotation()))
+        instance.add_camera(vehicle_name = "drone_1", camera_name = 'fpv_cam', relative_pose=Pose(Position(0.25, 0.0, 0.0), Rotation()), 
+                image_type = 0, image_width = 320, image_height = 240, fov_horizontal_degrees = 90)
+        instance.add_multirotor(vehicle_name = "drone_2", pose = Pose(Position(), Rotation()))
         instance.write_airsim_settings_file()
