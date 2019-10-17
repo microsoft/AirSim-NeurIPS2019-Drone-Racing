@@ -22,10 +22,19 @@
 	- Download training  environments (shipped in pakfiles) - `Soccer_Field.pak`, `ZhangJiaJie.pak`, and `Building99.pak`. 
 	- Move the environment pakfiles into `AirSim/AirSimExe/Content/Paks`. 
 
-Note:
+Notes:
 -  `Source code (zip)` or `Source code (tar.gz)` might not be up-to-date with the master branch of this repository. It can be lagging by `n commits to master since this release`, specified on the released page.   
 	For the code on this repository, it's best to just `git clone`.  
 
+- List of disabled APIs in qualification binaries: The following APIs on the server side in the qualification binaries. You should see an error message pop up in the terminal message when you call these. They do work in the training binaries:
+	- `simSetObjectPose`
+	- `simSetVehiclePose`
+	- `simSetObjectScale`
+	- `simGetObjectScale`
+	- `simSetSegmentationObjectID`
+	- `simGetSegmentationObjectID`
+	- `simPause`
+	- `simContinueForTime`
 
 #### Running
 - Linux
