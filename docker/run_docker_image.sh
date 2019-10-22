@@ -1,24 +1,32 @@
 # !bin/bash
 
-# Usage:
-# for running default image in windowed mode: 
-    # $ ./run_docker_image.sh 
-# for running default image in headless mode : 
-    # $ ./run_docker_image.sh "" headless
-# for running custom image in windowed mode: 
-    # $ ./run_docker_image.sh DOCKER_IMAGE_NAME:TAG
-# for running custom image in headless mode: 
-    # $ ./run_docker_image.sh DOCKER_IMAGE_NAME:TAG headless
+# **Usage**
+# - for running default image, training binaries, in windowed mode:    
+#     `$ ./run_docker_image.sh "" training` 
+# - for running default image, qualification binaries, in windowed mode:    
+#     `$ ./run_docker_image.sh "" qualification` 
+# - for running default image, training binaries, in headless mode:    
+#     `$ ./run_docker_image.sh "" training headless`
+# - for running default image, qualification binaries, in headless mode:    
+#     `$ ./run_docker_image.sh "" qualification headless`
+# - for running a custom image in windowed mode, pass in you image name and tag:    
+#     `# $ ./run_docker_image.sh DOCKER_IMAGE_NAME:TAG`
+# - for running a custom image in headless mode, pass in you image name and tag, followed by "headless":    
+#     # $ ./run_docker_image.sh DOCKER_IMAGE_NAME:TAG headless
 
-# This script takes two optional arguments
+# This script takes three optional arguments
+
 # 1st argument is the name (and tag) of the dockerfile to run
 # by default, it is set to "airsim_neurips:10.0-devel-ubuntu18.04"
 # else user can specify a docker image as follows:
 # $ ./run_docker_image.sh DOCKER_IMAGE_NAME:TAG
 DOCKER_IMAGE_NAME=${1:-airsim_neurips:10.0-devel-ubuntu18.04}
 
-# if user passes "headless" as the second argument
-IS_HEADLESS=${2:-notheadless}
+# 2nd argument: can be "training" or "qualification"
+TRAINING_OR_QUALIFICATION=${2:-training}
+
+# 3rd argument: if user passes "headless", binary runs in headless mode
+IS_HEADLESS=${3:-notheadless}
 
 # this block is for running X apps in docker
 XAUTH=/tmp/.docker.xauth
@@ -35,7 +43,11 @@ then
 fi
 
 # per use the following commented out code for different options
-UNREAL_BINARY_COMMAND="bash /home/airsim_user/AirSim_Training/AirSimExe.sh -windowed -opengl"
+if [[ $2 = "training" ]]; then 
+    UNREAL_BINARY_COMMAND="bash /home/airsim_user/AirSim_Training/AirSimExe.sh -windowed -opengl"
+elif [[ $2 = "qualification" ]]; then 
+    UNREAL_BINARY_COMMAND="bash /home/airsim_user/AirSim_Qualification/AirSimExe.sh -windowed -opengl"
+fi
 
 # eleminate terminal output and run airsim process in the background
 # UNREAL_BINARY_COMMAND="bash /home/airsim_user/AirSim_Training/AirSimExe.sh -windowed -opengl &>/dev/null &"
@@ -46,7 +58,7 @@ UNREAL_BINARY_COMMAND="bash /home/airsim_user/AirSim_Training/AirSimExe.sh -wind
 # now, let's check if we need to run in headless mode or not
 # set SDL_VIDEODRIVER_VALUE to '' if windowed mode, 'offscreen' if headless mode
 SDL_VIDEODRIVER_VALUE='';
-if [[ $2 = "headless" ]]; then 
+if [[ $3 = "headless" ]]; then 
     SDL_VIDEODRIVER_VALUE='offscreen';
 fi
 
