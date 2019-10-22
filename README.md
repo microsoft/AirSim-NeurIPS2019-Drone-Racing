@@ -13,14 +13,22 @@
 ### Downloading and running AirSim Binaries
 #### Downloading
 - Qualifier binaries and environments (v1.0)
-	- Download the v1.0 [Linux](https://github.com/microsoft/AirSim-NeurIPS2019-Drone-Racing/releases/tag/v1.0-linux) or [Windows](https://github.com/microsoft/AirSim-NeurIPS2019-Drone-Racing/releases/tag/v1.0-windows) `AirSim.zip`, and unzip it. 
-	- Download your qualifier environments (shipped in pakfiles) - `Qual_Tier_1_and_Tier_3.pak`  and ` Qual_Tier_2.pak`.
-	- Move the environment pakfiles into `AirSim/AirSimExe/Content/Paks`. 
+	- tl;dr:
+		- [Linux] Use the [download_qualification_binaries.sh](download_qualification_binaries.sh) script
+	- Long version:
+		- Download the v1.0 [Linux](https://github.com/microsoft/AirSim-NeurIPS2019-Drone-Racing/releases/tag/v1.0-linux) or [Windows](https://github.com/microsoft/AirSim-NeurIPS2019-Drone-Racing/releases/tag/v1.0-windows) `AirSim.zip`, and unzip it. 
+		- Download your qualifier environments (shipped in pakfiles) - `Qual_Tier_1_and_Tier_3.pak`  and ` Qual_Tier_2.pak`.
+		- Move the environment pakfiles into `AirSim/AirSimExe/Content/Paks`. 
+		- Download and move the `settings.json` file to `~/Documents/AirSim/setting.json`. 
 
 - Training binaries and environments (v0.3):
-	- Download the v0.3 [Linux](https://github.com/microsoft/AirSim-NeurIPS2019-Drone-Racing/releases/tag/v0.3.0-linux) or [Windows](https://github.com/microsoft/AirSim-NeurIPS2019-Drone-Racing/releases/tag/v0.3.0) `AirSim.zip`, and unzip it. 
-	- Download training  environments (shipped in pakfiles) - `Soccer_Field.pak`, `ZhangJiaJie.pak`, and `Building99.pak`. 
-	- Move the environment pakfiles into `AirSim/AirSimExe/Content/Paks`. 
+	- tl;dr: 
+		- [Linux] Use the [download_training_binaries.sh](download_training_binaries.sh) script
+	- Long version:
+		- Download the v0.3 [Linux](https://github.com/microsoft/AirSim-NeurIPS2019-Drone-Racing/releases/tag/v0.3.0-linux) or [Windows](https://github.com/microsoft/AirSim-NeurIPS2019-Drone-Racing/releases/tag/v0.3.0) `AirSim.zip`, and unzip it. 
+		- Download training  environments (shipped in pakfiles) - `Soccer_Field.pak`, `ZhangJiaJie.pak`, and `Building99.pak`. 
+		- Move the environment pakfiles into `AirSim/AirSimExe/Content/Paks`. 
+		- Download and move the `settings.json` file to `~/Documents/AirSim/setting.json`. 
 
 Notes:
 -  `Source code (zip)` or `Source code (tar.gz)` might not be up-to-date with the master branch of this repository. It can be lagging by `n commits to master since this release`, specified on the released page.   
@@ -38,7 +46,7 @@ Notes:
 
 #### Running
 - Linux
-	- Open a terminal window, `cd` to `AirSim/` directory, and enter the following command:
+	- Open a terminal window, `cd` to `AirSim_Training/` or `AirSim_Qualification` directory, and enter the following command:
 		```
 		./AirSimExe.sh -windowed -opengl4
 		```
