@@ -54,6 +54,40 @@ Notes:
 - Windows
 	- Navigate to the `AirSim/` directory, and double-click `run.bat` (or `AirSimExe.exe -windowed`)
 
+## Docker
+- Dockerfile:   
+	We provide a sample [dockerfile](docker/Dockerfile) you can modify.   
+	It downloads the training and qualification binaries automatically, and installs the python client.   
+	By default, it uses Ubuntu 18.04 and CUDA 10.0 with OpenGL, and is build on top of [nvidia/cudagl:10.0-devel-ubuntu18.04](https://hub.docker.com/r/nvidia/cudagl).    
+	This can be changed of course, as explained in the following section. 
+
+- Building the docker image:    
+	You can use [build_docker_image.py](docker/build_docker_image.py) to build the dockerfile above (or your own custom one)    
+	
+	**Usage** (with default arguments)
+	```shell
+	cd docker/;
+	python3 build_docker_image.py \
+		--dockerfile Dockerfile \
+		--base_image nvidia/cudagl:10.0-devel-ubuntu18.04 \
+		-- target_image airsim_neurips:10.0-devel-ubuntu18.04
+	```
+- Running the docker image:
+	See [docker/run_docker_image.sh](docker/run_docker_image.sh) to run the docker image:
+	**Usage**
+	- for running default image, training binaries, in windowed mode:    
+	    `$ ./run_docker_image.sh "" training` 
+	- for running default image, qualification binaries, in windowed mode:    
+	    `$ ./run_docker_image.sh "" qualification` 
+	- for running default image, training binaries, in headless mode:    
+	    `$ ./run_docker_image.sh "" training headless`
+	- for running default image, qualification binaries, in headless mode:    
+	    `$ ./run_docker_image.sh "" qualification headless`
+	- for running a custom image in windowed mode, pass in you image name and tag:    
+	    `$ ./run_docker_image.sh DOCKER_IMAGE_NAME:TAG`
+	- for running a custom image in headless mode, pass in you image name and tag, followed by "headless":    
+	     `$ ./run_docker_image.sh DOCKER_IMAGE_NAME:TAG headless`
+
 ## AirSim API
 - To control your drone and get information from the environment, you will need the `airsimneurips` API, which is accessible via Python.   
 We recommend you used python >= 3.6. Python 2.7 will go [out of support soon](https://pythonclock.org/)
