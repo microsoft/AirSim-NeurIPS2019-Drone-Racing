@@ -55,6 +55,12 @@ Notes:
 	- Navigate to the `AirSim/` directory, and double-click `run.bat` (or `AirSimExe.exe -windowed`)
 
 ## Docker
+- Prerequistes:
+	- Install [docker-ce](https://docs.docker.com/install/linux/docker-ce/ubuntu/). 
+	- Complete the desired [post-installation steps for linux](https://docs.docker.com/install/linux/linux-postinstall/) after installing docker.    
+	At the minimum, the page tells you how torun docker without root, and other useful setup options. 
+	- Install [nvidia-docker2](https://github.com/NVIDIA/nvidia-docker/wiki/Installation-(version-2.0)). 
+
 - Dockerfile:   
 	We provide a sample [dockerfile](docker/Dockerfile) you can modify.   
 	It downloads the training and qualification binaries automatically, and installs the python client.   
@@ -63,7 +69,6 @@ Notes:
 
 - Building the docker image:    
 	You can use [build_docker_image.py](docker/build_docker_image.py) to build the dockerfile above (or your own custom one)    
-	
 	**Usage** (with default arguments)
 	```shell
 	cd docker/;
@@ -73,7 +78,7 @@ Notes:
 		-- target_image airsim_neurips:10.0-devel-ubuntu18.04
 	```
 - Running the docker image:
-	See [docker/run_docker_image.sh](docker/run_docker_image.sh) to run the docker image:
+	See [docker/run_docker_image.sh](docker/run_docker_image.sh) to run the docker image:   
 	**Usage**
 	- for running default image, training binaries, in windowed mode:    
 	    `$ ./run_docker_image.sh "" training` 
@@ -132,7 +137,7 @@ We recommend you used python >= 3.6. Python 2.7 will go [out of support soon](ht
 			```python
 				airsim_client.simLoadLevel('Qualifier_Tier_3')
 				airsim_client.simStartRace(3)
-				```
+			```
 	- As Tier 2 focuses on perception and Tier 3 focuses on both perception and planning, note that `simGetObjectPose` returns noisy gate poses, after `simStartRace(2)` and `simStartRace(3)` is called. 
 
 	- As soon as `simStartRace(1)`  or `simStartRace(3)` is called, `drone_2` (MSR opponent racer) will start flying. 
@@ -177,7 +182,7 @@ Please read [the race monitoring section](https://github.com/microsoft/AirSim-Ne
 		--planning_baseline_type all_gates_at_once \
 		--planning_and_control_api moveOnSpline \
 		--level_name ZhangJiaJie_Medium 
-		--race_tier 1 \
+		--race_tier 1 
 	```
 
 ## Quick API overview 
