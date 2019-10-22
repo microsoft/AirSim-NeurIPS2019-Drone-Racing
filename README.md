@@ -19,7 +19,7 @@
 		- Download the v1.0 [Linux](https://github.com/microsoft/AirSim-NeurIPS2019-Drone-Racing/releases/tag/v1.0-linux) or [Windows](https://github.com/microsoft/AirSim-NeurIPS2019-Drone-Racing/releases/tag/v1.0-windows) `AirSim.zip`, and unzip it. 
 		- Download your qualifier environments (shipped in pakfiles) - `Qual_Tier_1_and_Tier_3.pak`  and ` Qual_Tier_2.pak`.
 		- Move the environment pakfiles into `AirSim/AirSimExe/Content/Paks`. 
-		- Download and move the `settings.json` file to `~/Documents/AirSim/setting.json`. 
+		- Download and move the `settings.json` file to `~/Documents/AirSim/settings.json`. 
 
 - Training binaries and environments (v0.3):
 	- tl;dr: 
@@ -28,7 +28,7 @@
 		- Download the v0.3 [Linux](https://github.com/microsoft/AirSim-NeurIPS2019-Drone-Racing/releases/tag/v0.3.0-linux) or [Windows](https://github.com/microsoft/AirSim-NeurIPS2019-Drone-Racing/releases/tag/v0.3.0) `AirSim.zip`, and unzip it. 
 		- Download training  environments (shipped in pakfiles) - `Soccer_Field.pak`, `ZhangJiaJie.pak`, and `Building99.pak`. 
 		- Move the environment pakfiles into `AirSim/AirSimExe/Content/Paks`. 
-		- Download and move the `settings.json` file to `~/Documents/AirSim/setting.json`. 
+		- Download and move the `settings.json` file to `~/Documents/AirSim/settings.json`. 
 
 Notes:
 -  `Source code (zip)` or `Source code (tar.gz)` might not be up-to-date with the master branch of this repository. It can be lagging by `n commits to master since this release`, specified on the released page.   
