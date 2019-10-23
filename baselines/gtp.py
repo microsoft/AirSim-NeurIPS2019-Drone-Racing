@@ -3,6 +3,7 @@ import numpy as np
 import cvxpy as cp
 from scipy.interpolate import CubicSpline, CubicHermiteSpline
 import airsimneurips as airsim
+import time
 
 gate_dimensions = [1.6, 1.6]
 
@@ -99,7 +100,7 @@ class IBRController:
      n_steps       Length of the trajectories
      n_game_iters  Number of game iterations (how often the best response is computed for drone i_0)
      n_sqp_iters   Number of SQP iterations (how often the constraints are linearized and the optimization is solved)
-     drone_params
+     drone_paramstangents
        r_coll      Collision radius, see competition guidelines.
        r_safe      Safety radius, see competition guidelines
        v_max       Maximal velocity, determines how far waypoints can be apart
@@ -133,6 +134,7 @@ class IBRController:
         for k in range(self.n_steps):
             idx, c, t, n, width, height = self.track.track_frame_at(p)
             p += self.dt * v_ego * t
+            p[2] = c[2]  # fix trajectory height to center of track
             trajectory[k, :] = p
         return trajectory
 
@@ -264,19 +266,20 @@ class IBRController:
 
         return p.value
 
-    def iterative_br(self, i_ego, state, n_game_iterations=2, n_sqp_iterations=2):
+    def iterative_br(self, i_ego, state, n_game_iterations=2, n_sqp_iterations=3):
         trajectories = [
             self.init_trajectory(i, state[i, :]) for i in [0, 1]
         ]
+        t0 = time.time()
         for i_game in range(n_game_iterations - 1):
             for i in [i_ego, (i_ego + 1) % 2]:
-                for i_sqp in range(n_sqp_iterations):
+                for i_sqp in range(n_sqp_iterations - 1):
                     trajectories[i] = self.best_response(i, state, trajectories)
-
         # One last time for i_ego
         for i_sqp in range(n_sqp_iterations):
             trajectories[i_ego] = self.best_response(i_ego, state, trajectories)
-
+        t1 = time.time()
+        print('Total IBR solution time: ', t1 - t0)
         return trajectories[i_ego]
 
     def truncate(self, p_i, trajectory):
@@ -288,7 +291,8 @@ class IBRController:
         :return: k, the index of the first point ahead of p_i
         """
         _, _, t, _, _, _ = self.track.track_frame_at(p_i)
+        truncate_distance = 5.0  # could be a parameter based on max velocity and computation time
         for k in range(self.n_steps):
-            if t.dot(trajectory[k, :] - p_i) > 0.0:
+            if t.dot(trajectory[k, :] - p_i) > truncate_distance:  # truncate if next waypoint is closer than truncate_distance meters in front of robot
                 return k, t
         return self.n_steps, t
