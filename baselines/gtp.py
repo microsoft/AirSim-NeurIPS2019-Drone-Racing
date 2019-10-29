@@ -46,18 +46,20 @@ class SplinedTrack:
         self.track_height_spline = CubicSpline(self.arc_length, gate_heights, axis=0)
 
         # Sample 2048 points, the 2048 are arbitrary and should really be a parameter
-        taus = np.linspace(self.arc_length[0], self.arc_length[-1], 2048)
+        taus = np.linspace(self.arc_length[0], self.arc_length[-1], 2**12)
 
         self.track_centers = self.track_spline(taus)
         self.track_tangents = self.track_spline.derivative(nu=1)(taus)
-
         self.track_tangents /= np.linalg.norm(self.track_tangents, axis=1)[:, np.newaxis]
-
         self.track_normals = np.zeros_like(self.track_tangents)
         self.track_normals[:, 0] = -self.track_tangents[:, 1]
         self.track_normals[:, 1] = self.track_tangents[:, 0]
-
         self.track_normals /= np.linalg.norm(self.track_normals, axis=1)[:, np.newaxis]
+        # self.track_verticals = np.zeros_like(self.track_tangents)
+        # self.track_verticals = np.cross(self.track_tangents, self.track_normals)
+        # print('track tangents: ', self.track_tangents)
+        # print('track normals: ', self.track_normals)
+        # print('track verticals: ', self.track_verticals)
 
         self.track_widths = self.track_width_spline(taus)
         self.track_heights = self.track_height_spline(taus)
@@ -117,7 +119,7 @@ class IBRController:
         # They control how the safety penalty and the relaxed constraints are weighted.
         self.nc_weight = 2.0
         self.nc_relax_weight = 128.0
-        self.track_relax_weight = 16.0
+        self.track_relax_weight = 64.0
 
     def init_trajectory(self, i_0, p_0):
         """Initialize Trajectory along the track tangent
@@ -195,9 +197,13 @@ class IBRController:
             idx, c, t, n, width, height = self.track.track_frame_at(trajectories[i_ego][k, :])
             track_constraints.append(n.T @ p[k, :] - n.dot(c) <= width - r_coll_ego)
             track_constraints.append(n.T @ p[k, :] - n.dot(c) >= -(width - r_coll_ego))
-            # 3D Height. This assumes that gates are not rolled (i. e. aligned with the z-axis)
-            track_constraints.append(p[k, 2] - c[2] <= height - r_coll_ego)
-            track_constraints.append(p[k, 2] - c[2] >= -(height - r_coll_ego))
+            # # 3D Height. This assumes that gates are not rolled (i. e. aligned with the z-axis). This does not even if gates are not rolled, e.g., consider two sequential gates where the second is directly above the first. There will be not feasible track to leave from the first to the second in this case. 
+            # track_constraints.append(p[k, 2] - c[2] <= height - r_coll_ego)
+            # track_constraints.append(p[k, 2] - c[2] >= -(height - r_coll_ego))
+            # The correct way to handle 3D height is with the following.
+            v = np.cross(t, n)  # the vertical direction component of the track
+            track_constraints.append(v.T @ p[k, :] - v.dot(c) <= height - r_coll_ego)
+            track_constraints.append(v.T @ p[k, :] - v.dot(c) >= -(height - r_coll_ego))
 
             track_obj += (track_objective_exp ** k) * (
                     cp.pos(n.T @ p[k, :] - n.dot(c) - (width - r_coll_ego)) +
@@ -214,7 +220,7 @@ class IBRController:
             p_opp = trajectories[i_opp][k, :]
             p_ego = trajectories[i_ego][k, :]
 
-            # Compute beta, the normal direction vector pointing from the ego's drone position to the opponent's
+            # Compute beta, the normal di   `rection vector pointing from the ego's drone position to the opponent's
             beta = p_opp - p_ego
             if np.linalg.norm(beta) >= 1e-5:
                 # Only normalize if norm is large enough
@@ -237,8 +243,9 @@ class IBRController:
         prob = cp.Problem(cp.Minimize(obj + self.nc_weight * nc_obj),
                           dyn_constraints + track_constraints + nc_constraints)
         prob.solve()
+        # print('original optimized parameters: ', p.value)
 
-        if np.isinf(prob.value):
+        if np.isinf(prob.value):    
             print("Relaxing track constraints")
             # If the problem is not feasible, relax track constraints
             # Assert it is indeed an infeasible problem and not unbounded (in which case value is -inf).
@@ -291,7 +298,7 @@ class IBRController:
         :return: k, the index of the first point ahead of p_i
         """
         _, _, t, _, _, _ = self.track.track_frame_at(p_i)
-        truncate_distance = 5.0  # could be a parameter based on max velocity and computation time
+        truncate_distance = 0.01  # could be a parameter based on max velocity and computation time
         for k in range(self.n_steps):
             if t.dot(trajectory[k, :] - p_i) > truncate_distance:  # truncate if next waypoint is closer than truncate_distance meters in front of robot
                 return k, t
