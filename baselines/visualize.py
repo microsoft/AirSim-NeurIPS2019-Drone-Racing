@@ -36,6 +36,20 @@ def plot_track(ax, track):
     ax.plot(left_boundary[:, 1], left_boundary[:, 0], 'b-')
     ax.plot(right_boundary[:, 1], right_boundary[:, 0], 'b-')
 
+def plot_track3d(ax, track):
+    left_boundary = track.track_centers + track.track_normals*track.track_widths[:, np.newaxis] 
+    right_boundary = track.track_centers - track.track_normals*track.track_widths[:, np.newaxis]
+    track_verticals = np.cross(track.track_tangents, track.track_normals)
+    upper_boundary = track.track_centers + track_verticals*track.track_heights[:,np.newaxis]
+    lower_boundary = track.track_centers - track_verticals*track.track_heights[:,np.newaxis]
+
+    # Plot the spline
+    ax.plot(track.track_centers[:, 1], track.track_centers[:, 0], -track.track_centers[:, 2], '--')
+    ax.plot(left_boundary[:, 1], left_boundary[:, 0], -track.track_centers[:, 2], 'b-')
+    ax.plot(right_boundary[:, 1], right_boundary[:, 0], -track.track_centers[:, 2], 'b-')
+    ax.plot(upper_boundary[:, 1], upper_boundary[:, 0], -upper_boundary[:, 2], 'g-')
+    ax.plot(lower_boundary[:, 1], lower_boundary[:, 0], -lower_boundary[:, 2], 'g-')
+
 
 def plot_state(ax, state):
     return ax.plot(state[:, 1], state[:, 0], 'o')
