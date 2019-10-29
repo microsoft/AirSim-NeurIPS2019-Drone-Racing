@@ -13,14 +13,22 @@
 ### Downloading and running AirSim Binaries
 #### Downloading
 - Qualifier binaries and environments (v1.0)
-	- Download the v1.0 [Linux](https://github.com/microsoft/AirSim-NeurIPS2019-Drone-Racing/releases/tag/v1.0-linux) or [Windows](https://github.com/microsoft/AirSim-NeurIPS2019-Drone-Racing/releases/tag/v1.0-windows) `AirSim.zip`, and unzip it. 
-	- Download your qualifier environments (shipped in pakfiles) - `Qual_Tier_1_and_Tier_3.pak`  and ` Qual_Tier_2.pak`.
-	- Move the environment pakfiles into `AirSim/AirSimExe/Content/Paks`. 
+	- tl;dr:
+		- [Linux] Use the [download_qualification_binaries.sh](download_qualification_binaries.sh) script
+	- Long version:
+		- Download the v1.0 [Linux](https://github.com/microsoft/AirSim-NeurIPS2019-Drone-Racing/releases/tag/v1.0-linux) or [Windows](https://github.com/microsoft/AirSim-NeurIPS2019-Drone-Racing/releases/tag/v1.0-windows) `AirSim.zip`, and unzip it. 
+		- Download your qualifier environments (shipped in pakfiles) - `Qual_Tier_1_and_Tier_3.pak`  and ` Qual_Tier_2.pak`.
+		- Move the environment pakfiles into `AirSim/AirSimExe/Content/Paks`. 
+		- Download and move the `settings.json` file to `~/Documents/AirSim/settings.json`. 
 
 - Training binaries and environments (v0.3):
-	- Download the v0.3 [Linux](https://github.com/microsoft/AirSim-NeurIPS2019-Drone-Racing/releases/tag/v0.3.0-linux) or [Windows](https://github.com/microsoft/AirSim-NeurIPS2019-Drone-Racing/releases/tag/v0.3.0) `AirSim.zip`, and unzip it. 
-	- Download training  environments (shipped in pakfiles) - `Soccer_Field.pak`, `ZhangJiaJie.pak`, and `Building99.pak`. 
-	- Move the environment pakfiles into `AirSim/AirSimExe/Content/Paks`. 
+	- tl;dr: 
+		- [Linux] Use the [download_training_binaries.sh](download_training_binaries.sh) script
+	- Long version:
+		- Download the v0.3 [Linux](https://github.com/microsoft/AirSim-NeurIPS2019-Drone-Racing/releases/tag/v0.3.0-linux) or [Windows](https://github.com/microsoft/AirSim-NeurIPS2019-Drone-Racing/releases/tag/v0.3.0) `AirSim.zip`, and unzip it. 
+		- Download training  environments (shipped in pakfiles) - `Soccer_Field.pak`, `ZhangJiaJie.pak`, and `Building99.pak`. 
+		- Move the environment pakfiles into `AirSim/AirSimExe/Content/Paks`. 
+		- Download and move the `settings.json` file to `~/Documents/AirSim/settings.json`. 
 
 Notes:
 -  `Source code (zip)` or `Source code (tar.gz)` might not be up-to-date with the master branch of this repository. It can be lagging by `n commits to master since this release`, specified on the released page.   
@@ -38,13 +46,52 @@ Notes:
 
 #### Running
 - Linux
-	- Open a terminal window, `cd` to `AirSim/` directory, and enter the following command:
+	- Open a terminal window, `cd` to `AirSim_Training/` or `AirSim_Qualification` directory, and enter the following command:
 		```
 		./AirSimExe.sh -windowed -opengl4
 		```
 
 - Windows
 	- Navigate to the `AirSim/` directory, and double-click `run.bat` (or `AirSimExe.exe -windowed`)
+
+## Docker
+- Prerequistes:
+	- Install [docker-ce](https://docs.docker.com/install/linux/docker-ce/ubuntu/). 
+	- Complete the desired [post-installation steps for linux](https://docs.docker.com/install/linux/linux-postinstall/) after installing docker.    
+	At the minimum, the page tells you how torun docker without root, and other useful setup options. 
+	- Install [nvidia-docker2](https://github.com/NVIDIA/nvidia-docker/wiki/Installation-(version-2.0)). 
+
+- Dockerfile:   
+	We provide a sample [dockerfile](docker/Dockerfile) you can modify.   
+	It downloads the training and qualification binaries automatically, and installs the python client.   
+	By default, it uses Ubuntu 18.04 and CUDA 10.0 with OpenGL, and is build on top of [nvidia/cudagl:10.0-devel-ubuntu18.04](https://hub.docker.com/r/nvidia/cudagl).    
+	This can be changed of course, as explained in the following section. 
+
+- Building the docker image:    
+	You can use [build_docker_image.py](docker/build_docker_image.py) to build the dockerfile above (or your own custom one)    
+	**Usage** (with default arguments)
+	```shell
+	cd docker/;
+	python3 build_docker_image.py \
+		--dockerfile Dockerfile \
+		--base_image nvidia/cudagl:10.0-devel-ubuntu18.04 \
+		-- target_image airsim_neurips:10.0-devel-ubuntu18.04
+	```
+- Running the docker image:
+	See [docker/run_docker_image.sh](docker/run_docker_image.sh) to run the docker image:   
+	**Usage**
+	- for running default image, training binaries, in windowed mode:    
+	    `$ ./run_docker_image.sh "" training` 
+	- for running default image, qualification binaries, in windowed mode:    
+	    `$ ./run_docker_image.sh "" qualification` 
+	- for running default image, training binaries, in headless mode:    
+	    `$ ./run_docker_image.sh "" training headless`
+	- for running default image, qualification binaries, in headless mode:    
+	    `$ ./run_docker_image.sh "" qualification headless`
+	- for running a custom image in windowed mode, pass in you image name and tag:    
+	    `$ ./run_docker_image.sh DOCKER_IMAGE_NAME:TAG`
+	- for running a custom image in headless mode, pass in you image name and tag, followed by "headless":    
+	     `$ ./run_docker_image.sh DOCKER_IMAGE_NAME:TAG headless`
 
 ## AirSim API
 - To control your drone and get information from the environment, you will need the `airsimneurips` API, which is accessible via Python.   
@@ -90,7 +137,7 @@ We recommend you used python >= 3.6. Python 2.7 will go [out of support soon](ht
 			```python
 				airsim_client.simLoadLevel('Qualifier_Tier_3')
 				airsim_client.simStartRace(3)
-				```
+			```
 	- As Tier 2 focuses on perception and Tier 3 focuses on both perception and planning, note that `simGetObjectPose` returns noisy gate poses, after `simStartRace(2)` and `simStartRace(3)` is called. 
 
 	- As soon as `simStartRace(1)`  or `simStartRace(3)` is called, `drone_2` (MSR opponent racer) will start flying. 
@@ -135,7 +182,7 @@ Please read [the race monitoring section](https://github.com/microsoft/AirSim-Ne
 		--planning_baseline_type all_gates_at_once \
 		--planning_and_control_api moveOnSpline \
 		--level_name ZhangJiaJie_Medium 
-		--race_tier 1 \
+		--race_tier 1 
 	```
 
 ## Quick API overview 
