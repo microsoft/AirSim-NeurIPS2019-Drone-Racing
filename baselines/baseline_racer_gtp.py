@@ -34,24 +34,25 @@ class BaselineRacerGTP(BaselineRacer):
 
         self.controller = None
 
-        # For plotting: Just some fig, ax and line objects to keep track of
+        # for plotting: Just some fig, ax and line objects to keep track of
         if self.plot_gtp:
             self.fig, self.ax = plt.subplots()
             self.line_state = None
             self.lines = [None] * 2
-            
             # plot 3d track just once for visualization
             self.fig2 = plt.figure(2)
             self.ax3d = self.fig2.add_subplot(111, projection='3d')
 
-        print('baseline_racer_gtp {} ready!'.format(self.drone_name))
-        self.pause_counter = 0
-        self.pause_limit = 3
-        self.send_new_traj = True
-        self.image_num = 0
+        print("baseline_racer_gtp ready!")
+        if (self.traj_params.blocking):
+            print("   with blocking behavior activated")
+        # self.pause_counter = 0
+        # self.pause_limit = 3
+        # self.send_new_traj = True
+        # self.image_num = 0
 
     def update_and_plan(self):
-        # Retrieve the current state from AirSim
+        # retrieve the current state from AirSim
         position_airsim = []
         for drone_name in self.drone_names:
             position_airsim.append(self.airsim_client.simGetObjectPose(drone_name).position)
@@ -59,7 +60,7 @@ class BaselineRacerGTP(BaselineRacer):
         state = np.array([position.to_numpy_array() for position in position_airsim])
 
         if self.plot_gtp:
-            # Plot or update the state
+            # plot or update the state
             if self.line_state is None:
                 self.line_state, = plot_state(self.ax, state)
             else:
@@ -68,17 +69,17 @@ class BaselineRacerGTP(BaselineRacer):
         trajectory = self.controller.iterative_br(self.drone_i, state)
         # trajectory = self.controller.init_trajectory(0, state[0,:])
 
-        # Now, let's issue the new trajectory to the trajectory planner
-        # Fetch the current state first, to see, if our trajectory is still planned for ahead of us
+        # now, let's issue the new trajectory to the trajectory planner
+        # fetch the current state first, to see, if our trajectory is still planned for ahead of us
         new_state_i = self.airsim_client.simGetObjectPose(self. drone_name).position.to_numpy_array()
 
         if self.plot_gtp:
             replot_state(self.line_state, state)
 
-        # As we move while computing the trajectory,
+        # as we move while computing the trajectory,
         # make sure that we only issue the part of the trajectory, that is still ahead of us
         k_truncate, _ = self.controller.truncate(new_state_i, trajectory[:, :])
-        print("k_truncate: ", k_truncate)
+        # print("k_truncate: ", k_truncate)
 
         # k_truncate == args.n means that the whole trajectory is behind us, and we only issue the last point
         if k_truncate == self.traj_params.n:
@@ -92,15 +93,15 @@ class BaselineRacerGTP(BaselineRacer):
             else:
                 replot_trajectory_2d(self.lines[self.drone_i], trajectory[k_truncate:, :])
 
-        # Finally issue the command to AirSim.
+        # finally issue the command to AirSim.
         if not self.use_vel_constraints:
-            # This returns a future, that we do not call .join() on, as we want to re-issue a new command   
+            # this returns a future, that we do not call .join() on, as we want to re-issue a new command   
             # once we compute the next iteration of our high-level planner
             
             # if self.send_new_traj:
             #     print('Sending new trajectory!')
             #     self.send_new_traj = False
-            print('Final position trajectory: ', trajectory[k_truncate:, :])
+            # print('Final position trajectory: ', trajectory[k_truncate:, :])
 
             self.airsim_client.moveOnSplineAsync(
                 to_airsim_vectors(trajectory[k_truncate:, :]),
@@ -125,8 +126,8 @@ class BaselineRacerGTP(BaselineRacer):
 
             # vel_constraints /= self.traj_params.dt
             # vel_constraints /= 100.0
-            print('Final position trajectory: ', trajectory[k_truncate:, :])
-            print('Final velocity trajectory: ', vel_constraints)
+            # print('Final position trajectory: ', trajectory[k_truncate:, :])
+            # print('Final velocity trajectory: ', vel_constraints)
             
             self.airsim_client.moveOnSplineVelConstraintsAsync(
                 to_airsim_vectors(trajectory[k_truncate:, :]),
@@ -139,19 +140,19 @@ class BaselineRacerGTP(BaselineRacer):
                 vehicle_name=self.drone_name)
 
         if self.plot_gtp:
-            # Refresh the updated plot
+            # refresh the updated plot
             self.fig.canvas.draw()
             self.fig.canvas.flush_events()
-            # # Save figure
+            # # save figure
             # figure_file_name = '/home/ericcristofalo/Documents/game_of_drones/log/image_' + str(self.image_num) + '.png'
             # print('saving image: ', figure_file_name)
             # self.fig.savefig(figure_file_name)
             # self.image_num = self.image_num + 1
-            # # Set the figure bounds around drone i for visualization
+            # # set the figure bounds around drone i for visualization
             # self.fig.xlim(state[self.drone_i][1] - 10, state[self.drone_i][1] + 10)
             # self.fig.ylim(state[self.drone_i][0] - 10, state[self.drone_i][0] + 10)
 
-        # # Counter for pause debugging
+        # # counter for pause debugging
         # # self.pause_counter = self.pause_counter + 1
         # # if (self.pause_counter == 9):
         # #     self.pause_counter = 0;
@@ -196,15 +197,30 @@ def main(args):
         {"r_safe": 0.5,
          "r_coll": 0.5,
          "v_max": 80.0,
-         "a_max": 30.0},
+         "a_max": 40.0},
         {"r_safe": 0.4,
          "r_coll": 0.3,
          "v_max": 20.0,
          "a_max": 10.0}]
 
-    # set drone dt as function of max speed
-    # designed to be 0.1s for v_max=20m/s
-    # args.dt = 1.0/drone_params[0]["v_max"]/1.0
+    # set good map-specific conditions
+    if (args.level_name == "Soccer_Field_Easy"):
+        pass
+    elif (args.level_name == "Soccer_Field_Medium"):
+        drone_params[0]["v_max"] = 60.0
+        drone_params[0]["a_max"] = 35.0
+    elif (args.level_name == "ZhangJiaJie_Medium"):
+        drone_params[0]["v_max"] = 60.0
+        drone_params[0]["a_max"] = 35.0
+    elif (args.level_name == "Building99_Hard"):
+        drone_params[0]["v_max"] = 10.0
+        drone_params[0]["a_max"] = 30.0
+    elif (args.level_name == "Qualifier_Tier_1"):
+        pass
+    elif (args.level_name == "Qualifier_Tier_2"):
+        pass
+    elif (args.level_name == "Qualifier_Tier_3"):
+        pass
 
     # ensure you have generated the neurips planning settings file by running python generate_settings_file.py
     baseline_racer_gtp = BaselineRacerGTP(
@@ -215,29 +231,18 @@ def main(args):
         use_vel_constraints=args.vel_constraints, 
         plot_gtp=args.plot_gtp)
 
-    # baseline_racer_opp = BaselineRacer(drone_name=drone_names[1], plot_transform=True, viz_traj=True)
-    # baseline_racer_opp = BaselineRacer(drone_name=drone_names[1], viz_traj=args.viz_traj, viz_traj_color_rgba=[1.0, 1.0, 0.0, 1.0], viz_image_cv2=False)
-
     baseline_racer_gtp.load_level(args.level_name)
     baseline_racer_gtp.start_race(args.race_tier)
-
     baseline_racer_gtp.initialize_drone()
-    # baseline_racer_opp.initialize_drone()
-
     baseline_racer_gtp.takeoff_with_moveOnSpline()
-    # baseline_racer_opp.takeoff_with_moveOnSpline()
-
-    # baseline_racer_opp.get_ground_truth_gate_poses()
-    # baseline_racer_opp.fly_through_all_gates_at_once_with_moveOnSpline()
-
-    # give opponent a little advantage
-    time.sleep(0.0)
+    time.sleep(0.0)  # give opponent a little advantage
     baseline_racer_gtp.run()
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='')
     parser.add_argument('--dt', type=float, default=0.05)
-    parser.add_argument('--n', type=int, default=12)
+    parser.add_argument('--n', type=int, default=14)
+    parser.add_argument('--blocking_behavior', dest='blocking', action='store_true', default=False)
     parser.add_argument('--vel_constraints', dest='vel_constraints', action='store_true', default=False)
     parser.add_argument('--plot_gtp', dest='plot_gtp', action='store_true', default=False)
     parser.add_argument('--level_name', type=str, choices=["Soccer_Field_Easy", "Soccer_Field_Medium", "ZhangJiaJie_Medium", "Building99_Hard", 
