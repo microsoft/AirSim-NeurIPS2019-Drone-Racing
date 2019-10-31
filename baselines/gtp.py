@@ -31,21 +31,21 @@ class SplinedTrack:
         self.arc_length = np.zeros(shape=self.n_gates)
         self.arc_length[1:] = np.cumsum(dists)
 
-        # Tangents from quaternion
+        # tangents from quaternion
         # by rotating default gate direction with quaternion
         self.tangents = np.zeros(shape=(self.n_gates, 3))
         for i, pose in enumerate(gate_poses):
             self.tangents[i, :] = rotate_vector(pose.orientation, gate_facing_vector).to_numpy_array()
         self.track_spline = CubicHermiteSpline(self.arc_length, positions, self.tangents, axis=0)
 
-        # Gate width to track (half) width
+        # gate width to track (half) width
         gate_widths = [gate_dimensions[0] / 2.0 for gate in gate_poses]
         gate_heights = [gate_dimensions[1] / 2.0 for gate in gate_poses]
 
         self.track_width_spline = CubicSpline(self.arc_length, gate_widths, axis=0)
         self.track_height_spline = CubicSpline(self.arc_length, gate_heights, axis=0)
 
-        # Sample 2048 points, the 2048 are arbitrary and should really be a parameter
+        # sample 2048 points, the 2048 are arbitrary and should really be a parameter
         taus = np.linspace(self.arc_length[0], self.arc_length[-1], 2**12)
 
         self.track_centers = self.track_spline(taus)
@@ -99,6 +99,7 @@ class IBRController:
      i_ego         The index of the 'ego' drone
      i_opp         The index of the opponent drone
      dt            Sampling time for trajectories
+     blocking_term Coefficient on the "blocking" objective
      n_steps       Length of the trajectories
      n_game_iters  Number of game iterations (how often the best response is computed for drone i_0)
      n_sqp_iters   Number of SQP iterations (how often the constraints are linearized and the optimization is solved)
@@ -112,6 +113,7 @@ class IBRController:
     def __init__(self, params, drone_params, gate_poses):
         self.dt = params.dt
         self.n_steps = params.n
+        self.blocking = params.blocking
         self.drone_params = drone_params
         self.track = SplinedTrack(gate_poses)
 
@@ -119,7 +121,8 @@ class IBRController:
         # They control how the safety penalty and the relaxed constraints are weighted.
         self.nc_weight = 2.0
         self.nc_relax_weight = 128.0
-        self.track_relax_weight = 64.0
+        self.track_relax_weight = 128.0  # possibly should be the largest of the gains?
+        self.blocking_weight = 16.0  # increasing gain increases the aggressiveness in the blocking behavior
 
     def init_trajectory(self, i_0, p_0):
         """Initialize Trajectory along the track tangent
@@ -144,24 +147,31 @@ class IBRController:
         """Based on current trajectories, compute the best-response (BR) of player i_ego.
 
         This is done by solving an optimization problem over the trajectory
-          p_ego[0], p_ego[1], ..., p_ego[N]
-        for drone i_ego maximizing the progress along the track,
-        subject to
-          - dynamical constraints
-            ||p_ego[k+1] - p_ego[k]|| <= v_max*dt
-          - stay-within-track constraints
-                  |n'(p[k] - c)| <= width,
-             |[0 0 1](p[k] - c)| <= height,
-            where n is the track normal (a vector on the xy-plane pointing perpendicular to the track tangent),
-              and c is the track center
-          - non-collision constraints
-            ||p_ego[k] - p_opp[k]|| >= r_coll * 2
+            p_ego[0], p_ego[1], ..., p_ego[N]
+        for drone i_ego maximizing the progress along the track while also trying to block the opponent. Here t is the tangent vector that points along the track and N is the horizon length. The resulting optimization is implemented as the following:
 
-        The progress along the track is approximated by the progress along the tangent
-        of the last point of the trajectory, i. e. t'p[k].
-        The non-collision constraints are non convex and are hence linearized. Instead of requiring the ego drone to
-        stay outside a circle, the drone is constrained to be in a half-plane tangential to that circle.
-        In addition to optimizing track progress, the penalty of violating the safety radius is accounted for.
+        minimize -t^T p_ego[N]
+
+        subject to
+
+          - dynamical constraints
+                ||p_ego[k+1] - p_ego[k]|| <= v_max*dt
+
+          - stay-within-track constraints
+                |n^T (p[k] - c)| <= width,
+                |v^T (p[k] - c)| <= height,
+            where v is the track vertical (t x n, where x here represents the cross product) and c is the track center
+
+          - non-collision constraints
+                ||p_ego[k] - p_opp[k]|| >= r_coll * 2
+
+        The progress along the track is approximated by the progress along the tangent of the last point of the trajectory, i. e., maximize t^T p_ego[k]. The non-collision constraints are non convex and are linearized here. Instead of requiring the ego drone to stay outside a circle, the drone is constrained to be in a half-plane tangential to that circle. In addition to optimizing track progress, the penalty of violating the safety radius is accounted for. 
+
+        If the blocking term defined in the trajectory parameters is non-zero, we add an additional term to the objective function that incentivizes the drones to slightly adjust their trajectories to block the opponent. Now the objective function is 
+        
+            -t^T p_ego[N] + sum_k( gamma^k p_rel[k]^T n n^T p_rel[k] )
+
+        where the sum here is over the full trajectory (1, ..., k, ..., N), gamma is the blocking coefficient (a term that is positive when the opponent is behind the ego agent and zero otherwise), and p_rel = p_ego - p_opp is the relative pose vector between the two drones. This is just a heuristic for "blocking" behavior that is only activated when the ego drone is in front of the opponent. 
 
         :param i_ego: The drone index of the ego drone.
         :param state: The current state (positions) of the two drones.
@@ -176,13 +186,11 @@ class IBRController:
         r_safe_opp = self.drone_params[i_opp]["r_safe"]
         d_coll = r_coll_ego + r_coll_opp
         d_safe = r_safe_ego + r_safe_opp
-
         p = cp.Variable(shape=(self.n_steps, 3))
 
         # === Dynamical Constraints ===
         # ||p_0 - p[0]|| <= v*dt
         init_dyn_constraint = cp.SOC(cp.Constant(v_ego * self.dt), cp.Constant(state[i_ego, :]) - p[0, :])
-
         # ||p[k+1] - p[k]|| <= v*dt
         dyn_constraints = [init_dyn_constraint] + [
             cp.SOC(cp.Constant(v_ego * self.dt), p[k + 1, :] - p[k, :]) for k in range(self.n_steps - 1)]
@@ -190,88 +198,106 @@ class IBRController:
         # === Track Constraints ===
         track_constraints = []
         track_obj = cp.Constant(0)
-        # exponentially decreasing weight
-        track_objective_exp = 0.5
-
+        track_objective_exp = 0.5  # exponentially decreasing weight
+        t = np.zeros((self.n_steps, 3))
+        n = np.zeros((self.n_steps, 3))
         for k in range(self.n_steps):
-            idx, c, t, n, width, height = self.track.track_frame_at(trajectories[i_ego][k, :])
-            track_constraints.append(n.T @ p[k, :] - n.dot(c) <= width - r_coll_ego)
-            track_constraints.append(n.T @ p[k, :] - n.dot(c) >= -(width - r_coll_ego))
-            # # 3D Height. This assumes that gates are not rolled (i. e. aligned with the z-axis). This does not even if gates are not rolled, e.g., consider two sequential gates where the second is directly above the first. There will be not feasible track to leave from the first to the second in this case. 
-            # track_constraints.append(p[k, 2] - c[2] <= height - r_coll_ego)
-            # track_constraints.append(p[k, 2] - c[2] >= -(height - r_coll_ego))
-            # The correct way to handle 3D height is with the following.
-            v = np.cross(t, n)  # the vertical direction component of the track
+            # query track indices at ego position
+            idx, c, t[k, :], n[k, :], width, height = self.track.track_frame_at(trajectories[i_ego][k, :])
+            # hortizontal track height constraints
+            track_constraints.append(n[k, :].T @ p[k, :] - np.dot(n[k, :], c) <= width - r_coll_ego)
+            track_constraints.append(n[k, :].T @ p[k, :] - np.dot(n[k, :], c) >= -(width - r_coll_ego))
+            # vertical track height constraints
+            v = np.cross(t[k, :], n[k, :])  # the vertical direction component of the track
             track_constraints.append(v.T @ p[k, :] - v.dot(c) <= height - r_coll_ego)
             track_constraints.append(v.T @ p[k, :] - v.dot(c) >= -(height - r_coll_ego))
-
+            # track constraints objective
             track_obj += (track_objective_exp ** k) * (
-                    cp.pos(n.T @ p[k, :] - n.dot(c) - (width - r_coll_ego)) +
-                    cp.pos(-(n.T @ p[k, :] - n.dot(c) + (width - r_coll_ego))))
+                    cp.pos(n[k, :].T @ p[k, :] - np.dot(n[k, :], c) - (width - r_coll_ego)) +
+                    cp.pos(-(n[k, :].T @ p[k, :] - np.dot(n[k, :], c) + (width - r_coll_ego))))
 
         # === Non-Collision Constraints ===
         nc_constraints = []
         nc_obj = cp.Constant(0)
         nc_relax_obj = cp.Constant(0)
-        # exponentially decreasing weight
-        non_collision_objective_exp = 0.5
-
+        non_collision_objective_exp = 0.5  # exponentially decreasing weight
         for k in range(self.n_steps):
             p_opp = trajectories[i_opp][k, :]
             p_ego = trajectories[i_ego][k, :]
-
-            # Compute beta, the normal di   `rection vector pointing from the ego's drone position to the opponent's
+            # Compute beta, the normal direction vector pointing from the ego's drone position to the opponent's
             beta = p_opp - p_ego
-            if np.linalg.norm(beta) >= 1e-5:
+            if np.linalg.norm(beta) >= 1e-6:
                 # Only normalize if norm is large enough
                 beta /= np.linalg.norm(beta)
-
             #     n.T * (p_opp - p_ego) >= d_coll
             nc_constraints.append(beta.dot(p_opp) - beta.T @ p[k, :] >= d_coll)
-
             # For normal non-collision objective use safety distance
             nc_obj += (non_collision_objective_exp ** k) * cp.pos(d_safe - (beta.dot(p_opp) - beta.T @ p[k, :]))
             # For relaxed non-collision objective use collision distance
             nc_relax_obj += (non_collision_objective_exp ** k) * cp.pos(d_coll - (beta.dot(p_opp) - beta.T @ p[k, :]))
 
+        # === Blocking Heuristic Objective ===
+        blocking_obj = cp.Constant(0)
+        blocking_objective_exp = 0.5  # exponentially decreasing weight
+        leader_term = np.dot((trajectories[i_ego][0, :] - trajectories[i_opp][0, :]), t[0, :])
+        if ( self.blocking & (leader_term > 0.0) ):
+            for k in range(self.n_steps):
+                p_opp = trajectories[i_opp][k, :]
+                # scale factor for leading robot
+                p_rel = trajectories[i_ego][k, :] - p_opp
+                leader_term = np.dot(p_rel, t[k, :]);
+                gamma = 0.0
+                if (leader_term > 0):
+                    gamma = 1.0/(leader_term * leader_term)/(k + 1);
+                else:
+                    gamma = 0.0
+                # add blocking cost function
+                blocking_obj += gamma  * blocking_objective_exp**k * cp.quad_form(p[k, :] - p_opp, np.outer(n[k, :], n[k, :]))
+        
+        # === "Win the Race" Objective ===
         # Take the tangent t at the last trajectory point
         # This serves as an approximation to the total track progress
-        _, _, t, _, _, _ = self.track.track_frame_at(trajectories[i_ego][-1, :])
-        obj = -t.T @ p[-1, :]
+        obj = -t[-1, :].T @ p[-1, :]
 
-        # Create the problem in cxvpy and solve it.
-        prob = cp.Problem(cp.Minimize(obj + self.nc_weight * nc_obj),
-                          dyn_constraints + track_constraints + nc_constraints)
-        prob.solve()
-        # print('original optimized parameters: ', p.value)
+        # create the problem in cxvpy and solve it
+        prob = cp.Problem(cp.Minimize(obj + self.nc_weight * nc_obj + self.blocking_weight * blocking_obj), dyn_constraints + track_constraints + nc_constraints)
 
-        if np.isinf(prob.value):    
-            print("Relaxing track constraints")
-            # If the problem is not feasible, relax track constraints
-            # Assert it is indeed an infeasible problem and not unbounded (in which case value is -inf).
-            # (The dynamical constraints keep the problem bounded.)
-            assert prob.value >= 0.0
-
-            # Solve relaxed problem (track constraint -> track objective)
-            relaxed_prob = cp.Problem(cp.Minimize(obj + self.nc_weight * nc_obj + self.track_relax_weight * track_obj),
-                                      dyn_constraints + nc_constraints)
-            relaxed_prob.solve()
-
-            if np.isinf(relaxed_prob.value):
-                print("Relaxing non collision constraints")
-                # If the problem is still infeasible, relax non-collision constraints
-                # Again, assert it is indeed an infeasible problem and not unbounded (in which case value is -inf).
+        # try to solve proposed problem
+        trajectory_result = np.array((self.n_steps, 3))
+        try:
+            prob.solve()
+            # relax track constraints if problem is infeasible
+            if np.isinf(prob.value):    
+                print("WARN: relaxing track constraints")
+                # If the problem is not feasible, relax track constraints
+                # Assert it is indeed an infeasible problem and not unbounded (in which case value is -inf).
                 # (The dynamical constraints keep the problem bounded.)
-                assert relaxed_prob.value >= 0.0
+                assert prob.value >= 0.0
 
-                # Solve relaxed problem (non-collision constraint -> non-collision objective)
-                relaxed_prob = cp.Problem(cp.Minimize(obj + self.nc_weight * nc_obj + self.nc_relax_weight * nc_relax_obj),
-                                          dyn_constraints + track_constraints)
+                # Solve relaxed problem (track constraint -> track objective)
+                relaxed_prob = cp.Problem(cp.Minimize(obj + self.nc_weight * nc_obj + self.track_relax_weight * track_obj),
+                                        dyn_constraints + nc_constraints)
                 relaxed_prob.solve()
 
-                assert not np.isinf(relaxed_prob.value)
+                # relax non-collision constraints if problem is still  infeasible
+                if np.isinf(relaxed_prob.value):
+                    print("WARN: relaxing non collision constraints")
+                    # If the problem is still infeasible, relax non-collision constraints
+                    # Again, assert it is indeed an infeasible problem and not unbounded (in which case value is -inf).
+                    # (The dynamical constraints keep the problem bounded.)
+                    assert relaxed_prob.value >= 0.0
 
-        return p.value
+                    # Solve relaxed problem (non-collision constraint -> non-collision objective)
+                    relaxed_prob = cp.Problem(cp.Minimize(obj + self.nc_weight * nc_obj + self.nc_relax_weight * nc_relax_obj),
+                                            dyn_constraints + track_constraints)
+                    relaxed_prob.solve()
+
+                    assert not np.isinf(relaxed_prob.value)
+            trajectory_result = p.value
+        except:  # if cvxpy fails, just return the initialized trajectory to do something
+            print("WARN: cvxpy failre: resorting to initial trajectory (no collision constraints!)")
+            trajectory_result = trajectories[i_ego]
+        return trajectory_result
 
     def iterative_br(self, i_ego, state, n_game_iterations=2, n_sqp_iterations=3):
         trajectories = [
@@ -282,7 +308,7 @@ class IBRController:
             for i in [i_ego, (i_ego + 1) % 2]:
                 for i_sqp in range(n_sqp_iterations - 1):
                     trajectories[i] = self.best_response(i, state, trajectories)
-        # One last time for i_ego
+        # one last time for i_ego
         for i_sqp in range(n_sqp_iterations):
             trajectories[i_ego] = self.best_response(i_ego, state, trajectories)
         t1 = time.time()
