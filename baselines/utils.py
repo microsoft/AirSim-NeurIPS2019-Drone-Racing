@@ -1,21 +1,14 @@
+import airsimneurips as airsim
 import json
+import numpy as np
 import os
 
-import numpy as np
-import airsimneurips as airsim
+def to_airsim_vector(np_arr):
+    assert np.size(np_arr) == 3
+    return airsim.Vector3r(np.float(np_arr[0]), np.float(np_arr[1]), np.float(np_arr[2]))
 
-
-# Maybe we wish to have the following 2 methods in the airsim API itself.
-
-def to_airsim_vector(array):
-    assert np.size(array) == 3
-    # Need to convert this to float
-    return airsim.Vector3r(np.float(array[0]), np.float(array[1]), np.float(array[2]))
-
-
-def to_airsim_vectors(array):
-    return [to_airsim_vector(array[i, :]) for i in range(np.size(array, 0))]
-
+def to_airsim_vectors(np_arr):
+    return [to_airsim_vector(np_arr[i, :]) for i in range(np.size(np_arr, 0))]
 
 # these clases are only meant to be settings generator.
 # for everything else, there's airsimneurips.Pose()

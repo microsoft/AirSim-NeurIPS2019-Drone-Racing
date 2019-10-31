@@ -1,27 +1,22 @@
-#!/usr/bin/env python
-import numpy as np
-import cvxpy as cp
 from scipy.interpolate import CubicSpline, CubicHermiteSpline
 import airsimneurips as airsim
+import cvxpy as cp
+import numpy as np
 import time
 
 gate_dimensions = [1.6, 1.6]
-
 gate_facing_vector = airsim.Vector3r(x_val=0, y_val=1, z_val=0)
-
 
 def rotate_vector(q, v):
     v_quat = v.to_Quaternionr()
     v_rotated_ = q * v_quat * q.inverse()
     return airsim.Vector3r(x_val=v_rotated_.x_val, y_val=v_rotated_.y_val, z_val=v_rotated_.z_val)
 
-
 class SplinedTrack:
     """This class represents a Track defined by Gates.
     A spline is fitted through the Gates with tangential constraints.
     This spline is then sampled at 2048 points.
     """
-
     def __init__(self, gate_poses):
         self.gates = gate_poses
 
@@ -55,11 +50,6 @@ class SplinedTrack:
         self.track_normals[:, 0] = -self.track_tangents[:, 1]
         self.track_normals[:, 1] = self.track_tangents[:, 0]
         self.track_normals /= np.linalg.norm(self.track_normals, axis=1)[:, np.newaxis]
-        # self.track_verticals = np.zeros_like(self.track_tangents)
-        # self.track_verticals = np.cross(self.track_tangents, self.track_normals)
-        # print('track tangents: ', self.track_tangents)
-        # print('track normals: ', self.track_normals)
-        # print('track verticals: ', self.track_verticals)
 
         self.track_widths = self.track_width_spline(taus)
         self.track_heights = self.track_height_spline(taus)
@@ -72,7 +62,6 @@ class SplinedTrack:
         i = np.linalg.norm(self.track_centers - p, axis=1).argmin()
         return i, self.track_centers[i], self.track_tangents[i], self.track_normals[i], \
                self.track_widths[i], self.track_heights[i]
-
 
 class IBRController:
     """
@@ -109,7 +98,6 @@ class IBRController:
        v_max       Maximal velocity, determines how far waypoints can be apart
        a_max       Maximal acceleration, not used here.
     """
-
     def __init__(self, params, drone_params, gate_poses):
         self.dt = params.dt
         self.n_steps = params.n

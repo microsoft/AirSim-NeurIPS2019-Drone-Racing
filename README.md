@@ -172,7 +172,7 @@ Please read [the race monitoring section](https://github.com/microsoft/AirSim-Ne
 	$ cd baselines;
 	$ python generate_settings_file.py
 	```
-    - Start the AirSim Neurips binary, [as explained above](https://github.com/microsoft/AirSim-NeurIPS2019-Drone-Racing#running-the-executable)
+    - Start the AirSim Neurips binary, [as explained above](https://github.com/microsoft/AirSim-NeurIPS2019-Drone-Racing#running)
     - Run the code!  
       See all the [baseline arguments here](https://github.com/microsoft/AirSim-NeurIPS2019-Drone-Racing/blob/master/baselines/baseline_racer.py#L260-#L265) 
 	```shell
@@ -190,7 +190,7 @@ Please read [the race monitoring section](https://github.com/microsoft/AirSim-Ne
 	$ cd baselines;
 	$ python generate_settings_file.py
 	```
-	- Start the AirSim Neurips binary, [as explained above](https://github.com/microsoft/AirSim-NeurIPS2019-Drone-Racing#running-the-executable)
+	- Start the AirSim Neurips binary, [as explained above](https://github.com/microsoft/AirSim-NeurIPS2019-Drone-Racing#running)
     - Run the GTP code!  
 	```shell
 	$ python baseline_racer_gtp.py \
@@ -199,7 +199,7 @@ Please read [the race monitoring section](https://github.com/microsoft/AirSim-Ne
 		--enable_viz_traj \
 		--level_name Qualifier_Tier_1
 	```
-	- This method is an Iterative Best Response (IBR) trajectory planning technique. In IBR, first the trajectories of both drones are initialized as straight down the track at maximum speed (to win the game!). The opponent trajectory is then held constant while we solve for the ego trajectory via Model Predictive Control (MPC) optimization (details in gtp.py). Then, we hold the ego trajectory constant and solve for a guess of the opponent's trajectory in the same fashion. If after some iterations, the solution convereges (i.e., the resulting trajectories stop changing), we have reached a Nash equilibrium over the space of trajectories. That is to say, either agents can not unilaterally change their trajectory to increase their own performance. This implementation is a heuristic based on the original method proposed in the paper below. 
+	- This method is an Iterative Best Response (IBR) trajectory planning technique. In IBR, first the trajectories of both drones are initialized as straight down the track at maximum speed (to win the game!). The opponent trajectory is then held constant while we solve for the ego trajectory via Model Predictive Control (MPC) optimization (details in [gtp.py](baselines/gtp.py)). Then, we hold the ego trajectory constant and solve for a guess of the opponent's trajectory in the same fashion. If after some iterations, the solution convereges (i.e., the resulting trajectories stop changing), we have reached a Nash equilibrium over the space of trajectories. That is to say, either agents can not unilaterally change their trajectory to increase their own performance. This implementation is a heuristic based on the original method proposed in the paper below ([PDF here](https://arxiv.org/abs/1801.02302)). 
 		- R. Spica, D. Falanga, E. Cristofalo, E. Montijano, D. Scaramuzza, and M. Schwager, "A Real-Time Game Theoretic Planner for Autonomous Two-Player Drone Racing", in the Proccedings of Robotics: Science and Systems (RSS), 2018. 
 
 ## Quick API overview 

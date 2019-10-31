@@ -1,37 +1,29 @@
-import gtp
 from baseline_racer import BaselineRacer
+from gtp_visualize import *
 from utils import to_airsim_vector, to_airsim_vectors
-from visualize import *
-
+import airsimneurips as airsim
+import argparse
+import gtp
+import numpy as np
+import time
 # Use non interactive matplotlib backend
 import matplotlib
-# matplotlib.use('Agg')
 matplotlib.use("TkAgg")
 import matplotlib.pyplot as plt
-from mpl_toolkits.mplot3d import Axes3D  # 3d plotting
-
-import airsimneurips as airsim
-import time
-import numpy as np
-
-import argparse
-
+from mpl_toolkits.mplot3d import Axes3D #3d plotting
 
 class BaselineRacerGTP(BaselineRacer):
     def __init__(self, traj_params, drone_names, drone_i, drone_params,
                  use_vel_constraints=False,
                  plot_gtp=False):
         super().__init__(drone_name=drone_names[drone_i], 
-          # plot_transform=True, 
-          viz_traj=True)
+            viz_traj=True)
         self.drone_names = drone_names
         self.drone_i = drone_i
         self.drone_params = drone_params
         self.traj_params = traj_params
-
         self.use_vel_constraints = use_vel_constraints
         self.plot_gtp = plot_gtp
-
         self.controller = None
 
         # for plotting: Just some fig, ax and line objects to keep track of
@@ -46,9 +38,6 @@ class BaselineRacerGTP(BaselineRacer):
         print("baseline_racer_gtp ready!")
         if (self.traj_params.blocking):
             print("   with blocking behavior activated")
-        # self.pause_counter = 0
-        # self.pause_limit = 3
-        # self.send_new_traj = True
         # self.image_num = 0
 
     def update_and_plan(self):
@@ -67,7 +56,6 @@ class BaselineRacerGTP(BaselineRacer):
                 replot_state(self.line_state, state)
 
         trajectory = self.controller.iterative_br(self.drone_i, state)
-        # trajectory = self.controller.init_trajectory(0, state[0,:])
 
         # now, let's issue the new trajectory to the trajectory planner
         # fetch the current state first, to see, if our trajectory is still planned for ahead of us
@@ -97,11 +85,6 @@ class BaselineRacerGTP(BaselineRacer):
         if not self.use_vel_constraints:
             # this returns a future, that we do not call .join() on, as we want to re-issue a new command   
             # once we compute the next iteration of our high-level planner
-            
-            # if self.send_new_traj:
-            #     print('Sending new trajectory!')
-            #     self.send_new_traj = False
-            # print('Final position trajectory: ', trajectory[k_truncate:, :])
 
             self.airsim_client.moveOnSplineAsync(
                 to_airsim_vectors(trajectory[k_truncate:, :]),
@@ -123,11 +106,6 @@ class BaselineRacerGTP(BaselineRacer):
                 vel_constraints[0, :] = trajectory[k_truncate, :] - new_state_i
             else:
                 vel_constraints[0, :] = trajectory[k_truncate, :] - trajectory[k_truncate - 1, :]
-
-            # vel_constraints /= self.traj_params.dt
-            # vel_constraints /= 100.0
-            # print('Final position trajectory: ', trajectory[k_truncate:, :])
-            # print('Final velocity trajectory: ', vel_constraints)
             
             self.airsim_client.moveOnSplineVelConstraintsAsync(
                 to_airsim_vectors(trajectory[k_truncate:, :]),
@@ -143,7 +121,7 @@ class BaselineRacerGTP(BaselineRacer):
             # refresh the updated plot
             self.fig.canvas.draw()
             self.fig.canvas.flush_events()
-            # # save figure
+            # save figure
             # figure_file_name = '/home/ericcristofalo/Documents/game_of_drones/log/image_' + str(self.image_num) + '.png'
             # print('saving image: ', figure_file_name)
             # self.fig.savefig(figure_file_name)
@@ -151,22 +129,6 @@ class BaselineRacerGTP(BaselineRacer):
             # # set the figure bounds around drone i for visualization
             # self.fig.xlim(state[self.drone_i][1] - 10, state[self.drone_i][1] + 10)
             # self.fig.ylim(state[self.drone_i][0] - 10, state[self.drone_i][0] + 10)
-
-        # # counter for pause debugging
-        # # self.pause_counter = self.pause_counter + 1
-        # # if (self.pause_counter == 9):
-        # #     self.pause_counter = 0;
-        # #     self.send_new_traj = True
-        # self.pause_counter += 1
-        # if (self.pause_counter == self.pause_limit):
-        #     airsim_pause_check = self.airsim_client.simIsPause()
-        #     if airsim_pause_check:  # if simulation is paused
-        #         self.airsim_client.simPause(False)  # unpause
-        #         self.pause_limit = 3  # run for this many steps
-        #     else:
-        #         self.airsim_client.simPause(True)  # pause
-        #         self.pause_limit = 3  # pause for this many steps
-        #     self.pause_counter = 0
 
     def run(self):
         self.get_ground_truth_gate_poses()
@@ -186,10 +148,8 @@ class BaselineRacerGTP(BaselineRacer):
             plot_track3d(self.ax3d, self.controller.track)
             self.fig2.show()
 
-
         while self.airsim_client.isApiControlEnabled(vehicle_name=self.drone_name):
             self.update_and_plan()
-
 
 def main(args):
     drone_names = ["drone_1", "drone_2"]
