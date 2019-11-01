@@ -10,7 +10,7 @@ div.dataTables_length select {
 }
 
 div.dataTables_filter {
-	text-align: right;
+	text-align: center;
 }
 
 div.dataTables_filter label {
@@ -28,6 +28,7 @@ div.dataTables_filter input {
 div.dataTables_info {
 	padding-top: 8px;
 	white-space: nowrap;
+	text-align: center;
 }
 
 div.dataTables_paginate {
