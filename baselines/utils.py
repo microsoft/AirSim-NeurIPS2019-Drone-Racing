@@ -1,5 +1,14 @@
+import airsimneurips as airsim
 import json
+import numpy as np
 import os
+
+def to_airsim_vector(np_arr):
+    assert np.size(np_arr) == 3
+    return airsim.Vector3r(np.float(np_arr[0]), np.float(np_arr[1]), np.float(np_arr[2]))
+
+def to_airsim_vectors(np_arr):
+    return [to_airsim_vector(np_arr[i, :]) for i in range(np.size(np_arr, 0))]
 
 # these clases are only meant to be settings generator.
 # for everything else, there's airsimneurips.Pose()
