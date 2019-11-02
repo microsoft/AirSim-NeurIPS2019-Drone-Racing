@@ -33,6 +33,7 @@ class BaselineRacerPerception(BaselineRacer):
         self.too_close_count = 0
         self.largest_next_gate_position_dist = 1.7
         self.aspect_ratio_max = 2.0
+        self.moveonspline_count = 0
 
     def get_rotation_matrix_quad_frame_to_global_frame(self,state):
         q0 = state.orientation.w_val
@@ -164,8 +165,8 @@ class BaselineRacerPerception(BaselineRacer):
                     self.no_gate_count = 0
                     self.too_close_count = 0
                     print("Move toward best estimate")
-                    self.airsim_client.moveOnSplineAsync([airsim.Vector3r(mu_1[0,0],mu_1[1,0], mu_1[2,0])], vel_max=15.0, acc_max=4.0, add_position_constraint=True, add_velocity_constraint=False,
-                        add_acceleration_constraint=False, viz_traj=self.viz_traj, viz_traj_color_rgba=self.viz_traj_color_rgba, vehicle_name=self.drone_name, replan_from_lookahead=True)
+                    self.airsim_client.moveOnSplineAsync([airsim.Vector3r(mu_1[0,0],mu_1[1,0], mu_1[2,0])], vel_max=10.0, acc_max=3.0, add_position_constraint=True, add_velocity_constraint=False,
+                        add_acceleration_constraint=False, viz_traj=self.viz_traj, viz_traj_color_rgba=self.viz_traj_color_rgba, vehicle_name=self.drone_name)
                 elif next_gate_position_dist < self.largest_next_gate_position_dist: #don't collect measurements
                     print("Gate too close")
                     self.no_gate_count = 0
@@ -212,6 +213,7 @@ class BaselineRacerPerception(BaselineRacer):
                     print("Gate detected, Measurement Taken")
                     print(self.measurement_count)
                     self.too_close_count = 0
+                    self.moveonspline_count += 1
                     cv2.circle(image_rgb, (int(gate_center_pixel_best[0]), int(gate_center_pixel_best[1])), 10, (255, 0, 0), -1)
                     cv2.circle(image_rgb, (int(gate_corners_plot_best[0][0]), int(gate_corners_plot_best[0][1])), 10, (255, 100, 0), -1)
                     cv2.circle(image_rgb, (int(gate_corners_plot_best[1][0]), int(gate_corners_plot_best[1][1])), 10, (255, 0, 100), -1)
@@ -219,8 +221,10 @@ class BaselineRacerPerception(BaselineRacer):
                     cv2.circle(image_rgb, (int(gate_corners_plot_best[3][0]), int(gate_corners_plot_best[3][1])), 10, (255, 0, 200), -1)
                     cv2.imshow("image_rgb", image_rgb)
                     cv2.waitKey(1)
-                    self.airsim_client.moveOnSplineAsync([waypoint_1,waypoint_2], vel_max=5.0, acc_max=3.0, add_position_constraint=True, add_velocity_constraint=False,
-                        add_acceleration_constraint=False, viz_traj=self.viz_traj, viz_traj_color_rgba=self.viz_traj_color_rgba, vehicle_name=self.drone_name, replan_from_lookahead=True)
+                    if self.moveonspline_count == 5:
+                        self.airsim_client.moveOnSplineAsync([waypoint_1,waypoint_2], vel_max=2.0, acc_max=4.0, add_position_constraint=True, add_velocity_constraint=False,
+                            add_acceleration_constraint=False, viz_traj=self.viz_traj, viz_traj_color_rgba=self.viz_traj_color_rgba, vehicle_name=self.drone_name, replan_from_lookahead=True)
+                        self.moveonspline_count = 0
 
 def main(args):
     # ensure you have generated the neurips planning settings file by running python generate_settings_file.py
