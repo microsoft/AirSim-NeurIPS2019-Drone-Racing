@@ -29,9 +29,9 @@ class BaselineRacerPerception(BaselineRacer):
         self.waypoint_gate_2 = np.array([0.0, 0.0, -4.0, 1.0]).T.reshape(4,1)
         self.gate_points_3D = 1.5*np.array([[0,0,0],[-1.0,1.0,0],[1.0,1.0,0],[1.0,-1.0,0],[-1.0,-1.0,0]])
         self.C = np.identity(3)
-        self.Q = 50*np.identity(3)
+        self.Q = 5*np.identity(3)
         self.too_close_count = 0
-        self.largest_next_gate_position_dist = 1.7
+        self.largest_next_gate_position_dist = 2.5
         self.aspect_ratio_max = 2.0
         self.moveonspline_count = 0
 
@@ -158,31 +158,22 @@ class BaselineRacerPerception(BaselineRacer):
             #print(smallest_measurement_error, next_gate_position_dist, next_gate_idx)
 
             # MOVE
+            self.moveonspline_count += 1
             if smallest_measurement_error > 5.0:
                 self.no_gate_count += 1
                 print("Gate NOT detected")
-                if self.no_gate_count == 10 and next_gate_position_dist >= self.largest_next_gate_position_dist:
+                if self.no_gate_count == 15 and next_gate_position_dist >= self.largest_next_gate_position_dist:
                     self.no_gate_count = 0
                     self.too_close_count = 0
-                    print("Move toward best estimate")
-                    self.airsim_client.moveOnSplineAsync([airsim.Vector3r(mu_1[0,0],mu_1[1,0], mu_1[2,0])], vel_max=10.0, acc_max=3.0, add_position_constraint=True, add_velocity_constraint=False,
+                    print("Move toward best estimate", next_gate_position_dist)
+                    if next_gate_position_dist > 20.0:
+                        vmax = 7.0
+                        amax = 5.0
+                    else:
+                        vmax = 3.0
+                        amax = 2.0
+                    self.airsim_client.moveOnSplineAsync([airsim.Vector3r(mu_1[0,0],mu_1[1,0], mu_1[2,0])], vel_max=vmax, acc_max=amax, add_position_constraint=True, add_velocity_constraint=False,
                         add_acceleration_constraint=False, viz_traj=self.viz_traj, viz_traj_color_rgba=self.viz_traj_color_rgba, vehicle_name=self.drone_name)
-                elif next_gate_position_dist < self.largest_next_gate_position_dist: #don't collect measurements
-                    print("Gate too close")
-                    self.no_gate_count = 0
-                    self.too_close_count += 1
-                    if self.too_close_count == 1:
-                        print("reset gate too close")
-                        next_gate_idx += 1
-                        if next_gate_idx >= len(self.gate_poses_ground_truth):
-                            next_gate_idx = 0
-                            print("race end")
-                        mu_1_airsimvector = self.gate_poses_ground_truth[next_gate_idx].position
-                        mu_1 = np.reshape(np.array([mu_1_airsimvector.x_val, mu_1_airsimvector.y_val, mu_1_airsimvector.z_val]), (3,1))
-                        sigma_1 = 50*np.identity(3)
-                        sigma_2 = 50*np.identity(3)
-                        self.measurement_count = 0
-                        self.too_close_count = 0
             else:
                 self.no_gate_count = 0
                 self.measurement_count += 1
@@ -193,27 +184,11 @@ class BaselineRacerPerception(BaselineRacer):
                 mu_2, sigma_2 = self.kalman_filter(mu_2, sigma_2, np.reshape(waypoint_2_best,(3,1)))
                 waypoint_1 = airsim.Vector3r(mu_1[0,0],mu_1[1,0], mu_1[2,0])
                 waypoint_2 = airsim.Vector3r(mu_2[0,0],mu_2[1,0], mu_2[2,0])
-
-                if next_gate_position_dist < self.largest_next_gate_position_dist: #don't collect measurements, continue to waypoint, reset filter with new mu and sigmas
-                    print("Gate too close")
-                    time.sleep(3)
-                    self.too_close_count += 1
-                    if self.too_close_count == 1:
-                        print("reset gate too close")
-                        next_gate_idx += 1
-                        if next_gate_idx >= len(self.gate_poses_ground_truth):
-                            next_gate_idx = 0
-                            print("race end")
-                        mu_1_airsimvector = self.gate_poses_ground_truth[next_gate_idx].position
-                        mu_1 = np.reshape(np.array([mu_1_airsimvector.x_val, mu_1_airsimvector.y_val, mu_1_airsimvector.z_val]), (3,1))
-                        sigma_1 = 50*np.identity(3)
-                        sigma_2 = 50*np.identity(3)
-                        self.measurement_count = 0
-                else:
+                if next_gate_position_dist > self.largest_next_gate_position_dist:
                     print("Gate detected, Measurement Taken")
                     print(self.measurement_count)
                     self.too_close_count = 0
-                    self.moveonspline_count += 1
+
                     cv2.circle(image_rgb, (int(gate_center_pixel_best[0]), int(gate_center_pixel_best[1])), 10, (255, 0, 0), -1)
                     cv2.circle(image_rgb, (int(gate_corners_plot_best[0][0]), int(gate_corners_plot_best[0][1])), 10, (255, 100, 0), -1)
                     cv2.circle(image_rgb, (int(gate_corners_plot_best[1][0]), int(gate_corners_plot_best[1][1])), 10, (255, 0, 100), -1)
@@ -221,10 +196,26 @@ class BaselineRacerPerception(BaselineRacer):
                     cv2.circle(image_rgb, (int(gate_corners_plot_best[3][0]), int(gate_corners_plot_best[3][1])), 10, (255, 0, 200), -1)
                     cv2.imshow("image_rgb", image_rgb)
                     cv2.waitKey(1)
-                    if self.moveonspline_count == 5:
-                        self.airsim_client.moveOnSplineAsync([waypoint_1,waypoint_2], vel_max=2.0, acc_max=4.0, add_position_constraint=True, add_velocity_constraint=False,
+                    if self.moveonspline_count >= 5:
+                        self.airsim_client.moveOnSplineAsync([waypoint_1,waypoint_2], vel_max=7.0, acc_max=5.0, add_position_constraint=True, add_velocity_constraint=False,
                             add_acceleration_constraint=False, viz_traj=self.viz_traj, viz_traj_color_rgba=self.viz_traj_color_rgba, vehicle_name=self.drone_name, replan_from_lookahead=True)
                         self.moveonspline_count = 0
+            if next_gate_position_dist < self.largest_next_gate_position_dist: #don't collect measurements, continue to waypoint, reset filter with new mu and sigmas
+                print("Gate too close")
+                time.sleep(3)
+                self.no_gate_count = 0
+                self.too_close_count += 1
+                if self.too_close_count == 1:
+                    print("reset gate too close")
+                    next_gate_idx += 1
+                    if next_gate_idx >= len(self.gate_poses_ground_truth):
+                        next_gate_idx = 0
+                        print("race end")
+                    mu_1_airsimvector = self.gate_poses_ground_truth[next_gate_idx].position
+                    mu_1 = np.reshape(np.array([mu_1_airsimvector.x_val, mu_1_airsimvector.y_val, mu_1_airsimvector.z_val]), (3,1))
+                    sigma_1 = 50*np.identity(3)
+                    sigma_2 = 50*np.identity(3)
+                    self.measurement_count = 0
 
 def main(args):
     # ensure you have generated the neurips planning settings file by running python generate_settings_file.py
