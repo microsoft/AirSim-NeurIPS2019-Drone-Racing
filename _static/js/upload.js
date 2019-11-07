@@ -1,11 +1,7 @@
-
-
 const uploadButton = document.getElementById("upload-button");
 const tier1File = document.getElementById("tier1-file");
-const tier2File = document.getElementById("tier2-file");
-const tier3File = document.getElementById("tier3-file");
 const reportFile = document.getElementById("report-file");
-// const submitForm = document.getElementById("submit-form");
+const submitForm = document.getElementById("submit-form");
 
 const reportStatus = message => {
     status.innerHTML += `${message}<br/>`;
@@ -30,9 +26,6 @@ const containerURL = new azblob.ContainerURL(
     }
 };
 
-
-
-
 const uploadFiles = async () => {
     try {
         var teamName = document.getElementById("team-name").value;
@@ -52,22 +45,7 @@ const uploadFiles = async () => {
             promises.push(azblob.uploadBrowserDataToBlockBlob(
                 azblob.Aborter.none, file, blockBlobURL));
         }
-        // Tier 2
-        for (const file of tier2File.files) {
-            console.log(file);
-            const blockBlobURL = azblob.BlockBlobURL.fromContainerURL(
-                containerURL, uploadTime + '-' + teamName + '-' + teamId + '-tier2-' + file.name);
-            promises.push(azblob.uploadBrowserDataToBlockBlob(
-                azblob.Aborter.none, file, blockBlobURL));
-        }
-        // Tier 3
-        for (const file of tier3File.files) {
-            console.log(file);
-            const blockBlobURL = azblob.BlockBlobURL.fromContainerURL(
-                containerURL, uploadTime + '-' + teamName + '-' + teamId + '-tier3-' + file.name);
-            promises.push(azblob.uploadBrowserDataToBlockBlob(
-                azblob.Aborter.none, file, blockBlobURL));
-        }
+
         // Reports 
         for (const file of reportFile.files) {
             console.log(file);
@@ -77,11 +55,10 @@ const uploadFiles = async () => {
                 azblob.Aborter.none, file, blockBlobURL));
         }
 
-
         await Promise.all(promises);
         alert("Upload complete");
         location.reload();
-        // submitForm.reset()     
+        submitForm.reset();
 
     } catch (error) {
         console.log(error.body.message);
@@ -90,6 +67,3 @@ const uploadFiles = async () => {
 }
 
 uploadButton.addEventListener("click", uploadFiles);
-
-
-
