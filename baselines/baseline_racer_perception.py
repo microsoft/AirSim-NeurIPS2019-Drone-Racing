@@ -162,16 +162,18 @@ class BaselineRacerPerception(BaselineRacer):
             if smallest_measurement_error > 5.0:
                 self.no_gate_count += 1
                 print("Gate NOT detected")
-                if self.no_gate_count == 15 and next_gate_position_dist >= self.largest_next_gate_position_dist:
+                if next_gate_position_dist > 30.0:
+                    vmax = 10.0
+                    amax = 6.0
+                    no_gate_count_max = 15
+                else:
+                    vmax = 3.0
+                    amax = 2.0
+                    no_gate_count_max = 5
+                if self.no_gate_count == no_gate_count_max and next_gate_position_dist >= self.largest_next_gate_position_dist:
                     self.no_gate_count = 0
                     self.too_close_count = 0
                     print("Move toward best estimate", next_gate_position_dist)
-                    if next_gate_position_dist > 20.0:
-                        vmax = 7.0
-                        amax = 5.0
-                    else:
-                        vmax = 3.0
-                        amax = 2.0
                     self.airsim_client.moveOnSplineAsync([airsim.Vector3r(mu_1[0,0],mu_1[1,0], mu_1[2,0])], vel_max=vmax, acc_max=amax, add_position_constraint=True, add_velocity_constraint=False,
                         add_acceleration_constraint=False, viz_traj=self.viz_traj, viz_traj_color_rgba=self.viz_traj_color_rgba, vehicle_name=self.drone_name)
             else:
@@ -188,7 +190,6 @@ class BaselineRacerPerception(BaselineRacer):
                     print("Gate detected, Measurement Taken")
                     print(self.measurement_count)
                     self.too_close_count = 0
-
                     cv2.circle(image_rgb, (int(gate_center_pixel_best[0]), int(gate_center_pixel_best[1])), 10, (255, 0, 0), -1)
                     cv2.circle(image_rgb, (int(gate_corners_plot_best[0][0]), int(gate_corners_plot_best[0][1])), 10, (255, 100, 0), -1)
                     cv2.circle(image_rgb, (int(gate_corners_plot_best[1][0]), int(gate_corners_plot_best[1][1])), 10, (255, 0, 100), -1)
