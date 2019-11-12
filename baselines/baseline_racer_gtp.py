@@ -70,11 +70,13 @@ class BaselineRacerGTP(BaselineRacer):
         # print("k_truncate: ", k_truncate)
 
         # k_truncate == args.n means that the whole trajectory is behind us, and we only issue the last point
+        plan_trajectory = True
         if k_truncate == self.traj_params.n:
-            k_truncate = self.traj_params.n - 1
+            # k_truncate = self.traj_params.n - 2
             print('DEBUG: truncating entire trajectory, k_truncate = {}'.format(k_truncate))
+            plan_trajectory = False
 
-        if self.plot_gtp:
+        if self.plot_gtp & plan_trajectory:
             # For our 2D trajectory, let's plot or update
             if self.lines[self.drone_i] is None:
                 self.lines[self.drone_i], = plot_trajectory_2d(self.ax, trajectory[k_truncate:, :])
@@ -86,16 +88,17 @@ class BaselineRacerGTP(BaselineRacer):
             # this returns a future, that we do not call .join() on, as we want to re-issue a new command   
             # once we compute the next iteration of our high-level planner
 
-            self.airsim_client.moveOnSplineAsync(
-                to_airsim_vectors(trajectory[k_truncate:, :]),
-                add_position_constraint=False,
-                add_velocity_constraint=True,
-                vel_max=self.drone_params[self.drone_i]["v_max"],
-                acc_max=self.drone_params[self.drone_i]["a_max"],
-                viz_traj=self.viz_traj, 
-                vehicle_name=self.drone_name,
-                replan_from_lookahead=False,
-                replan_lookahead_sec=0.0)
+            if plan_trajectory:
+                self.airsim_client.moveOnSplineAsync(
+                    to_airsim_vectors(trajectory[k_truncate:, :]),
+                    add_position_constraint=False,
+                    add_velocity_constraint=True,
+                    vel_max=self.drone_params[self.drone_i]["v_max"],
+                    acc_max=self.drone_params[self.drone_i]["a_max"],
+                    viz_traj=self.viz_traj, 
+                    vehicle_name=self.drone_name,
+                    replan_from_lookahead=False,
+                    replan_lookahead_sec=0.0)
         else:
             # Compute the velocity as the difference between waypoints
             vel_constraints = np.zeros_like(trajectory[k_truncate:, :])
@@ -107,15 +110,16 @@ class BaselineRacerGTP(BaselineRacer):
             else:
                 vel_constraints[0, :] = trajectory[k_truncate, :] - trajectory[k_truncate - 1, :]
             
-            self.airsim_client.moveOnSplineVelConstraintsAsync(
-                to_airsim_vectors(trajectory[k_truncate:, :]),
-                to_airsim_vectors(vel_constraints),
-                add_position_constraint=True,
-                add_velocity_constraint=True,
-                vel_max=self.drone_params[self.drone_i]["v_max"],
-                acc_max=self.drone_params[self.drone_i]["a_max"],
-                viz_traj=self.viz_traj,
-                vehicle_name=self.drone_name)
+            if plan_trajectory:
+                self.airsim_client.moveOnSplineVelConstraintsAsync(
+                    to_airsim_vectors(trajectory[k_truncate:, :]),
+                    to_airsim_vectors(vel_constraints),
+                    add_position_constraint=True,
+                    add_velocity_constraint=True,
+                    vel_max=self.drone_params[self.drone_i]["v_max"],
+                    acc_max=self.drone_params[self.drone_i]["a_max"],
+                    viz_traj=self.viz_traj,
+                    vehicle_name=self.drone_name)
 
         if self.plot_gtp:
             # refresh the updated plot
