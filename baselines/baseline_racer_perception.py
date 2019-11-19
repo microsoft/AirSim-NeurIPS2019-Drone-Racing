@@ -24,6 +24,10 @@ class BaselineRacerPerception(BaselineRacer):
         self.upper_green1 = np.array([50, 255, 50])
         self.lower_green2 = np.array([0, 175, 0])
         self.upper_green2 = np.array([170, 255, 150])
+        self.lower_green3 = np.array([50, 130, 50])
+        self.upper_green3 = np.array([120, 255, 100])
+        self.lower_green4 = np.array([215, 250, 239])
+        self.upper_green4 = np.array([230, 252, 248])
         self.dist_coeff = np.zeros((1,5))
         self.waypoint_gate_1 = np.array([0.0, 0.0, 0.0, 1.0]).T.reshape(4,1)
         self.waypoint_gate_2 = np.array([0.0, 0.0, -4.0, 1.0]).T.reshape(4,1)
@@ -118,7 +122,9 @@ class BaselineRacerPerception(BaselineRacer):
             rot_matrix_quad2global = self.get_rotation_matrix_quad_frame_to_global_frame(state)
             mask1 = cv2.inRange(image_rgb,self.lower_green1,self.upper_green1)
             mask2 = cv2.inRange(image_rgb,self.lower_green2,self.upper_green2)
-            mask = mask1 + mask2
+            mask3 = cv2.inRange(image_rgb,self.lower_green3,self.upper_green3)
+            mask4 = cv2.inRange(image_rgb,self.lower_green4,self.upper_green4)
+            mask = mask1 + mask2 + mask3 + mask4
             dilated_gate = cv2.dilate(mask,self.kernel, iterations=8)
             #eroded_gate = cv2.erode(dilated_gate,self.kernel, iterations=8)
             gate_contours = None
@@ -167,15 +173,15 @@ class BaselineRacerPerception(BaselineRacer):
                     amax = 6.0
                     no_gate_count_max = 15
                 else:
-                    vmax = 3.0
-                    amax = 2.0
-                    no_gate_count_max = 5
+                    vmax = 5.0
+                    amax = 3.0
+                    no_gate_count_max = 3
                 if self.no_gate_count == no_gate_count_max and next_gate_position_dist >= self.largest_next_gate_position_dist:
                     self.no_gate_count = 0
                     self.too_close_count = 0
                     print("Move toward best estimate", next_gate_position_dist)
-                    self.airsim_client.moveOnSplineAsync([airsim.Vector3r(mu_1[0,0],mu_1[1,0], mu_1[2,0])], vel_max=vmax, acc_max=amax, add_position_constraint=True, add_velocity_constraint=False,
-                        add_acceleration_constraint=False, viz_traj=self.viz_traj, viz_traj_color_rgba=self.viz_traj_color_rgba, vehicle_name=self.drone_name)
+                    self.airsim_client.moveOnSplineAsync([airsim.Vector3r(mu_1[0,0],mu_1[1,0], mu_1[2,0])], vel_max=vmax, acc_max=amax, add_position_constraint=True, add_velocity_constraint=True,
+                        add_acceleration_constraint=True, viz_traj=self.viz_traj, viz_traj_color_rgba=self.viz_traj_color_rgba, vehicle_name=self.drone_name, replan_from_lookahead=False, replan_lookahead_sec=1.0)
             else:
                 self.no_gate_count = 0
                 self.measurement_count += 1
@@ -198,12 +204,14 @@ class BaselineRacerPerception(BaselineRacer):
                     cv2.imshow("image_rgb", image_rgb)
                     cv2.waitKey(1)
                     if self.moveonspline_count >= 5:
-                        self.airsim_client.moveOnSplineAsync([waypoint_1,waypoint_2], vel_max=7.0, acc_max=5.0, add_position_constraint=True, add_velocity_constraint=False,
-                            add_acceleration_constraint=False, viz_traj=self.viz_traj, viz_traj_color_rgba=self.viz_traj_color_rgba, vehicle_name=self.drone_name, replan_from_lookahead=True)
+                        if next_gate_idx >= len(self.gate_poses_ground_truth)-1:
+                            next_gate_idx = -1
+                        self.airsim_client.moveOnSplineAsync([waypoint_1,waypoint_2,self.gate_poses_ground_truth[next_gate_idx+1].position], vel_max=7.0, acc_max=5.0, add_position_constraint=True, add_velocity_constraint=True,
+                            add_acceleration_constraint=True, viz_traj=self.viz_traj, viz_traj_color_rgba=self.viz_traj_color_rgba, vehicle_name=self.drone_name, replan_from_lookahead=False, replan_lookahead_sec=1.0)
                         self.moveonspline_count = 0
             if next_gate_position_dist < self.largest_next_gate_position_dist: #don't collect measurements, continue to waypoint, reset filter with new mu and sigmas
                 print("Gate too close")
-                time.sleep(3)
+                time.sleep(2)
                 self.no_gate_count = 0
                 self.too_close_count += 1
                 if self.too_close_count == 1:
