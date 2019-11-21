@@ -6,7 +6,7 @@ from numpy.linalg import multi_dot
 import airsimneurips as airsim
 import copy
 import cv2
-import math
+#import math
 import numpy as np
 import time
 
@@ -18,8 +18,6 @@ class BaselineRacerPerception(BaselineRacer):
         self.gate_corners_flat = np.float32([[[94, 64],[204, 64],[204, 174], [94, 174]]])
         self.camera_matrix = np.array([[160.000, 0.000000, 160.000], [0.000000, 160.000, 120.000], [0.000000, 0.000000, 1.000000]])
         self.gate_center_pixel_flat = np.array([149,119,1]).T
-        self.no_gate_count = 0
-        self.measurement_count = 0
         self.lower_green1 = np.array([0, 120, 0])
         self.upper_green1 = np.array([50, 255, 50])
         self.lower_green2 = np.array([0, 175, 0])
@@ -29,16 +27,20 @@ class BaselineRacerPerception(BaselineRacer):
         self.lower_green4 = np.array([215, 250, 239])
         self.upper_green4 = np.array([230, 252, 248])
         self.dist_coeff = np.zeros((1,5))
-        self.waypoint_gate_1 = np.array([0.0, 0.0, 0.0, 1.0]).T.reshape(4,1)
-        self.waypoint_gate_2 = np.array([0.0, 0.0, -4.0, 1.0]).T.reshape(4,1)
+        self.waypoint_gate_1 = np.array([0.0, 0.0, 0.0, 1.0]).T.reshape(4,1) #waypoint at gate center
+        self.waypoint_gate_2 = np.array([0.0, 0.0, -4.0, 1.0]).T.reshape(4,1) #waypoint behind the gate
         self.gate_points_3D = 1.5*np.array([[0,0,0],[-1.0,1.0,0],[1.0,1.0,0],[1.0,-1.0,0],[-1.0,-1.0,0]])
         self.C = np.identity(3)
         self.Q = 5*np.identity(3)
-        self.too_close_count = 0
         self.largest_next_gate_position_dist = 2.5
         self.aspect_ratio_max = 2.0
+        self.no_gate_count = 0
+        self.measurement_count = 0
+        self.too_close_count = 0
         self.moveonspline_count = 0
+        self.next_gate_idx = 0
 
+    # gets rotation matrix from quad frame to global frame
     def get_rotation_matrix_quad_frame_to_global_frame(self,state):
         q0 = state.orientation.w_val
         q1 = state.orientation.x_val
@@ -49,26 +51,37 @@ class BaselineRacerPerception(BaselineRacer):
                                         [2*(q1*q3-q0*q2), 2*(q1*q0+q2*q3), 1-2*(q1**2+q2**2)]])
         return rot_matrix_quad2global
 
+    # returns true if the aspect ratio of the gate is too large, returns false if the aspect ratio of the gate is under self.aspect_ratio_max
     def find_aspect_ratio(self, gate_corners):
         aspect_ratio_mtx = np.empty((1,4))
         aspect_ratio_mtx[0,0] = abs(np.float32(gate_corners[1][1] - gate_corners[2][1])/np.float32(gate_corners[0][0] - gate_corners[1][0]+self.eps))
         aspect_ratio_mtx[0,1] = abs(np.float32(gate_corners[0][1] - gate_corners[3][1])/np.float32(gate_corners[2][0] - gate_corners[3][0]+self.eps))
         aspect_ratio_mtx[0,2] = abs(np.float32(gate_corners[0][1] - gate_corners[3][1])/np.float32(gate_corners[0][0] - gate_corners[1][0]+self.eps))
         aspect_ratio_mtx[0,3] = abs(np.float32(gate_corners[1][1] - gate_corners[2][1])/np.float32(gate_corners[2][0] - gate_corners[3][0]+self.eps))
-        large_aspect_ratio = 1.0
+        aspect_ratio_too_large = False
         for i in range(4):
             if aspect_ratio_mtx[0,i] < 1.0:
                 aspect_ratio_mtx[0,i] = 1/aspect_ratio_mtx[0,i]
             if aspect_ratio_mtx[0,i] > self.aspect_ratio_max:
-                large_aspect_ratio = aspect_ratio_mtx[0,i]
-        return large_aspect_ratio
+                aspect_ratio_too_large = True
+        return aspect_ratio_too_large
 
+    # get waypoint in global coordinate frame from waypoint in gate centered frame
     def gate_frame_waypoint_to_global_waypoint(self,state,rot_translation_matrix_gate2quad,rot_matrix_quad2global,waypoint_gate):
         waypoint_rel = np.dot(rot_translation_matrix_gate2quad, waypoint_gate)
         waypoint_rel = np.dot(rot_matrix_quad2global, np.array([waypoint_rel[2], waypoint_rel[0], -waypoint_rel[1]]))
         waypoint_glob = np.reshape(np.array([state.position.x_val + waypoint_rel[0], state.position.y_val + waypoint_rel[1], state.position.z_val - waypoint_rel[2]]),(1,3))
         return waypoint_glob
 
+    # Use a Kalman Filter to estimate waypoints in global coordinate frame
+    def kalman_filter(self, mu, sigma, y):
+        K = multi_dot([sigma,self.C.T,np.linalg.inv(multi_dot([self.C,sigma,self.C.T])+self.Q)])
+        mu = mu + np.dot(K,(y-np.dot(self.C,mu)))
+        sigma = np.dot((np.identity(3)-np.dot(K,self.C)),sigma)
+        return mu, sigma
+
+    # find the error between the measured gate center and mean of the estimate
+    # measured gate center found through homography transformation from four gate corner points
     def find_measurement_error(self,four_gate_corners, mu_1, state, rot_matrix_quad2global):
         four_gate_corners = order_points(four_gate_corners.reshape(4,2))
         gate_corners_plot = copy.deepcopy(four_gate_corners)
@@ -97,16 +110,9 @@ class BaselineRacerPerception(BaselineRacer):
         measurement_error = np.linalg.norm(waypoint_1_error)
         return measurement_error, waypoint_glob_1, waypoint_glob_2, gate_center_pixel, gate_corners_plot
 
-    def kalman_filter(self, mu, sigma, y):
-        K = multi_dot([sigma,self.C.T,np.linalg.inv(multi_dot([self.C,sigma,self.C.T])+self.Q)])
-        mu = mu + np.dot(K,(y-np.dot(self.C,mu)))
-        sigma = np.dot((np.identity(3)-np.dot(K,self.C)),sigma)
-        return mu, sigma
-
     def run(self):
         # Move through first gate
-        self.get_ground_truth_gate_poses() # noisy since tier 2 is default
-        next_gate_idx = 0
+        self.get_ground_truth_gate_poses() # Tier 2 gives noisy prior of gate poses
         mu_1_airsimvector = self.gate_poses_ground_truth[0].position
         mu_1 = np.reshape(np.array([mu_1_airsimvector.x_val, mu_1_airsimvector.y_val, mu_1_airsimvector.z_val]), (3,1))
         sigma_1 = 50*np.identity(3)
@@ -114,12 +120,14 @@ class BaselineRacerPerception(BaselineRacer):
         while self.airsim_client.isApiControlEnabled(vehicle_name=self.drone_name):
         	# Take image
             response = self.airsim_client.simGetImages([airsim.ImageRequest("fpv_cam", airsim.ImageType.Scene, False, False)])
-            img1d = np.fromstring(response[0].image_data_uint8, dtype=np.uint8) # get numpy array
+            img1d = np.fromstring(response[0].image_data_uint8, dtype=np.uint8)
             image_rgb = img1d.reshape(response[0].height, response[0].width, 3)
 
         	# Get quad state when the image was taken
             state = self.airsim_client.simGetVehiclePose()
             rot_matrix_quad2global = self.get_rotation_matrix_quad_frame_to_global_frame(state)
+
+            # Get gate mask
             mask1 = cv2.inRange(image_rgb,self.lower_green1,self.upper_green1)
             mask2 = cv2.inRange(image_rgb,self.lower_green2,self.upper_green2)
             mask3 = cv2.inRange(image_rgb,self.lower_green3,self.upper_green3)
@@ -128,17 +136,16 @@ class BaselineRacerPerception(BaselineRacer):
             dilated_gate = cv2.dilate(mask,self.kernel, iterations=8)
             #eroded_gate = cv2.erode(dilated_gate,self.kernel, iterations=8)
             gate_contours = None
-            gate_contours, hierarchy = cv2.findContours(dilated_gate, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+            gate_contours, ____ = cv2.findContours(dilated_gate, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
 
             cv2.imshow("mask", mask)
             cv2.imshow("dilated_gate", dilated_gate)
             #cv2.imshow("eroded_gate", eroded_gate)
             cv2.waitKey(1)
 
-            largest_area = 0.0
             gate_corners = None
             smallest_measurement_error = 100
-            #check for each contour
+            # check each contour
             for contour in gate_contours:
                 gate_contour_epsilon = 0.01 * cv2.arcLength(contour, True)
                 gate_contour_approx = cv2.approxPolyDP(contour,gate_contour_epsilon,True)
@@ -153,15 +160,15 @@ class BaselineRacerPerception(BaselineRacer):
                         four_gate_corners = np.append(four_gate_corners,i,axis=0)
                     #now find the measurement error
                     measurement_error, waypoint_glob_1, waypoint_glob_2, gate_center_pixel, gate_corners_plot  = self.find_measurement_error(four_gate_corners, mu_1, state, rot_matrix_quad2global)
-                    aspect_ratio = self.find_aspect_ratio(four_gate_corners)
-                    if measurement_error < smallest_measurement_error and aspect_ratio < self.aspect_ratio_max:
+                    aspect_ratio_too_large = self.find_aspect_ratio(four_gate_corners)
+                    if measurement_error < smallest_measurement_error and aspect_ratio_too_large == False:
                         waypoint_1_best = copy.deepcopy(waypoint_glob_1)
                         waypoint_2_best = copy.deepcopy(waypoint_glob_2)
                         smallest_measurement_error = copy.deepcopy(measurement_error)
                         gate_center_pixel_best = copy.deepcopy(gate_center_pixel)
                         gate_corners_plot_best = copy.deepcopy(gate_corners_plot)
             next_gate_position_dist = abs(np.linalg.norm(np.reshape(np.array([state.position.x_val,state.position.y_val,state.position.z_val]),(3,1)) - mu_1))
-            #print(smallest_measurement_error, next_gate_position_dist, next_gate_idx)
+            #print(smallest_measurement_error, next_gate_position_dist, self.next_gate_idx)
 
             # MOVE
             self.moveonspline_count += 1
@@ -204,9 +211,9 @@ class BaselineRacerPerception(BaselineRacer):
                     cv2.imshow("image_rgb", image_rgb)
                     cv2.waitKey(1)
                     if self.moveonspline_count >= 5:
-                        if next_gate_idx >= len(self.gate_poses_ground_truth)-1:
-                            next_gate_idx = -1
-                        self.airsim_client.moveOnSplineAsync([waypoint_1,waypoint_2,self.gate_poses_ground_truth[next_gate_idx+1].position], vel_max=7.0, acc_max=5.0, add_position_constraint=True, add_velocity_constraint=True,
+                        if self.next_gate_idx >= len(self.gate_poses_ground_truth)-1:
+                            self.next_gate_idx = -1
+                        self.airsim_client.moveOnSplineAsync([waypoint_1,waypoint_2,self.gate_poses_ground_truth[self.next_gate_idx+1].position], vel_max=7.0, acc_max=5.0, add_position_constraint=True, add_velocity_constraint=True,
                             add_acceleration_constraint=True, viz_traj=self.viz_traj, viz_traj_color_rgba=self.viz_traj_color_rgba, vehicle_name=self.drone_name, replan_from_lookahead=False, replan_lookahead_sec=1.0)
                         self.moveonspline_count = 0
             if next_gate_position_dist < self.largest_next_gate_position_dist: #don't collect measurements, continue to waypoint, reset filter with new mu and sigmas
@@ -216,11 +223,11 @@ class BaselineRacerPerception(BaselineRacer):
                 self.too_close_count += 1
                 if self.too_close_count == 1:
                     print("reset gate too close")
-                    next_gate_idx += 1
-                    if next_gate_idx >= len(self.gate_poses_ground_truth):
-                        next_gate_idx = 0
+                    self.next_gate_idx += 1
+                    if self.next_gate_idx >= len(self.gate_poses_ground_truth):
+                        self.next_gate_idx = 0
                         print("race end")
-                    mu_1_airsimvector = self.gate_poses_ground_truth[next_gate_idx].position
+                    mu_1_airsimvector = self.gate_poses_ground_truth[self.next_gate_idx].position
                     mu_1 = np.reshape(np.array([mu_1_airsimvector.x_val, mu_1_airsimvector.y_val, mu_1_airsimvector.z_val]), (3,1))
                     sigma_1 = 50*np.identity(3)
                     sigma_2 = 50*np.identity(3)
