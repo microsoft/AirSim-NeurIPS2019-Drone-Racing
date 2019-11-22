@@ -1,4 +1,5 @@
 Team, Num Gates Passed, Lap Time (s), Num Gates Missed, Num Gates Attempted, Max Speed (m/s), Avg Speed (m/s) 
-Sangyun,25,81.50,0,25 / 25,18.51,5.72
+Sangyun,25,79.92,0,25 / 25,16.69,5.96
 USRG,25,86.64,0,25 / 25,10.72,5.44
 Dedale,25,128.33,0,25 / 25,7.61,3.81
+NCTU_REM,7,0.00,16,23 / 25,17.49,2.18
