@@ -12,6 +12,16 @@
 
 ### Downloading and running AirSim Binaries
 #### Downloading
+- Final round binaries and environments (v1.1)
+	- tl;dr:
+		- [Linux] Use the [download_final_round_binaries.sh](download_final_round_binaries.sh) script
+	- Long version:
+		- Download the v1.1 [Linux](https://github.com/microsoft/AirSim-NeurIPS2019-Drone-Racing/releases/tag/v1.1-linux) or [Windows](https://github.com/microsoft/AirSim-NeurIPS2019-Drone-Racing/releases/tag/v1.1-windows) `AirSim.zip`, and unzip it. 
+		- Download your qualifier environments (shipped in pakfiles) - `Final_Tier_1_and_Tier_2.pak`  and ` Final_Tier_3.pak`.
+		- Move the environment pakfiles into `AirSim/AirSimExe/Content/Paks`. 
+		- Download and move the `settings.json` file to `~/Documents/AirSim/settings.json`. 
+		- Use `airsimneurips` >= 1.2.0
+
 - Qualifier binaries and environments (v1.0)
 	- tl;dr:
 		- [Linux] Use the [download_qualification_binaries.sh](download_qualification_binaries.sh) script
@@ -108,7 +118,7 @@ We recommend you used python >= 3.6. Python 2.7 will go [out of support soon](ht
 	- Going through both open and closed issues in this repository might answer some of your questions. The search bar on top left can prove useful.    
 	- [AirSim upstream API](https://microsoft.github.io/AirSim/docs/apis/) and [examples](https://github.com/microsoft/AirSim/tree/master/PythonClient) can also be of use. However, please note that the main AirSim repo's API is not used in the competition (there's some overlap and some differences), however is a good learning resource. 
     
-## Submitting Results and Leaderboard
+## Submitting Results and Leaderboard - Qualification Round
 - For the qualification round, we have one race track for each tier. The relevant binaries (v1.0) are available for [linux](https://github.com/microsoft/AirSim-NeurIPS2019-Drone-Racing/releases/tag/v1.0-linux) and [windows](https://github.com/microsoft/AirSim-NeurIPS2019-Drone-Racing/releases/tag/v1.0-windows)
 	- Tier 1: This is in the Soccer Field environment.    
 	THe race track is in the `Qual_Tier_1_and_Tier_3.pak` pakfile
@@ -164,7 +174,58 @@ Please read [the race monitoring section](https://github.com/microsoft/AirSim-Ne
 	- We have emailed you a private key, which should be entered in the `Team ID` field. This helps us verify it was your team who indeed made the submission.   
 	- The [leaderboard](https://microsoft.github.io/AirSim-NeurIPS2019-Drone-Racing/leaderboard.html) is updated once per day at 2100 PST.   
 	If you do not see your results after 24 hours, please [email us](mailto:neuripsdronecontestinfo@gmail.com) with your team name and submitted log files.
-	
+
+## Submitting Results and Leaderboard - Final Round
+- For the final round, we have one race track for each tier. The relevant binaries (v1.1) are available for [linux](https://github.com/microsoft/AirSim-NeurIPS2019-Drone-Racing/releases/tag/v1.1-linux) and [windows](https://github.com/microsoft/AirSim-NeurIPS2019-Drone-Racing/releases/tag/v1.1-windows)
+	- Tier 1: This is in the Soccer Field environment.    
+	THe race track is in the `Final_Tier_1_and_Tier_2.pak` pakfile
+	- Tier 2: This is in the Soccer Field environment.    
+	The race track is in the `Final_Tier_1_and_Tier_2.pak` pakfile. 
+	- Tier 3: This is again in the ZhangJiaJie environment.    
+	The race track is in the `Final_Tier_3.pak` pakfile. 
+
+- How to generate logfiles for each tier:
+	- Loading level and starting race:
+		- Please update your airsimneurips pythonclient (should be >=1.2.0). 
+		- Calling `simStartRace(race_tier=1, 2, or 3)` generates the appropriate log files. You can only run `tier N` races in `Final_Tier_N` levels. 
+		- Tier 1: 
+			```python
+				airsim_client.simLoadLevel('Final_Tier_1')
+				airsim_client.simStartRace(tier=1)
+			```
+
+		- Tier 2: 
+			```python
+				airsim_client.simLoadLevel('Final_Tier_2')
+				airsim_client.simStartRace(tier=2)
+			```
+
+		- Tier 3: 
+			```python
+				airsim_client.simLoadLevel('Final_Tier_3')
+				airsim_client.simStartRace(tier=3)
+			```
+	- As Tier 2 focuses on perception and Tier 3 focuses on both perception and planning, note that `simGetObjectPose` returns noisy gate poses.
+
+	- As soon as `simStartRace(tier=1)`  or `simStartRace(tier=3)` is called, `drone_2` (MSR opponent racer) will start flying. 
+
+	- See `baseline_racer.py` for sample code. The previous bullet points are being called in wrapper functions in the following snippet in `baseline_racer.py`:
+	```python
+		baseline_racer.load_level(args.level_name)
+		baseline_racer.start_race(args.race_tier)
+	```
+
+- To submit your results to the final leaderboard:
+	- Navigate to the [submission site](https://microsoft.github.io/AirSim-NeurIPS2019-Drone-Racing/upload.html), enter your team name in the proper field, and upload any number of [race logs](https://github.com/microsoft/AirSim-NeurIPS2019-Drone-Racing/blob/master/docs/competition_guidelines.md#race-monitoring).   
+It's ok to make a submission for as little as a single track and/or a single tier.   
+You can find race logs inside of `AirSimExe/Saved/Logs/RaceLogs` in your downloaded binary folder.   
+Please read [the race monitoring section](https://github.com/microsoft/AirSim-NeurIPS2019-Drone-Racing/blob/master/docs/competition_guidelines.md#race-monitoring) in the competition guidelines for more details. 
+	- The leaderboard will publish the results of a drone that is named `drone_1` (call [`generate_settings_file.py`](https://github.com/microsoft/AirSim-NeurIPS2019-Drone-Racing/blob/master/baselines/generate_settings_file.py) to generate an AirSim settings file, as done for the `baseline_racer` below. 
+	- Please submit a PDF file in the `report` section to help us verify the honesty of your submission by the Dec 5th, 2359 PST deadline. Please summarize your approach for all tiers you make a submission for, with appropriate citations. The report PDF size should not exceed 10 MB, and should be a maximum of 6 pages in length. We leave the exact format of the report to your descrition, but the [IEEE template](https://ras.papercept.net/conferences/support/tex.php) is a good choice.  
+	- We have emailed you a private key, which should be entered in the `Team ID` field. This helps us verify it was your team who indeed made the submission.   
+	- The [final leaderboard](https://microsoft.github.io/AirSim-NeurIPS2019-Drone-Racing/leaderboard_final.html) is updated once per day at 2100 PST.   
+	If you do not see your results after 24 hours, please [email us](mailto:neuripsdronecontestinfo@gmail.com) with your team name and submitted log files.
+
 ## Sample code
  - Plan and move on minimum jerk trajectory using gate ground truth poses:
     - Generate an AirSim settings.json file
