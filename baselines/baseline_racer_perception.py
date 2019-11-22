@@ -6,7 +6,6 @@ from numpy.linalg import multi_dot
 import airsimneurips as airsim
 import copy
 import cv2
-#import math
 import numpy as np
 import time
 
@@ -92,7 +91,7 @@ class BaselineRacerPerception(BaselineRacer):
 
         # find middle of gate pixel coordinates
         gate_center_pixel = np.dot(np.linalg.inv(homography_matrix), self.gate_center_pixel_flat)
-        gate_center_pixel = (int(gate_center_pixel[0]/(gate_center_pixel[2]+self.eps)), int(gate_center_pixel[1]/(gate_center_pixel[2]+self.eps)))
+        gate_center_pixel = ((gate_center_pixel[0]/(gate_center_pixel[2])), (gate_center_pixel[1]/(gate_center_pixel[2])))
 
         # coordinates of gate corners in image (pixel coordinates)
         gate_points_2D = np.float32(np.concatenate((np.array(gate_center_pixel).reshape(-1,1,2),four_gate_corners),axis=0))
@@ -111,7 +110,6 @@ class BaselineRacerPerception(BaselineRacer):
         return measurement_error, waypoint_glob_1, waypoint_glob_2, gate_center_pixel, gate_corners_plot
 
     def run(self):
-        # Move through first gate
         self.get_ground_truth_gate_poses() # Tier 2 gives noisy prior of gate poses
         mu_1_airsimvector = self.gate_poses_ground_truth[0].position
         mu_1 = np.reshape(np.array([mu_1_airsimvector.x_val, mu_1_airsimvector.y_val, mu_1_airsimvector.z_val]), (3,1))
@@ -134,17 +132,17 @@ class BaselineRacerPerception(BaselineRacer):
             mask4 = cv2.inRange(image_rgb,self.lower_green4,self.upper_green4)
             mask = mask1 + mask2 + mask3 + mask4
             dilated_gate = cv2.dilate(mask,self.kernel, iterations=8)
-            #eroded_gate = cv2.erode(dilated_gate,self.kernel, iterations=8)
             gate_contours = None
             gate_contours, ____ = cv2.findContours(dilated_gate, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
 
             cv2.imshow("mask", mask)
             cv2.imshow("dilated_gate", dilated_gate)
-            #cv2.imshow("eroded_gate", eroded_gate)
             cv2.waitKey(1)
 
             gate_corners = None
             smallest_measurement_error = 100
+
+            # find four gate corners that give the smallest error between the gate center and mean
             # check each contour
             for contour in gate_contours:
                 gate_contour_epsilon = 0.01 * cv2.arcLength(contour, True)
@@ -158,7 +156,6 @@ class BaselineRacerPerception(BaselineRacer):
                     for i in comb:
                         i = np.reshape(i,(1,2))
                         four_gate_corners = np.append(four_gate_corners,i,axis=0)
-                    #now find the measurement error
                     measurement_error, waypoint_glob_1, waypoint_glob_2, gate_center_pixel, gate_corners_plot  = self.find_measurement_error(four_gate_corners, mu_1, state, rot_matrix_quad2global)
                     aspect_ratio_too_large = self.find_aspect_ratio(four_gate_corners)
                     if measurement_error < smallest_measurement_error and aspect_ratio_too_large == False:
@@ -168,16 +165,15 @@ class BaselineRacerPerception(BaselineRacer):
                         gate_center_pixel_best = copy.deepcopy(gate_center_pixel)
                         gate_corners_plot_best = copy.deepcopy(gate_corners_plot)
             next_gate_position_dist = abs(np.linalg.norm(np.reshape(np.array([state.position.x_val,state.position.y_val,state.position.z_val]),(3,1)) - mu_1))
-            #print(smallest_measurement_error, next_gate_position_dist, self.next_gate_idx)
-
-            # MOVE
             self.moveonspline_count += 1
+
+            # If the smallest error if large, then continue toward the best estimate of the gate location
             if smallest_measurement_error > 5.0:
                 self.no_gate_count += 1
                 print("Gate NOT detected")
                 if next_gate_position_dist > 30.0:
                     vmax = 10.0
-                    amax = 6.0
+                    amax = 3.0
                     no_gate_count_max = 15
                 else:
                     vmax = 5.0
@@ -189,6 +185,7 @@ class BaselineRacerPerception(BaselineRacer):
                     print("Move toward best estimate", next_gate_position_dist)
                     self.airsim_client.moveOnSplineAsync([airsim.Vector3r(mu_1[0,0],mu_1[1,0], mu_1[2,0])], vel_max=vmax, acc_max=amax, add_position_constraint=True, add_velocity_constraint=True,
                         add_acceleration_constraint=True, viz_traj=self.viz_traj, viz_traj_color_rgba=self.viz_traj_color_rgba, vehicle_name=self.drone_name, replan_from_lookahead=False, replan_lookahead_sec=1.0)
+            # else, input the measurement to the Kalman Filter and proceed to the updated estimate
             else:
                 self.no_gate_count = 0
                 self.measurement_count += 1
@@ -203,7 +200,7 @@ class BaselineRacerPerception(BaselineRacer):
                     print("Gate detected, Measurement Taken")
                     print(self.measurement_count)
                     self.too_close_count = 0
-                    cv2.circle(image_rgb, (int(gate_center_pixel_best[0]), int(gate_center_pixel_best[1])), 10, (255, 0, 0), -1)
+                    #cv2.circle(image_rgb, (int(gate_center_pixel_best[0]), int(gate_center_pixel_best[1])), 10, (255, 0, 0), -1)
                     cv2.circle(image_rgb, (int(gate_corners_plot_best[0][0]), int(gate_corners_plot_best[0][1])), 10, (255, 100, 0), -1)
                     cv2.circle(image_rgb, (int(gate_corners_plot_best[1][0]), int(gate_corners_plot_best[1][1])), 10, (255, 0, 100), -1)
                     cv2.circle(image_rgb, (int(gate_corners_plot_best[2][0]), int(gate_corners_plot_best[2][1])), 10, (255, 200, 0), -1)
@@ -216,7 +213,8 @@ class BaselineRacerPerception(BaselineRacer):
                         self.airsim_client.moveOnSplineAsync([waypoint_1,waypoint_2,self.gate_poses_ground_truth[self.next_gate_idx+1].position], vel_max=7.0, acc_max=5.0, add_position_constraint=True, add_velocity_constraint=True,
                             add_acceleration_constraint=True, viz_traj=self.viz_traj, viz_traj_color_rgba=self.viz_traj_color_rgba, vehicle_name=self.drone_name, replan_from_lookahead=False, replan_lookahead_sec=1.0)
                         self.moveonspline_count = 0
-            if next_gate_position_dist < self.largest_next_gate_position_dist: #don't collect measurements, continue to waypoint, reset filter with new mu and sigmas
+            # If too close to the gate don't collect measurements, continue to waypoint, reset filter with new mean and covariance
+            if next_gate_position_dist < self.largest_next_gate_position_dist:
                 print("Gate too close")
                 time.sleep(2)
                 self.no_gate_count = 0
