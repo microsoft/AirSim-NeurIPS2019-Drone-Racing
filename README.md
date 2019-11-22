@@ -264,35 +264,97 @@ Please read [the race monitoring section](https://github.com/microsoft/AirSim-Ne
 		- R. Spica, D. Falanga, E. Cristofalo, E. Montijano, D. Scaramuzza, and M. Schwager, "A Real-Time Game Theoretic Planner for Autonomous Two-Player Drone Racing", in the Proccedings of Robotics: Science and Systems (RSS), 2018. 
 
 ## Quick API overview 
-- Changing unreal environments  
-	There are two ways to swap between environments / "unreal level", either via AirSIm API or by the UI menu.
-	- Python API 
-	Use `simLoadLevel(level_name="MainMenu")` to change Unreal environments on the fly.   
-	 Possible values for `level_name` are : `"Soccer_Field_Easy"`, `"Soccer_Field_Medium"`, `"ZhangJiaJie_Medium"`, `"Building99_Hard"`. 
-	Here's a quick snippet to iterate throught all the training environments.   
-	Before trying this, please ensure you've downloaded the corresponding training (v0.3) / qualifier (v1.0) binaries, [as described above](https://github.com/microsoft/AirSim-NeurIPS2019-Drone-Racing#downloading-airsimexe-and-unreal-environments)
+We added some new APIs (marked with &#x1F49A;) to [AirSim](https://github.com/Microsoft/Airsim) for the NeurIPS competition binaries. 
 
-		```python
-		import airsimneurips as airsim
-		client = airsim.MultirotorClient()
-		client.confirmConnection()
+#### Loading Unreal Engine environments  
+- [`simLoadLevel(level_name)`](https://microsoft.github.io/AirSim-NeurIPS2019-Drone-Racing/api.html#airsimneurips.client.MultirotorClient.level_name) &#x1F49A;    
+Possible values for `level_name` are: 
+	- `"Soccer_Field_Easy"`, `"Soccer_Field_Medium"`, `"ZhangJiaJie_Medium"`, `"Building99_Hard"` in the training binaries (`v0.3`). 
+	- `"Qualification_Tier_1"`, `"Qualification_Tier_2"`, `"Qualification_Tier_3"` in the qualification binaries (`v1.0`). 
+	- `"Final_Tier_1"`, `"Final_Tier_2"`, `"Final_Tier_3"` in the final round binaries (`v1.1`). 
+Before trying this, please ensure you've downloaded the corresponding training (`v0.3`) / qualifier (`v1.0`) / final round (`v1.0`) binaries, [as described above](https://github.com/microsoft/AirSim-NeurIPS2019-Drone-Racing#downloading-airsimexe-and-unreal-environments)
 
-		# use this for training environments (v0.3)
+- UI Menu
+	- Press `F10` to toggle the level menu
+	- Click your desired level. (Note: the UI lists all the pakfiles in the `AirSim/AirSimExe/Content/Paks` directory. Ensure you downloaded the pakfile, if you are not able to see a particular environment)
 
-		client.simLoadLevel('Soccer_Field_Easy')	
-		client.simLoadLevel('Soccer_Field_Medium')	
-		client.simLoadLevel('ZhangJiaJie_Medium')
-		client.simLoadLevel('Building99_Hard')
+#### Race APIs:
+- Start a race:
+	[`simStartRace(tier=1/2/3)`](https://microsoft.github.io/AirSim-NeurIPS2019-Drone-Racing/api.html#airsimneurips.client.MultirotorClient.simStartRace) &#x1F49A;
 
-		# use this for qualification environments (v1.0)
-		client.simLoadLevel('Qualification_Tier_1')	
-		client.simLoadLevel('Qualification_Tier_2')	
-		client.simLoadLevel('Qualification_Tier_3')	
+- Reset race:
+	[`simResetRace()`](https://microsoft.github.io/AirSim-NeurIPS2019-Drone-Racing/api.html#airsimneurips.client.MultirotorClient.simResetRace) &#x1F49A;
 
-		```
-	- UI Menu
-		- Press `F10` to toggle the level menu
-		- Click your desired level. (Note: the UI lists all the pakfiles in the `AirSim/AirSimExe/Content/Paks` directory. Ensure you downloaded the pakfile, if you are not able to see a particular environment)
+- Check if racer is disqualified:
+	[`simIsRacerDisqualified()`](https://microsoft.github.io/AirSim-NeurIPS2019-Drone-Racing/api.html#airsimneurips.client.MultirotorClient.simIsRacerDisqualified) &#x1F49A;
+
+- Get index of last gate passed:
+	[`simGetLastGatePassed()`](https://microsoft.github.io/AirSim-NeurIPS2019-Drone-Racing/api.html#airsimneurips.client.MultirotorClient.simGetLastGatePassed) &#x1F49A;
+
+- Disable generation of logfiles by race APIs:
+	[`simDisableRaceLog`](https://microsoft.github.io/AirSim-NeurIPS2019-Drone-Racing/api.html#airsimneurips.client.MultirotorClient.simDisableRaceLog) &#x1F49A;
+
+#### Lower level control APIs:
+- FPV like Angle rate setpoint APIs: 
+	- [`moveByAngleRatesThrottleAsync`](https://microsoft.github.io/AirSim-NeurIPS2019-Drone-Racing/api.html#airsimneurips.client.MultirotorClient.moveByAngleRatesThrottleAsync) &#x1F49A;
+	- [`moveByAngleRatesZAsync`](https://microsoft.github.io/AirSim-NeurIPS2019-Drone-Racing/api.html#airsimneurips.client.MultirotorClient.moveByAngleRatesZAsync) &#x1F49A; (stabilizes altitude)
+
+- Angle setpoint APIs:  
+	- [`moveByRollPitchYawThrottleAsync`](https://microsoft.github.io/AirSim-NeurIPS2019-Drone-Racing/api.html#airsimneurips.client.MultirotorClient.moveByRollPitchYawThrottleAsync) &#x1F49A;
+	- [`moveByRollPitchYawZAsync`](https://microsoft.github.io/AirSim-NeurIPS2019-Drone-Racing/api.html#airsimneurips.client.MultirotorClient.moveByRollPitchYawZAsync) &#x1F49A; (stabilizes altitude)
+
+- RollPitchYawrate setpoint APIs: 
+	- [`moveByRollPitchYawrateThrottleAsync`](https://microsoft.github.io/AirSim-NeurIPS2019-Drone-Racing/api.html#airsimneurips.client.MultirotorClient.moveByRollPitchYawrateThrottleAsync) &#x1F49A;
+	- [`moveByRollPitchYawrateZ`](https://microsoft.github.io/AirSim-NeurIPS2019-Drone-Racing/api.html#airsimneurips.client.MultirotorClient.moveByRollPitchYawrateZ) &#x1F49A; (stabilizes altitude)
+
+#### Medium level control APIs:
+- Velocity setpoints
+	- [`moveByVelocityAsync`](https://microsoft.github.io/AirSim-NeurIPS2019-Drone-Racing/api.html#airsimneurips.client.MultirotorClient.moveByVelocityAsync)
+	- [`moveByVelocityZAsync`](https://microsoft.github.io/AirSim-NeurIPS2019-Drone-Racing/api.html#airsimneurips.client.MultirotorClient.moveByVelocityZAsync) (stabilizes altitude)
+
+- Position setpoints
+	- [`moveToPosition`](https://microsoft.github.io/AirSim-NeurIPS2019-Drone-Racing/api.html#airsimneurips.client.MultirotorClient.moveToPositionAsync)
+	- [`moveOnPath`](https://microsoft.github.io/AirSim-NeurIPS2019-Drone-Racing/api.html#airsimneurips.client.MultirotorClient.moveOnPathAsync)
+	- [`moveToZAsync`](https://microsoft.github.io/AirSim-NeurIPS2019-Drone-Racing/api.html#airsimneurips.client.MultirotorClient.moveToZAsync)
+
+#### High level control APIs:
+- Minimum jerk trajectory planning (using [ethz-asl/mav_trajectory_generation](https://github.com/ethz-asl/mav_trajectory_generation)), and trajectory tracking (using a pure pursuit like controller minimizing position and velocity errors), with position setpoints. 
+	Optionally use the `*lookahead*` parameters to start new trajectory from a point sampled `n` seconds ahead for trajectory being tracked currently. 
+	- [`moveOnSplineAsync`](https://microsoft.github.io/AirSim-NeurIPS2019-Drone-Racing/api.html#airsimneurips.client.MultirotorClient.moveOnSplineAsync) &#x1F49A;
+
+- Minimum jerk trajectory planning (using [ethz-asl/mav_trajectory_generation](https://github.com/ethz-asl/mav_trajectory_generation)), and trajectory tracking (using a pure pursuit like controller minimizing position and velocity errors), with position setpoints and corresponding velocity constraints. Useful for making a drone go through a gate waypoint, while obeying speed and direction constraints. 
+	Optionally use the `*lookahead*` parameters to start new trajectory from a point sampled `n` seconds ahead for trajectory being tracked currently. 
+	- [`moveOnSplineVelConstraintsAsync`](https://microsoft.github.io/AirSim-NeurIPS2019-Drone-Racing/api.html#airsimneurips.client.MultirotorClient.moveOnSplineVelConstraintsAsync) &#x1F49A;
+
+- Clear and stop following current trajectory. 
+	- [`clearTrajectory`](https://microsoft.github.io/AirSim-NeurIPS2019-Drone-Racing/api.html#airsimneurips.client.MultirotorClient.clearTrajectory) &#x1F49A;
+
+#### Gain setter APIs:
+- [`setAngleRateControllerGains`](https://microsoft.github.io/AirSim-NeurIPS2019-Drone-Racing/api.html#airsimneurips.client.MultirotorClient.setAngleRateControllerGains) &#x1F49A;
+- [`setAngleLevelControllerGains`](https://microsoft.github.io/AirSim-NeurIPS2019-Drone-Racing/api.html#airsimneurips.client.MultirotorClient.setAngleLevelControllerGains) &#x1F49A;
+- [`setVelocityControllerGains`](https://microsoft.github.io/AirSim-NeurIPS2019-Drone-Racing/api.html#airsimneurips.client.MultirotorClient.setVelocityControllerGains) &#x1F49A;
+- [`setPositionControllerGains`](https://microsoft.github.io/AirSim-NeurIPS2019-Drone-Racing/api.html#airsimneurips.client.MultirotorClient.setPositionControllerGains) &#x1F49A;
+- [`setTrajectoryTrackerGains`](https://microsoft.github.io/AirSim-NeurIPS2019-Drone-Racing/api.html#airsimneurips.client.MultirotorClient.setTrajectoryTrackerGains) &#x1F49A; 
+
+#### APIs to help generate gate detection datasets:
+- Object pose setter and getter: 
+	- [`simSetObjectPose`](https://microsoft.github.io/AirSim-NeurIPS2019-Drone-Racing/api.html#airsimneurips.client.MultirotorClient.simSetObjectPose)
+	- [`simGetObjectPose`](https://microsoft.github.io/AirSim-NeurIPS2019-Drone-Racing/api.html#airsimneurips.client.MultirotorClient.simGetObjectPose)
+
+- Object scale setter and getter: 
+	- [`simSetObjectScale`](https://microsoft.github.io/AirSim-NeurIPS2019-Drone-Racing/api.html#airsimneurips.client.MultirotorClient.simSetObjectScale) &#x1F49A;
+	- [`simGetObjectScale`](https://microsoft.github.io/AirSim-NeurIPS2019-Drone-Racing/api.html#airsimneurips.client.MultirotorClient.simGetObjectScale) &#x1F49A;
+
+- Object segmentation ID setter and getter: 
+	- [`simGetSegmentationObjectID`](https://microsoft.github.io/AirSim-NeurIPS2019-Drone-Racing/api.html#airsimneurips.client.MultirotorClient.simGetSegmentationObjectID)
+	- [`simSetSegmentationObjectID`](https://microsoft.github.io/AirSim-NeurIPS2019-Drone-Racing/api.html#airsimneurips.client.MultirotorClient.simSetSegmentationObjectID)
+
+- Listing all the objects in the scene: 
+	- [`simListSceneObjects`](https://microsoft.github.io/AirSim-NeurIPS2019-Drone-Racing/api.html#airsimneurips.client.MultirotorClient.simListSceneObjects) &#x1F49A;
+
+- Gate specific APIs: 
+	- [`simGetNominalGateInnerDimensions`](https://microsoft.github.io/AirSim-NeurIPS2019-Drone-Racing/api.html#airsimneurips.client.MultirotorClient.simGetNominalGateInnerDimensions) &#x1F49A;
+	- [`simGetNominalGateOuterDimensions`](https://microsoft.github.io/AirSim-NeurIPS2019-Drone-Racing/api.html#airsimneurips.client.MultirotorClient.simGetNominalGateOuterDimensions) &#x1F49A;
 
 ## Questions
 Please open a Github Issue on **this** repository (not [AirSim](https://github.com/microsoft/AirSim)) for any technical questions w.r.t. the Neurips competition. 
