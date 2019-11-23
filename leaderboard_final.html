@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Game of Drones: Leaderboard</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="_static/css/bootstrap.min.css" rel="stylesheet">
+    <link href="_static/css/dataTables.bootstrap.css" rel="stylesheet">
+  </head>
+
+  <header class="main-header" role="banner">
+    <img class="center-block" src="_static/images/banner_zhangjiajie.png" alt="Banner Image"/>
+  </header>
+  <body>
+    <br>
+    <h1 class="text-center">Game of Drones: Leaderboard</h1> 
+        <br>
+
+    <div class="col-md-offset-4">
+    <p class="text-center">
+      <ul>
+        <li> 
+          The leaderboard below is updated once per day at 2100 PST. <br>
+        </li>
+        <li> 
+          If you do not see your results after 24 hours, please <a href="mailto:neuripsdronecontestinfo@gmail.com">email us</a> with your team name and submitted log files.
+        </li>
+      </ul>
+    </p>
+    </div>
+    <br>
+    <br>
+    <p class="text-center">
+        <a style="width: 200px;" class="btn btn-primary btn-lg" onclick = toggle_tier_1()>Tier 1</a>
+        <a style="width: 200px;" class="btn btn-primary btn-lg" onclick = toggle_tier_2()>Tier 2</a>
+        <a style="width: 200px;" class="btn btn-primary btn-lg" onclick = toggle_tier_3()>Tier 3</a>
+    </p>
+
+    <div id='tier-1' class="container-fluid center-block">
+      <h2 class="text-center">Tier 1</h2>
+      <div id='table-tier-1'></div>
+    </div><!-- /.container -->
+
+    <div id='tier-2' class="container-fluid center-block">
+      <h2 class="text-center">Tier 2</h2>
+      <div id='table-tier-2'></div>
+    </div><!-- /.container -->
+
+    <div id='tier-3' class="container-fluid center-block">
+      <h2 class="text-center">Tier 3</h2>
+      <div id='table-tier-3'></div>
+    </div><!-- /.container -->
+
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script type="text/javascript" src="_static/js/jquery.min.js"></script>
+    <script type="text/javascript" src="_static/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="_static/js/jquery.csv.min.js"></script>
+    <script type="text/javascript" src="_static/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="_static/js/dataTables.bootstrap.js"></script>
+    <script type="text/javascript" src="_static/js/csv_to_html_table.js"></script>
+
+    <script type="text/javascript">
+      CsvToHtmlTable.init({
+        csv_path: '_static/data/tier_1_final.csv',
+        element: 'table-tier-1', 
+        allow_download: false,
+        csv_options: {separator: ',', delimiter: '"'},
+        datatables_options: {"paging": false, "ordering": false, "table": 'cell-border', "autoWidth": true}
+      });
+    </script>
+
+    <script type="text/javascript">
+      CsvToHtmlTable.init({
+        csv_path: '_static/data/tier_2_final.csv',
+        element: 'table-tier-2', 
+        allow_download: false,
+        csv_options: {separator: ',', delimiter: '"'},
+        datatables_options: {"paging": false, "ordering": false, "autoWidth": true}
+      });
+    </script>
+
+    <script type="text/javascript">
+      CsvToHtmlTable.init({
+        csv_path: '_static/data/tier_3_final.csv',
+        element: 'table-tier-3', 
+        allow_download: false,
+        csv_options: {separator: ',', delimiter: '"'},
+        datatables_options: {"paging": false, "ordering": false, "autoWidth": true}
+      });
+    </script>
+
+
+    <script>
+    function toggle_tier_1() {
+      var table_tier_1 = document.getElementById("tier-1");
+      var table_tier_2 = document.getElementById("tier-2");
+      var table_tier_3 = document.getElementById("tier-3");
+
+      table_tier_1.style.display = "block";
+      table_tier_2.style.display = "none";
+      table_tier_3.style.display = "none";
+    }
+    </script>
+
+    <script>
+    function toggle_tier_2() {
+      var table_tier_1 = document.getElementById("tier-1");
+      var table_tier_2 = document.getElementById("tier-2");
+      var table_tier_3 = document.getElementById("tier-3");
+
+      table_tier_1.style.display = "none";
+      table_tier_2.style.display = "block";
+      table_tier_3.style.display = "none";
+    }
+    </script>
+
+    <script>
+    function toggle_tier_3() {
+      var table_tier_1 = document.getElementById("tier-1");
+      var table_tier_2 = document.getElementById("tier-2");
+      var table_tier_3 = document.getElementById("tier-3");
+
+      table_tier_1.style.display = "none";
+      table_tier_2.style.display = "none";
+      table_tier_3.style.display = "block";
+    }
+    </script>
+
+  </body>
+</html>
