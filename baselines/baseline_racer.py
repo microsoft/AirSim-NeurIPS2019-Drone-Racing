@@ -130,7 +130,7 @@ class BaselineRacer(object):
             add_position_constraint=True, add_velocity_constraint=False, add_acceleration_constraint=False, viz_traj=self.viz_traj, viz_traj_color_rgba=self.viz_traj_color_rgba, vehicle_name=self.drone_name)
 
     def fly_through_all_gates_at_once_with_moveOnSpline(self):
-        if self.level_name in ["Soccer_Field_Medium", "Soccer_Field_Easy", "ZhangJiaJie_Medium", "Qualifier_Tier_1", "Qualifier_Tier_2", "Qualifier_Tier_3"] :
+        if self.level_name in ["Soccer_Field_Medium", "Soccer_Field_Easy", "ZhangJiaJie_Medium", "Qualifier_Tier_1", "Qualifier_Tier_2", "Qualifier_Tier_3", "Final_Tier_1", "Final_Tier_2", "Final_Tier_3"] :
             vel_max = 30.0
             acc_max = 15.0
 
@@ -268,6 +268,7 @@ def main(args):
         if args.planning_and_control_api == "moveOnSplineVelConstraints":
             baseline_racer.fly_through_all_gates_one_by_one_with_moveOnSplineVelConstraints().join()
 
+    # Comment out the following if you observe the python script exiting prematurely, and resetting the race 
     baseline_racer.stop_image_callback_thread()
     baseline_racer.stop_odometry_callback_thread()
     baseline_racer.reset_race()
@@ -275,7 +276,7 @@ def main(args):
 if __name__ == "__main__":
     parser = ArgumentParser()
     parser.add_argument('--level_name', type=str, choices=["Soccer_Field_Easy", "Soccer_Field_Medium", "ZhangJiaJie_Medium", "Building99_Hard", 
-        "Qualifier_Tier_1", "Qualifier_Tier_2", "Qualifier_Tier_3"], default="ZhangJiaJie_Medium")
+        "Qualifier_Tier_1", "Qualifier_Tier_2", "Qualifier_Tier_3", "Final_Tier_1", "Final_Tier_2", "Final_Tier_3"], default="ZhangJiaJie_Medium")
     parser.add_argument('--planning_baseline_type', type=str, choices=["all_gates_at_once","all_gates_one_by_one"], default="all_gates_at_once")
     parser.add_argument('--planning_and_control_api', type=str, choices=["moveOnSpline", "moveOnSplineVelConstraints"], default="moveOnSpline")
     parser.add_argument('--enable_viz_traj', dest='viz_traj', action='store_true', default=False)

@@ -60,12 +60,29 @@ Notes:
 		```
 		./AirSimExe.sh -windowed -opengl4
 		```
+	- Running headless (with rendering of images enabled):
+		```
+		DISPLAY= ./AirSimExe.sh -opengl4
+		```
+	- To disable rendering completely for training planning and / or control policies, you can use:
+		```
+		-./AirSimExe.sh -nullrhi
+		```
+		Note that `simGetImages` will not work with this option. 
+	- To increase speed of `simGetImages` / increase speed of Unreal Engine's game thread;
+		- Add the `"ViewMode": "NoDisplay"` to your settings.json file, or use [this file](https://gist.github.com/madratman/5fadbb08f65e9c0187ccc1f5090fc086) directly.   
+		This disables rendering in the main viewport camera.   
+		Then run the binary with the following options.  
+		```
+		./AirSimExe.sh -windowed -NoVSync -BENCHMARK
+		```
+		You can also use the Unreal console commands `Stat FPS`, `Stat UnitGraph`, `r.VSync`, `t.maxFPS`. See [Issue #111](https://github.com/microsoft/AirSim-NeurIPS2019-Drone-Racing/issues/111) for more details. 
 
 - Windows
 	- Navigate to the `AirSim/` directory, and double-click `run.bat` (or `AirSimExe.exe -windowed`)
 
 ## Docker
-- Prerequistes:
+- Prerequisites:
 	- Install [docker-ce](https://docs.docker.com/install/linux/docker-ce/ubuntu/). 
 	- Complete the desired [post-installation steps for linux](https://docs.docker.com/install/linux/linux-postinstall/) after installing docker.    
 	At the minimum, the page tells you how torun docker without root, and other useful setup options. 
@@ -111,6 +128,8 @@ We recommend you used python >= 3.6. Python 2.7 will go [out of support soon](ht
 	```
 	pip install airsimneurips
 	```
+
+- See [quick overview of the API](#quick-api-overview) below
 
 - The API is documented at [airsimneurips API doc](https://microsoft.github.io/AirSim-NeurIPS2019-Drone-Racing/api.html)
 
@@ -227,15 +246,14 @@ Please read [the race monitoring section](https://github.com/microsoft/AirSim-Ne
 	If you do not see your results after 24 hours, please [email us](mailto:neuripsdronecontestinfo@gmail.com) with your team name and submitted log files.
 
 ## Sample code
- - Plan and move on minimum jerk trajectory using gate ground truth poses:
-    - Generate an AirSim settings.json file
+ - Plan and move on a minimum jerk trajectory using ground truth poses of gates:
+	- Generate an AirSim settings.json file (same as the one provided in releases)
 	 ```shell
 	$ cd baselines;
 	$ python generate_settings_file.py
 	```
-    - Start the AirSim Neurips binary, [as explained above](https://github.com/microsoft/AirSim-NeurIPS2019-Drone-Racing#running)
-    - Run the code!  
-      See all the [baseline arguments here](https://github.com/microsoft/AirSim-NeurIPS2019-Drone-Racing/blob/master/baselines/baseline_racer.py#L260-#L265) 
+	- Start the AirSim Neurips binary, [as explained above](#running)
+	- Run the code!
 	```shell
 	$ python baseline_racer.py \
 		--enable_viz_traj \
@@ -245,6 +263,18 @@ Please read [the race monitoring section](https://github.com/microsoft/AirSim-Ne
 		--level_name ZhangJiaJie_Medium \
 		--race_tier 1 
 	```
+
+	Usage is:
+	```shell
+	$ python baselines/baseline_racer.py -h
+	usage: baseline_racer.py [-h]
+		[--level_name {Soccer_Field_Easy,Soccer_Field_Medium,ZhangJiaJie_Medium,Building99_Hard,Qualifier_Tier_1,Qualifier_Tier_2,Qualifier_Tier_3,Final_Tier_1,Final_Tier_2,Final_Tier_3}]
+		[--planning_baseline_type {all_gates_at_once,all_gates_one_by_one}]
+		[--planning_and_control_api {moveOnSpline,moveOnSplineVelConstraints}]
+		[--enable_viz_traj] [--enable_viz_image_cv2]
+		[--race_tier {1,2,3}]
+	```
+
  - Plan a Game Theoretic Plan (GTP) trajectory for an ego drone based on an estimate of the opponent drone's behavior. 
 	- Generate an AirSim settings.json file
 	 ```shell
@@ -267,7 +297,7 @@ Please read [the race monitoring section](https://github.com/microsoft/AirSim-Ne
 We added some new APIs (marked with &#x1F49A;) to [AirSim](https://github.com/Microsoft/Airsim) for the NeurIPS competition binaries. 
 
 #### Loading Unreal Engine environments  
-- [`simLoadLevel(level_name)`](https://microsoft.github.io/AirSim-NeurIPS2019-Drone-Racing/api.html#airsimneurips.client.MultirotorClient.level_name) &#x1F49A;    
+- [`simLoadLevel(level_name)`](https://microsoft.github.io/AirSim-NeurIPS2019-Drone-Racing/api.html#airsimneurips.client.MultirotorClient.simLoadLevel) &#x1F49A;    
 Possible values for `level_name` are: 
 	- `"Soccer_Field_Easy"`, `"Soccer_Field_Medium"`, `"ZhangJiaJie_Medium"`, `"Building99_Hard"` in the training binaries (`v0.3`). 
 	- `"Qualification_Tier_1"`, `"Qualification_Tier_2"`, `"Qualification_Tier_3"` in the qualification binaries (`v1.0`). 
@@ -305,7 +335,7 @@ Before trying this, please ensure you've downloaded the corresponding training (
 
 - RollPitchYawrate setpoint APIs: 
 	- [`moveByRollPitchYawrateThrottleAsync`](https://microsoft.github.io/AirSim-NeurIPS2019-Drone-Racing/api.html#airsimneurips.client.MultirotorClient.moveByRollPitchYawrateThrottleAsync) &#x1F49A;
-	- [`moveByRollPitchYawrateZ`](https://microsoft.github.io/AirSim-NeurIPS2019-Drone-Racing/api.html#airsimneurips.client.MultirotorClient.moveByRollPitchYawrateZ) &#x1F49A; (stabilizes altitude)
+	- [`moveByRollPitchYawrateZAsync`](https://microsoft.github.io/AirSim-NeurIPS2019-Drone-Racing/api.html#airsimneurips.client.MultirotorClient.moveByRollPitchYawrateZAsync) &#x1F49A; (stabilizes altitude)
 
 #### Medium level control APIs:
 - Velocity setpoints
