@@ -1,49 +1,53 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Game of Drones: Submit Solution</title>
-    <link href="_static/css/bootstrap.min.css" rel="stylesheet">
-    <link href="_static/css/dataTables.bootstrap.css" rel="stylesheet">
-  </head>
 
-  <nav class="navbar navbar-default navbar-fixed-top">
-    <div class="container-fluid">
-      <div class="navbar-header">
-          <a class="navbar-brand">Game of Drones</a>
-          <button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span> 
-          </button> 
-      </div>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Game of Drones: Submit Solution</title>
+  <link href="_static/css/bootstrap.min.css" rel="stylesheet">
+  <link href="_static/css/dataTables.bootstrap.css" rel="stylesheet">
+</head>
 
-      <div class="collapse navbar-collapse" id="collapsibleNavbar">
-        <ul class="nav navbar-nav">
-          <li><a href="index.html">Home</a></li>
-          <li><a href="https://github.com/microsoft/AirSim-NeurIPS2019-Drone-Racing" target="_blank">Github Repo</a></li>
-          <li><a href="api.html">API Doc</a></li>
-          <li class="active"><a href="upload.html">Upload Solution</a></li>
-          <li><a href="leaderboard.html">Qualification Leaderboard</a></li>
-          <li><a href="leaderboard_final.html">Final Leaderboard</a></li>
-          <li><a href="registered_teams_heatmap_neurips_2019.html">Registered Teams</a></li>
-          <li><a href="https://www.microsoft.com/en-us/research/academic-program/game-of-drones-competition-at-neurips-2019" target="_blank"> <strike> Register </strike></a></li>
-        </ul>
-      </div>
+<nav class="navbar navbar-default navbar-fixed-top">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand">Game of Drones</a>
+      <button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
     </div>
-  </nav>
 
-  <body>
+    <div class="collapse navbar-collapse" id="collapsibleNavbar">
+      <ul class="nav navbar-nav">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="https://github.com/microsoft/AirSim-NeurIPS2019-Drone-Racing" target="_blank">Github Repo</a></li>
+        <li><a href="api.html">API Doc</a></li>
+        <li class="active"><a href="upload.html">Upload Solution</a></li>
+        <li><a href="leaderboard.html">Qualification Leaderboard</a></li>
+        <li><a href="leaderboard_final.html">Final Leaderboard</a></li>
+        <li><a href="winning_teams_reports.html">Winning Team Reports</a></li>
+        <li><a href="registered_teams_heatmap_neurips_2019.html">Registered Teams</a></li>
+        <li><a
+            href="https://www.microsoft.com/en-us/research/academic-program/game-of-drones-competition-at-neurips-2019"
+            target="_blank"> <strike> Register </strike></a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<body>
 
   <div class="container-fluid">
 
-    <h1 class="text-center">Submit Solution for the Final Round</h1>  
+    <h1 class="text-center">Submit Solution for the Final Round</h1>
 
     <div class="col-sm-offset-3">
       <p class="text-center">
-    <!--     <ul>
+        <!--     <ul>
          <li> 
             The <a href="leaderboard_final.html">final leaderboard</a> is updated once per day at 2100 PST. <br>
           </li>
@@ -55,43 +59,46 @@
     </div>
     <br>
 
-  <form class="center-block" id="submit-form">
-    <div class="row">
-      <label for="team-name" class="col-md-offset-4 col-form-label">Team Name:</label>
+    <form class="center-block" id="submit-form">
+      <div class="row">
+        <label for="team-name" class="col-md-offset-4 col-form-label">Team Name:</label>
         <div class="col-md-offset-4">
-          <input class="form-control" style="width: 200px;" id="team-name" type="text" placeholder="Team Name" name="team-name"><br>
+          <input class="form-control" style="width: 200px;" id="team-name" type="text" placeholder="Team Name"
+            name="team-name"><br>
         </div>
-    </div>
-    <div class="row">
-      <label for="team-id"  class="col-md-offset-4 col-form-label">Team ID:</label>
+      </div>
+      <div class="row">
+        <label for="team-id" class="col-md-offset-4 col-form-label">Team ID:</label>
         <div class="col-md-offset-4">
-          <input class="form-control" style="width: 200px;" id="team-id" type="text" placeholder="Team ID" name="team-id"><br>
+          <input class="form-control" style="width: 200px;" id="team-id" type="text" placeholder="Team ID"
+            name="team-id"><br>
         </div>
-    </div>
-    <div class="row">
-      <label for="tier1-file"  class="col-md-offset-4 col-form-label">Race Logs:</label>
+      </div>
+      <div class="row">
+        <label for="tier1-file" class="col-md-offset-4 col-form-label">Race Logs:</label>
         <div class="col-md-offset-4">
           <input id="tier1-file" type="file" multiple=""><br>
         </div>
-    </div>
-    <div class="row">
-      <label for="report-file" class="col-md-offset-4 col-form-label">Report:</label>
+      </div>
+      <div class="row">
+        <label for="report-file" class="col-md-offset-4 col-form-label">Report:</label>
         <div class="col-md-offset-4">
           <input id="report-file" type="file" multiple=""><br>
         </div>
-    </div>
-  </form>
+      </div>
+    </form>
 
     <div><br>
       <button id="upload-button" type="button" class="btn btn-primary btn-lg center-block">Submit</button>
     </div>
   </div>
-    <br>
-    <br>
-    <br>
-    <script src="_static/js/azure-storage-blob.js"></script>
-    <script src="_static/js/upload.js"></script>
-    <script type="text/javascript" src="_static/js/jquery.min.js"></script>
-    <script type="text/javascript" src="_static/js/bootstrap.min.js"></script>
-  </body>
+  <br>
+  <br>
+  <br>
+  <script src="_static/js/azure-storage-blob.js"></script>
+  <script src="_static/js/upload.js"></script>
+  <script type="text/javascript" src="_static/js/jquery.min.js"></script>
+  <script type="text/javascript" src="_static/js/bootstrap.min.js"></script>
+</body>
+
 </html>

@@ -1,54 +1,62 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Game of Drones: Qualification Leaderboard</title>
 
-    <!-- Bootstrap core CSS -->
-    <link href="_static/css/bootstrap.min.css" rel="stylesheet">
-    <link href="_static/css/dataTables.bootstrap.css" rel="stylesheet">
-  </head>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Game of Drones: Qualification Leaderboard</title>
 
-  <nav class="navbar navbar-default navbar-fixed-top">
-    <div class="container-fluid">
-      <div class="navbar-header">
-          <a class="navbar-brand">Game of Drones</a>
-          <button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span> 
-          </button> 
-      </div>
+  <!-- Bootstrap core CSS -->
+  <link href="_static/css/bootstrap.min.css" rel="stylesheet">
+  <link href="_static/css/dataTables.bootstrap.css" rel="stylesheet">
+</head>
 
-      <div class="collapse navbar-collapse" id="collapsibleNavbar">
-        <ul class="nav navbar-nav">
-          <li><a href="index.html">Home</a></li>
-          <li><a href="https://github.com/microsoft/AirSim-NeurIPS2019-Drone-Racing" target="_blank">Github Repo</a></li>
-          <li><a href="api.html">API Doc</a></li>
-          <li><a href="upload.html">Upload Solution</a></li>
-          <li class="active"><a href="leaderboard.html">Qualification Leaderboard</a></li>
-          <li><a href="leaderboard_final.html">Final Leaderboard</a></li>
-          <li><a href="registered_teams_heatmap_neurips_2019.html">Registered Teams</a></li>
-          <li><a href="https://www.microsoft.com/en-us/research/academic-program/game-of-drones-competition-at-neurips-2019" target="_blank"> <strike> Register </strike></a></li>
-        </ul>
-      </div>
+<nav class="navbar navbar-default navbar-fixed-top">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand">Game of Drones</a>
+      <button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
     </div>
-  </nav>
+
+    <div class="collapse navbar-collapse" id="collapsibleNavbar">
+      <ul class="nav navbar-nav">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="https://github.com/microsoft/AirSim-NeurIPS2019-Drone-Racing" target="_blank">Github Repo</a></li>
+        <li><a href="api.html">API Doc</a></li>
+        <li><a href="upload.html">Upload Solution</a></li>
+        <li class="active"><a href="leaderboard.html">Qualification Leaderboard</a></li>
+        <li><a href="leaderboard_final.html">Final Leaderboard</a></li>
+        <li><a href="winning_teams_reports.html">Winning Team Reports</a></li>
+        <li><a href="registered_teams_heatmap_neurips_2019.html">Registered Teams</a></li>
+        <li><a
+            href="https://www.microsoft.com/en-us/research/academic-program/game-of-drones-competition-at-neurips-2019"
+            target="_blank"> <strike> Register </strike></a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
 
 <!--   <header class="main-header" role="banner">
     <img class="center-block" src="_static/images/banner_zhangjiajie.png" alt="Banner Image"/>
   </header>
  -->
-  <body>
+
+<body>
   <div class="container-fluid">
-    <h1 class="text-center">Game of Drones: Qualification Leaderboard</h1> 
+    <h1 class="text-center">Game of Drones: Qualification Leaderboard</h1>
     <br>
     <p class="text-center">
-        <button type="button" class="btn btn-outline-primary btn-lg" style="width: 200px;" onclick = toggle_tier_1()>Tier 1</button>
-        <button type="button" class="btn btn-outline-primary btn-lg" style="width: 200px;" onclick = toggle_tier_2()>Tier 2</button>
-        <button type="button" class="btn btn-outline-primary btn-lg" style="width: 200px;" onclick = toggle_tier_3()>Tier 3</button>
+      <button type="button" class="btn btn-outline-primary btn-lg" style="width: 200px;" onclick=toggle_tier_1()>Tier
+        1</button>
+      <button type="button" class="btn btn-outline-primary btn-lg" style="width: 200px;" onclick=toggle_tier_2()>Tier
+        2</button>
+      <button type="button" class="btn btn-outline-primary btn-lg" style="width: 200px;" onclick=toggle_tier_3()>Tier
+        3</button>
     </p>
 
     <div id='tier-1' class="container-fluid center-block">
@@ -68,48 +76,48 @@
 
   </div>
 
-    <!-- Bootstrap core JavaScript
+  <!-- Bootstrap core JavaScript
     ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <script type="text/javascript" src="_static/js/jquery.min.js"></script>
-    <script type="text/javascript" src="_static/js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="_static/js/jquery.csv.min.js"></script>
-    <script type="text/javascript" src="_static/js/jquery.dataTables.min.js"></script>
-    <script type="text/javascript" src="_static/js/dataTables.bootstrap.js"></script>
-    <script type="text/javascript" src="_static/js/csv_to_html_table.js"></script>
+  <!-- Placed at the end of the document so the pages load faster -->
+  <script type="text/javascript" src="_static/js/jquery.min.js"></script>
+  <script type="text/javascript" src="_static/js/bootstrap.min.js"></script>
+  <script type="text/javascript" src="_static/js/jquery.csv.min.js"></script>
+  <script type="text/javascript" src="_static/js/jquery.dataTables.min.js"></script>
+  <script type="text/javascript" src="_static/js/dataTables.bootstrap.js"></script>
+  <script type="text/javascript" src="_static/js/csv_to_html_table.js"></script>
 
-    <script type="text/javascript">
-      CsvToHtmlTable.init({
-        csv_path: '_static/data/tier_1.csv',
-        element: 'table-tier-1', 
-        allow_download: false,
-        csv_options: {separator: ',', delimiter: '"'},
-        datatables_options: {"paging": false, "ordering": false, "table": 'cell-border', "autoWidth": true}
-      });
-    </script>
+  <script type="text/javascript">
+    CsvToHtmlTable.init({
+      csv_path: '_static/data/tier_1.csv',
+      element: 'table-tier-1',
+      allow_download: false,
+      csv_options: { separator: ',', delimiter: '"' },
+      datatables_options: { "paging": false, "ordering": false, "table": 'cell-border', "autoWidth": true }
+    });
+  </script>
 
-    <script type="text/javascript">
-      CsvToHtmlTable.init({
-        csv_path: '_static/data/tier_2.csv',
-        element: 'table-tier-2', 
-        allow_download: false,
-        csv_options: {separator: ',', delimiter: '"'},
-        datatables_options: {"paging": false, "ordering": false, "autoWidth": true}
-      });
-    </script>
+  <script type="text/javascript">
+    CsvToHtmlTable.init({
+      csv_path: '_static/data/tier_2.csv',
+      element: 'table-tier-2',
+      allow_download: false,
+      csv_options: { separator: ',', delimiter: '"' },
+      datatables_options: { "paging": false, "ordering": false, "autoWidth": true }
+    });
+  </script>
 
-    <script type="text/javascript">
-      CsvToHtmlTable.init({
-        csv_path: '_static/data/tier_3.csv',
-        element: 'table-tier-3', 
-        allow_download: false,
-        csv_options: {separator: ',', delimiter: '"'},
-        datatables_options: {"paging": false, "ordering": false, "autoWidth": true}
-      });
-    </script>
+  <script type="text/javascript">
+    CsvToHtmlTable.init({
+      csv_path: '_static/data/tier_3.csv',
+      element: 'table-tier-3',
+      allow_download: false,
+      csv_options: { separator: ',', delimiter: '"' },
+      datatables_options: { "paging": false, "ordering": false, "autoWidth": true }
+    });
+  </script>
 
 
-    <script>
+  <script>
     function toggle_tier_1() {
       var table_tier_1 = document.getElementById("tier-1");
       var table_tier_2 = document.getElementById("tier-2");
@@ -119,9 +127,9 @@
       table_tier_2.style.display = "none";
       table_tier_3.style.display = "none";
     }
-    </script>
+  </script>
 
-    <script>
+  <script>
     function toggle_tier_2() {
       var table_tier_1 = document.getElementById("tier-1");
       var table_tier_2 = document.getElementById("tier-2");
@@ -131,9 +139,9 @@
       table_tier_2.style.display = "block";
       table_tier_3.style.display = "none";
     }
-    </script>
+  </script>
 
-    <script>
+  <script>
     function toggle_tier_3() {
       var table_tier_1 = document.getElementById("tier-1");
       var table_tier_2 = document.getElementById("tier-2");
@@ -143,6 +151,7 @@
       table_tier_2.style.display = "none";
       table_tier_3.style.display = "block";
     }
-    </script>
-  </body>
+  </script>
+</body>
+
 </html>
