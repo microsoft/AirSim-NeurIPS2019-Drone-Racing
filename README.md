@@ -294,18 +294,18 @@ Please read [the race monitoring section](https://github.com/microsoft/AirSim-Ne
 		- R. Spica, D. Falanga, E. Cristofalo, E. Montijano, D. Scaramuzza, and M. Schwager, "A Real-Time Game Theoretic Planner for Autonomous Two-Player Drone Racing", in the Proccedings of Robotics: Science and Systems (RSS), 2018. 
 
  - Race with a perception method that estimates the next gate's location and moves using moveOnSplineAsync.
-        - Generate an AirSim settings.json file
+ 	- Generate an AirSim settings.json file
 	 ```shell
 	$ cd baselines;
 	$ python generate_settings_file.py
 	```
 	- Start the AirSim Neurips binary, [as explained above](https://github.com/microsoft/AirSim-NeurIPS2019-Drone-Racing#running)
-        - Run the perception code!  
+	- Run the perception code!  
 	```shell
 	$ python baseline_racer_perception.py \
 		--level_name Qualifier_Tier_2
 	```
-        - This perception method leverages that all gates are planar, rectangular, and have similar coloration. In each image frame, color thresholding is done to create a mask of the gate. This mask is then compared to that of a baseline image that is taken from a known distance from a gate with known dimensions. A homography transformation between the two masks can be retrieved to find the image coordinate of the center of the gate in the image taken during flight, and a point to point correspondance can be used to find the 3D coordinate of the oncoming gate center. For each gate, a Kalman Filter is used to estimate of the gate center location based on the measurements. The coordinate is then used as a waypoint in the moveOnSplineAsync() API. 
+	- This perception method leverages that all gates are planar, rectangular, and have similar coloration. In each image frame, color thresholding is done to create a mask of the gate. This mask is then compared to that of a baseline image that is taken from a known distance from a gate with known dimensions. A homography transformation between the two masks can be retrieved to find the image coordinate of the center of the gate in the image taken during flight, and a point to point correspondance can be used to find the 3D coordinate of the oncoming gate center. For each gate, a Kalman Filter is used to estimate of the gate center location based on the measurements. The coordinate is then used as a waypoint in the moveOnSplineAsync() API. 
                                                                 
 ## Quick API overview 
 We added some new APIs (marked with &#x1F49A;) to [AirSim](https://github.com/Microsoft/Airsim) for the NeurIPS competition binaries. 
