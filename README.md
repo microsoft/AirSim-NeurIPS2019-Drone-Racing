@@ -10,6 +10,17 @@
 
 <img src="https://github.com/madratman/airsim_neurips_gifs/blob/master/imgs/neurips_b99_3_drones.gif?raw=true" width="285"> <img src="https://github.com/madratman/airsim_neurips_gifs/blob/master/imgs/neurips_soccer_field_8_drones.gif?raw=true" width="285"> <img src="https://github.com/madratman/airsim_neurips_gifs/blob/master/imgs/neurips_zhangjiajie_4_drones.gif?raw=true" width="285">
 
+Note: If you use this repository in your research, please cite our pre-print, [AirSim Drone Racing Lab](https://arxiv.org/abs/2003.05654).
+
+```
+@article{madaan2020airsim,
+  title={AirSim Drone Racing Lab},
+  author={Madaan, Ratnesh and Gyde, Nicholas and Vemprala, Sai and Brown, Matthew and Nagami, Keiko and Taubner, Tim and Cristofalo, Eric and Scaramuzza, Davide and Schwager, Mac and Kapoor, Ashish},
+  journal={arXiv preprint arXiv:2003.05654},
+  year={2020}
+}
+```
+
 ### Downloading and running AirSim Binaries
 #### Downloading
 - Final round binaries and environments (v1.1)
