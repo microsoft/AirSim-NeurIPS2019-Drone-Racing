@@ -1,5 +1,6 @@
 # Game of Drones: A NeurIPS 2019 Competition
 
+**Note: This repository is not being maintained any more. Please use [AirSim Drone Racing Lab](https://github.com/microsoft/AirSim-Drone-Racing-Lab).**
 
 ## Quickstart
 - [Website](https://microsoft.github.io/AirSim-NeurIPS2019-Drone-Racing/)
